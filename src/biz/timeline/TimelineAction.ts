@@ -4,14 +4,14 @@ import Logger from "~/global/util/Logger";
 import {TIMELINE_ACTIONS} from "~/biz/timeline/TimelineReducer";
 import TipsUtil from "~/global/util/TipsUtil";
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 8
 const TAG = "TimelineAction"
 export default class TimelineAction {
     private static pageNum: number;
 
     static refreshTimeline() {
         return async dispatch => {
-            this.pageNum = 0
+            this.pageNum = 1
             dispatch(TIMELINE_ACTIONS.Refreshing())
             try {
                 let response = await FanfouFetch.get(Api.home_timeline, {page: this.pageNum, format: 'html'})
