@@ -11,7 +11,7 @@
  *formatDate(1472793615764); // 2016-09-02 13:20:15
  */
 
-export function formatDate(date, fmt?) {
+export function formatDate(date?, fmt?) {
     date = date == undefined ? new Date() : date;
     date = typeof date == 'number' ? new Date(date) : date;
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';

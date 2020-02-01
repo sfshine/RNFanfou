@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import * as themeAction from '~/global/theme/ThemeAction';
 import {StyleSheet} from 'react-native'
-import {navigateReset, navigateResetN} from "~/global/navigator/NavigationManager";
+import {navigateResetN} from "~/global/navigator/NavigationManager";
 import SplashScreen from "react-native-splash-screen";
 import Logger from "~/global/util/Logger"
 import LoginAction from "~/biz/user/login/LoginAction";

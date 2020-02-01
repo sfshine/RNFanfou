@@ -3,8 +3,8 @@ import {GlobalCache} from "~/global/AppGlobal";
 import {ConfigUtil} from "~/global/util/ConfigUtil";
 import TipsUtil from "~/global/util/TipsUtil";
 import {Api, FanfouModule} from "~/biz/common/api/Api";
-import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {navigateResetN} from "~/global/navigator/NavigationManager";
+import FanfouFetch from "~/biz/common/api/FanfouFetch";
 
 
 /**

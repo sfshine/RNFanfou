@@ -30,6 +30,11 @@ export function navigateResetN(navigation, page) {
     navigation.dispatch(resetAction);
 }
 
+export function goBack(props) {
+    const {navigation} = props;
+    return goBackN(navigation)
+}
+
 export function goBackN(navigation) {
     if (navigation) {
         navigation.goBack();

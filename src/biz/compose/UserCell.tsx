@@ -1,9 +1,17 @@
 import React, {PureComponent} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CheckBox from 'react-native-check-box'
 import Icon from "react-native-vector-icons/Ionicons";
+import BaseProps from "~/global/base/BaseProps";
 
-export default class UserCell extends PureComponent {
+interface Props extends BaseProps {
+    user: any,
+    checkMap: boolean,
+    showCheckBox: any,
+    onPress: (event: GestureResponderEvent) => void;
+}
+
+export default class UserCell extends PureComponent<Props> {
     render() {
         // console.log("UserCell: ", this.props)
         const {user, checkMap, showCheckBox} = this.props;
