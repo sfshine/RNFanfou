@@ -1,9 +1,9 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from "react-navigation-stack";
 import TestMainPage from "~/biz/test/main/TestMainPage";
-import WelcomePage from "~/biz/test/welcome/WelcomePage";
-import $FunNamePage from "../../biz/test/ideaplugin/$FunNamePage";
-import DetailPage from "../../biz/test/detail/DetailPage";
+import WelcomePage from "~/biz/welcome/WelcomePage";
+import $FunNamePage from "~/biz/test/ideaplugin/$FunNamePage";
+import DetailPage from "~/biz/test/detail/DetailPage";
 import WebPage from "~/global/components/WebPage";
 
 const RootNavigator = createStackNavigator({
