@@ -1,20 +1,25 @@
 import React, {PureComponent} from 'react';
 import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import NavigationUtil from "../../../global/navigator/NavigationUtil";
-import simplifyDate from "../../../global/util/DateUtil";
-import AutoHeightImage from "../../../global/components/AutoHeightImage";
+import AutoHeightImage from "~/global/components/AutoHeightImage";
 import HTMLView from 'react-native-htmlview';
-import WebViewScreen from "../../common/WebViewScreen";
+import BaseProps from "~/global/base/BaseProps";
+import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
+import {formatDate} from "~/global/util/DateUtil";
 
 const screenWidth = Dimensions.get('window').width;
 
-export default class StatusComponent extends PureComponent {
+interface Props extends BaseProps {
+    item: any,
+    callback: any,
+}
+
+export default class StatusComponent extends PureComponent<Props> {
     render() {
         console.log("StatusComponent: ", this.props)
         const {item, callback} = this.props;
         let userView = <TouchableOpacity activeOpacity={0.7} style={styles.userContainer}
                                          onPress={() => {
-                                             NavigationUtil.fromMainToPage("ProfileScreen", {user: item.user})
+                                             navigateN(NavigationManager.mainNavigation, "ProfileScreen", {user: item.user})
                                          }}>
             <Image source={{uri: item.user.profile_image_url_large}} style={styles.thumbnail}/>
             <View style={styles.userInfoContainer}>
@@ -33,7 +38,7 @@ export default class StatusComponent extends PureComponent {
                             a: styles.source,
                         }}
                     />
-                    < Text style={styles.created_at}>{simplifyDate(item.created_at)}</Text>
+                    < Text style={styles.created_at}>{formatDate(new Date(item.created_at))}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -43,7 +48,7 @@ export default class StatusComponent extends PureComponent {
                 if (callback) {
                     callback()
                 } else {
-                    NavigationUtil.fromMainToPage("StatusDetailScreen", {item: item})
+                    navigateN(NavigationManager.mainNavigation, "StatusDetailScreen", {item: item})
                 }
             }}>
                 <HTMLView
@@ -51,7 +56,7 @@ export default class StatusComponent extends PureComponent {
                     onLinkPress={(url) => this.hrefDispatcher(url)}
                     stylesheet={{
                         p: styles.text,
-                        a: [styles.text, {color: this.props.theme.hrefColor}],
+                        a: [styles.text],
                     }}/>
                 {item.photo &&
                 <TouchableOpacity activeOpacity={0.7}
@@ -60,13 +65,13 @@ export default class StatusComponent extends PureComponent {
                                       marginTop: 5,
                                   }}
                                   onPress={() => {
-                                      NavigationUtil.fromMainToPage("PictureViewScreen", {images: [{url: item.photo.largeurl}]})
+                                      navigateN(NavigationManager.mainNavigation, "PictureViewScreen", {images: [{url: item.photo.largeurl}]})
                                   }}>
                     <AutoHeightImage width={screenWidth * 0.8}
                                      height={screenWidth * 0.8 * 0.618}
                                      source={{uri: item.photo.largeurl}}
                                      style={styles.msgImage}/>
-                </TouchableOpacity>/*imageurl,largeurl*/}
+                </TouchableOpacity>}
             </TouchableOpacity>
         return <View style={styles.container}>
             {userView}
@@ -78,17 +83,17 @@ export default class StatusComponent extends PureComponent {
         console.log("hrefDispatcher: " + url)
         // <a href="http://fanfou.com/dailu321" className="former">*/
         if (url.indexOf('http://fanfou.com/') == 0) {
-            NavigationUtil.fromMainToPage("ProfileScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "ProfileScreen", {url: url})
+
         }
         // "#<a href="/q/%E6%B5%8B%E8%AF%95">测试</a>#"
         else if (url.indexOf('/q/') == 0) {
-            NavigationUtil.fromMainToPage("SearchScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "SearchScreen", {url: url})
         }
         // "<a href="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" title="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" rel="nofollow" target="_blank">https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg</a>"
         else {
-            NavigationUtil.fromMainToPage("WebViewScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "WebViewScreen", {url: url})
         }
-
     }
 }
 

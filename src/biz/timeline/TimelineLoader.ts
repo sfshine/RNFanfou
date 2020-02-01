@@ -1,5 +1,5 @@
-import FanfouFetch from "../../../global/network/FanfouFetch";
-import RefreshState from "../../../global/components/refresh/RefreshState";
+import RefreshState from "../../global/components/refresh/RefreshState";
+import FanfouFetch from "~/biz/common/api/FanfouFetch";
 
 const PAGE_SIZE = 20
 
@@ -16,7 +16,7 @@ export function loadTimeline(api, bundle, actions) {
         FanfouFetch.get(api, {page: bundle.pageIndex, format: 'html', ...bundle.extParams}).then((json) => {
             console.log("loadTimeline json", json);
             //无论什么时候获取的数据不够一页就要显示没有更多数据了
-            let endStatus = json.length < PAGE_SIZE ? RefreshState.NoMoreData : RefreshState.Idle
+            let endStatus = json.length < PAGE_SIZE ? RefreshState.LoadingMoreEnd : RefreshState.Idle
             let newBundle = {pageIndex: bundle.pageIndex, pageData: [...bundle.pageData, ...json]}
             console.log("loadTimeline newBundle", newBundle);
             isRefresh ? dispatch(actions.timeline_refreshSuccessAction(newBundle, endStatus)) : dispatch(actions.timeline_loadMoreSuccessAction(newBundle, endStatus))

@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import NavigationBar from "../../global/navigator/Navigationbar";
 import RefreshListView from "../../global/components/refresh/RefreshListView";
-import TimelineCell from "../home/TimelineCell";
+import TimelineCell from "../timeline/TimelineCell";
 import * as action from "../user/profile/ProfileAction";
 
 class ProfileScreen extends React.Component {

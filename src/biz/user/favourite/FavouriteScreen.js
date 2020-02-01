@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./FavouriteAction";
-import TimelineCell from "../../home/TimelineCell";
+import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView2 from "../../../global/components/refresh/RefreshListView2";
 import NavigationBar from "../../../global/navigator/Navigationbar";
 import SafeAreaViewPlus from "../../../global/components/SafeAreaViewPlus";

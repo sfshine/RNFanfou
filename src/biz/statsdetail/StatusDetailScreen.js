@@ -5,12 +5,12 @@ import NavigationBar from "../../../global/navigator/Navigationbar";
 import CommonViewFactory from "../../global/util/CommonViewFactory";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import StatusComponent from "../home/components/StatusComponent";
-import TimelineCell from "../home/TimelineCell";
+import StatusComponent from "../timeline/components/StatusComponent";
+import TimelineCell from "../timeline/TimelineCell";
 import RefreshListView from "../../global/components/refresh/RefreshListView";
 import * as action from "./StatusDetailAction";
-import QuickComposeComponent, {COMPOSE_MODE} from "../home/compose/QuickComposeComponent";
-import * as quickComposeAction from "../home/compose/QuickComposeAction";
+import QuickComposeComponent, {COMPOSE_MODE} from "../compose/QuickComposeComponent";
+import * as quickComposeAction from "../compose/QuickComposeAction";
 import FanfouFetch from "../../../global/network/FanfouFetch";
 import {statuses_destroy} from "../../../global/network/Api";
 import {Toast} from 'antd-mobile-rn';
@@ -86,8 +86,8 @@ class StatusDetailScreen extends React.Component {
             leftButton={CommonViewFactory.getLeftBackButton(() => NavigationUtil.goBack(this.props))}
         />;
         return <SafeAreaViewPlus backPress={this.goBack}>
-            <QuickComposeComponent isFocus={this.state.isFocus}/>
-            <View style={styles.container}>
+            {/*<QuickComposeComponent isFocus={this.state.isFocus}/>*/}
+            <View style={styles.container}>s
                 <View style={{flex: 1}}>
                     {navigationBar}
                     <RefreshListView

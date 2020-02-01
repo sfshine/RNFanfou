@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./FriendsAction";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
-import UserCell from "../../home/components/UserCell";
+import UserCell from "../../compose/UserCell";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import NavigationBar from "../../../global/navigator/Navigationbar";
 import BackPressHelper from "../../../global/components/BackPressHelper";

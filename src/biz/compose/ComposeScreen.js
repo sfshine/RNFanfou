@@ -9,7 +9,7 @@ import FanfouFetch from "../../../global/network/FanfouFetch";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import SYImagePicker from "react-native-syan-image-picker";
 import {photos_upload, statuses_update} from '../../../global/network/Api';
-import SafeAreaViewPlus from "../../../global/components/SafeAreaViewPlus";
+import SafeAreaViewPlus from "../../global/components/SafeAreaViewPlus";
 import {showLoading, toast, toastFail, toastSuccess} from "../../../global/util/UIUtil";
 
 class ComposeScreen extends React.Component {

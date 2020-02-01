@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import * as action from "./PublicAction";
 import {getSearchWordList} from "../../search/SearchAction";
 
-import TimelineCell from "../TimelineCell";
+import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import EventBus from "react-native-event-bus";

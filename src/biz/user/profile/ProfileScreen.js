@@ -3,10 +3,10 @@ import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from '
 import {connect} from "react-redux";
 import NavigationBar from "../../../global/navigator/Navigationbar";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
-import TimelineCell from "../../home/TimelineCell";
+import TimelineCell from "../../timeline/TimelineCell";
 import * as action from "./ProfileAction";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
-import QuickComposeComponent from "../../home/compose/QuickComposeComponent";
+import QuickComposeComponent from "../../compose/QuickComposeComponent";
 import FanfouFetch from "../../../global/network/FanfouFetch";
 import {friendships_create, friendships_destroy, users_show} from "../../../global/network/Api";
 import {Toast} from 'antd-mobile-rn';

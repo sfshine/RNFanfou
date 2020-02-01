@@ -1,7 +1,7 @@
 import React from 'react';
 import {BackHandler, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import PageCmpt from "../../../global/components/PageCmpt";
+import PageCmpt from "../../global/components/PageCmpt";
 import TipsUtil from "~/global/util/TipsUtil";
 import BottomTabNavigator from "~/global/navigator/BottomTabNavigator";
 import NavigationManager from "~/global/navigator/NavigationManager";
@@ -10,7 +10,7 @@ interface Props {
     navigation: object;
 }
 
-class TestMainPage extends React.PureComponent<Props, {}> {
+class MainPage extends React.PureComponent<Props, {}> {
     private canBack: boolean;
 
     constructor(props) {
@@ -48,4 +48,4 @@ export default connect(
     (state) => ({
     }),
     (dispatch) => ({})
-)(TestMainPage)
+)(MainPage)

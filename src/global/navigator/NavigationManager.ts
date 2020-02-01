@@ -4,27 +4,20 @@ export default class NavigationManager {
     static mainNavigation;
 }
 
-export function goBack(props) {
-    const {navigation} = props;
-    return goBackN(navigation)
-}
-
-export function navigateReset(props, page) {
-    const {navigation} = props;
-    navigateResetN(navigation, page)
-}
 
 export function navigate(props, page, params?) {
     const {navigation} = props;
     navigateN(navigation, page, params)
 }
 
-export function goBackN(navigation) {
-    if (navigation) {
-        navigation.goBack();
-        return true
-    }
-    return false
+export function navigateN(navigation, page, params?) {
+    navigation.navigate(
+        {
+            key: page + Math.random() * 10000,
+            routeName: page,
+            params: params ? {...params} : {}
+        }
+    )
 }
 
 export function navigateResetN(navigation, page) {
@@ -37,12 +30,10 @@ export function navigateResetN(navigation, page) {
     navigation.dispatch(resetAction);
 }
 
-export function navigateN(navigation, page, params?) {
-    navigation.navigate(
-        {
-            key: page + Math.random() * 10000,
-            routeName: page,
-            params: params ? {...params} : {}
-        }
-    )
+export function goBackN(navigation) {
+    if (navigation) {
+        navigation.goBack();
+        return true
+    }
+    return false
 }

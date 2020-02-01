@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CheckBox from 'react-native-check-box'
 import Icon from "react-native-vector-icons/Ionicons";
 
-export default class UserCell extends React.Component {
+export default class UserCell extends PureComponent {
     render() {
         // console.log("UserCell: ", this.props)
         const {user, checkMap, showCheckBox} = this.props;

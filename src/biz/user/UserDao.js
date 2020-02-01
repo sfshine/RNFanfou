@@ -1,5 +1,6 @@
-import { AsyncStorage, } from 'react-native';
-const KEY = "user"
+import {AsyncStorage} from 'react-native';
+
+const KEY = 'user';
 
 export default class UserDao {
 
@@ -19,7 +20,7 @@ export default class UserDao {
                         reject(error);
                     }
                 }
-            });
+            }).then();
         });
     }
 
@@ -29,11 +30,12 @@ export default class UserDao {
      */
     static save(objectData) {
         let stringData = JSON.stringify(objectData);
-        AsyncStorage.setItem(KEY, stringData, (error, result) => {7
+        AsyncStorage.setItem(KEY, stringData, (error, result) => {
 
-        });
+        }).then();
     }
+
     static clear() {
-        AsyncStorage.removeItem(KEY)
+        AsyncStorage.removeItem(KEY).then();
     }
 }

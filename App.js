@@ -9,7 +9,7 @@ import InitHelper from './src/global/util/InitHelper';
 export default class App extends PureComponent {
     constructor(props) {
         super(props);
-        InitHelper.init(GLOBAL);
+        InitHelper.init(GLOBAL).then(r => {});
     }
 
     render() {

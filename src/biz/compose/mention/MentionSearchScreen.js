@@ -2,12 +2,12 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./MentionAction";
-import RefreshListView from "../../../../global/components/refresh/RefreshListView";
-import UserCell from "../../components/UserCell";
-import CommonViewFactory from "../../../../global/util/CommonViewFactory";
+import RefreshListView from "../../../global/components/refresh/RefreshListView";
+import UserCell from "../UserCell";
+import CommonViewFactory from "../../../global/util/CommonViewFactory";
 import {NAV_BAR_HEIGHT_ANDROID} from "../../../../global/navigator/Navigationbar";
-import RefreshState from "../../../../global/components/refresh/RefreshState";
-import SafeAreaViewPlus from "../../../../global/components/SafeAreaViewPlus";
+import RefreshState from "../../../global/components/refresh/RefreshState";
+import SafeAreaViewPlus from "../../../global/components/SafeAreaViewPlus";
 import NavigationUtil from "../../../../global/navigator/NavigationUtil";
 
 class MentionSearchScreen extends React.Component {

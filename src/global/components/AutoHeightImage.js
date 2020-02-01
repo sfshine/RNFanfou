@@ -2,7 +2,6 @@ import React, {PureComponent} from "react";
 import {Image} from "react-native";
 import PropTypes from 'prop-types';
 
-const placeHolder = require("../../../res/image_placeholder.png")
 export default class AutoHeightImage extends PureComponent {
     constructor(props) {
         super(props);
@@ -22,7 +21,7 @@ export default class AutoHeightImage extends PureComponent {
         //             width: this.props.width,
         //             height: heightScaled
         //         });
-        //     } else if (!this.props.width && this.props.height) {
+        //     } else if (!this.props.widsth && this.props.height) {
         //         this.setState({
         //             width: width * (this.props.height / height),
         //             height: this.props.height
@@ -36,7 +35,6 @@ export default class AutoHeightImage extends PureComponent {
     render() {
         return (
             <Image
-                defaultSource={placeHolder}
                 resizeMode={'contain'}
                 source={this.props.source}
                 style={{

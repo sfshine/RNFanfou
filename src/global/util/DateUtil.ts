@@ -5,13 +5,13 @@
  * @returns 返回格式化后的日期字符串
  * @author https://www.cnblogs.com/liuxianan/p/js-date-format-parse.html （还有一些其他方法可以参考）
  *
- *formatDate(); // 2016-09-02 13:17:13
+ *formatDate(new Date()); // 2016-09-02 13:17:13
  *formatDate(new Date(), 'yyyy-MM-dd'); // 2016-09-02
  *formatDate(new Date(), 'yyyy-MM-dd 第q季度 www HH:mm:ss:SSS');//2016-09-02 第3季度 星期五 13:19:15:792
  *formatDate(1472793615764); // 2016-09-02 13:20:15
  */
 
-export function formatDate(date, fmt) {
+export function formatDate(date, fmt?) {
     date = date == undefined ? new Date() : date;
     date = typeof date == 'number' ? new Date(date) : date;
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';

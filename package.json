@@ -46,7 +46,8 @@
     "redux-thunk": "2.3.0",
     "rn-bugly": "0.1.0",
     "rn-global-modal": "^1.0.3",
-    "tslib": "^1.10.0"
+    "tslib": "^1.10.0",
+    "react-native-htmlview": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

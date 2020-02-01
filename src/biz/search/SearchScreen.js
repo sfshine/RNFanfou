@@ -3,7 +3,7 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {connect} from "react-redux";
 import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/Navigationbar";
 import RefreshListView2 from "../../global/components/refresh/RefreshListView2";
-import TimelineCell from "../home/TimelineCell";
+import TimelineCell from "../timeline/TimelineCell";
 import * as action from "./SearchAction";
 import CommonViewFactory from "../../global/util/CommonViewFactory";
 import NavigationUtil from "../../global/navigator/NavigationUtil";

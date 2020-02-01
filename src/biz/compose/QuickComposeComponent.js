@@ -10,7 +10,7 @@ import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import {connect} from "react-redux";
 import * as action from "./QuickComposeAction";
 import BackPressHelper from "../../../global/components/BackPressHelper";
-import {removeHtmlTag} from "../../../global/util/StringUtil";
+import {removeHtmlTag} from "../../global/util/StringUtil";
 import {showLoading, toast, toastFail, toastSuccess} from "../../../global/util/UIUtil";
 
 export const COMPOSE_MODE = {

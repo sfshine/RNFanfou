@@ -1,6 +1,6 @@
 import {statuses_friends, search_users} from '../../../../global/network/Api';
 import FanfouFetch from "../../../../global/network/FanfouFetch";
-import RefreshState from "../../../../global/components/refresh/RefreshState";
+import RefreshState from "../../../global/components/refresh/RefreshState";
 
 const PAGE_SIZE = 50
 

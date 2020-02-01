@@ -1,26 +1,21 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from "react-navigation-stack";
-import TestMainPage from "~/biz/test/main/TestMainPage";
 import WelcomePage from "~/biz/welcome/WelcomePage";
-import $FunNamePage from "~/biz/test/ideaplugin/$FunNamePage";
-import DetailPage from "~/biz/test/detail/DetailPage";
 import WebPage from "~/global/components/WebPage";
+import LoginPage from "~/biz/user/login/LoginPage";
+import MainPage from "~/biz/main/MainPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
             screen: WelcomePage
         },
-        TestMainPage: {
-            screen: TestMainPage
-        },
-        $FunNamePage: {
-            screen: $FunNamePage
-        },
-        DetailPage: {
-            screen: DetailPage
-        },
         WebPage: {
             screen: WebPage
+        }, LoginPage: {
+            screen: LoginPage
+        },
+        MainPage: {
+            screen: MainPage
         }
     }, {
         defaultNavigationOptions: {

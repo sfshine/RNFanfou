@@ -5,12 +5,12 @@ import {connect} from 'react-redux';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 
-import HomePage from '~/biz/test/main/home/HomePage';
 import MePage from '../../biz/test/main/me/MePage';
+import HomeFragment from '../../biz/main/home/HomeFragment';
 
 const TABS = {
-    HomePage: {
-        screen: HomePage,
+    HomeFragment: {
+        screen: HomeFragment,
         navigationOptions: {
             tabBarLabel: '首页',
             tabBarIcon: ({tintColor, focused}) => (
@@ -21,7 +21,7 @@ const TABS = {
         },
     },
     ProjectPage: {
-        screen: HomePage,
+        screen: MePage,
         navigationOptions: {
             tabBarLabel: '项目',
             tabBarIcon: ({tintColor, focused}) => (
@@ -32,7 +32,7 @@ const TABS = {
         },
     },
     WXAccountPage: {
-        screen: HomePage,
+        screen: MePage,
         navigationOptions: {
             tabBarLabel: '公众号',
             tabBarIcon: ({tintColor, focused}) => (

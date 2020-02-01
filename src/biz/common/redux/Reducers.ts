@@ -1,16 +1,15 @@
 import {combineReducers} from 'redux';
 import Logger from "../../../global/util/Logger";
 import {RESET} from "../../../global/redux/ResetAction";
-import homeReducer from "../../test/main/home/HomeReducer";
 import themeReducer from '../../../global/theme/ThemeReducer';
-import $FunNameReducer from "../../test/ideaplugin/$FunNameReducer";
-import DetailReducer from "~/biz/test/detail/DetailReducer";
+import LoginReducer from "~/biz/user/login/LoginReducer";
+import timelineReducer from "~/biz/timeline/TimelineReducer";
+import TimelineReducer from "~/biz/timeline/TimelineReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
-    $FunNameReducer: $FunNameReducer,
-    homeReducer: homeReducer,
-    DetailReducer: DetailReducer,
+    LoginReducer: LoginReducer,
+    TimelineReducer:TimelineReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {

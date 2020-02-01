@@ -2,14 +2,14 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./MentionAction";
-import RefreshListView from "../../../../global/components/refresh/RefreshListView";
-import UserCell from "../../components/UserCell";
-import CommonViewFactory from "../../../../global/util/CommonViewFactory";
+import RefreshListView from "../../../global/components/refresh/RefreshListView";
+import UserCell from "../UserCell";
+import CommonViewFactory from "../../../global/util/CommonViewFactory";
 import NavigationUtil from "../../../../global/navigator/NavigationUtil";
 import NavigationBar from "../../../../global/navigator/Navigationbar";
 import BackPressHelper from "../../../../global/components/BackPressHelper";
 import MentionSearchScreen from "./MentionSearchScreen";
-import SafeAreaViewPlus from "../../../../global/components/SafeAreaViewPlus";
+import SafeAreaViewPlus from "../../../global/components/SafeAreaViewPlus";
 
 class MentionScreen extends React.Component {
     constructor(props) {

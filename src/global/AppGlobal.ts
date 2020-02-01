@@ -1,7 +1,6 @@
 export const emptyUser = {
     token: "",
-    userName: "",
-    userId: "",
+    secret: "",
 }
 export const emptyParams = {}
 export const GlobalCache = {

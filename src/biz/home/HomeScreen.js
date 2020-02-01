@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
-import TimelinePage from "./timeline/TimelinePage";
+import TimelinePage from "../timeline/TimelineCmpt";
 import Icon from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NavigationUtil from "../../global/navigator/NavigationUtil";

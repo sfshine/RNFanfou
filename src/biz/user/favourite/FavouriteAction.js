@@ -1,5 +1,5 @@
 import RefreshState from "../../../global/components/refresh/RefreshState";
-import {loadTimeline} from '../../home/timeline/TimelineLoader';
+import {loadTimeline} from '../../timeline/TimelineLoader';
 import {favorites} from "../../../global/network/Api";
 
 const actions = {
