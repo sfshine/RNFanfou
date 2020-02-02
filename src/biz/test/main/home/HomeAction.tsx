@@ -18,7 +18,7 @@ export default class HomeAction {
             this.pageNum = 0
             dispatch(ACTIONS.Refreshing())
             try {
-                let response = await Fetch.post(formatStr(Api.article_list, this.pageNum))
+                let response = await Fetch.get(formatStr(Api.article_list, this.pageNum))
                 if (!response.data || !response.data.datas) {
                     throw "JSON数据异常"
                 } else {
@@ -36,7 +36,7 @@ export default class HomeAction {
             this.pageNum++
             dispatch(ACTIONS.LoadingMore())
             try {
-                let response = await Fetch.post(formatStr(Api.article_list, this.pageNum))
+                let response = await Fetch.get(formatStr(Api.article_list, this.pageNum))
                 if (!response.data || !response.data.datas) {
                     throw "JSON数据异常"
                 } else {

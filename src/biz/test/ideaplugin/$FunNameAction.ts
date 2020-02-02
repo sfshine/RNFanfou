@@ -15,8 +15,8 @@ export default class $FunNameAction {
         return async dispatch => {
             let loadingUI = TipsUtil.toastLoading("加载中...")
             try {
-                let response = await Fetch.post(formatStr(Api.article_list, pageNum))
-                dispatch(ACTIONS.success(response.data.datas));
+                let response = await Fetch.get(formatStr(Api.article_list, pageNum))
+                dispatch(ACTIONS.success(response));
                 TipsUtil.toastHide(loadingUI)
             } catch (err) {
                 Logger.error(TAG, err)

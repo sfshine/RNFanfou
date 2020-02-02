@@ -100,7 +100,7 @@ export default class Fetch {
         })
     }
 
-    static get(url, params) {
+    static get(url, params?) {
         return new Promise((resolve, reject) => {
             url = this.createGetUrl(url, params)
             url = this.createGetUrl(url, GlobalCache.defaultParams)
