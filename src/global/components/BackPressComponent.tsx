@@ -18,7 +18,7 @@ export default class BackPressComponent extends PureComponent<Props> {
     }
 
     componentDidMount() {
-        if (this.props.backPress) BackHandler.addEventListener('hardwareBackPress', this.onHardwareBackPress());
+        if (this.props.backPress) BackHandler.addEventListener('hardwareBackPress', this.onHardwareBackPress);
     }
 
     componentWillUnmount() {

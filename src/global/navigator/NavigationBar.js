@@ -60,7 +60,7 @@ class NavigationBar extends PureComponent {
 
     getDefaultLeftButton(backNav) {
         return backNav ? NavigationBarViewFactory.createButton({
-            icon: 'md-arrow-backPress',
+            icon: 'md-arrow-back',
             callback: () => goBackN(backNav)
         }) : <View style={{width: 10}}/>
     }
