@@ -1,22 +1,24 @@
 import {Api} from "../../biz/common/api/Api"
 import {GlobalCache} from '../AppGlobal';
+import Logger from "~/global/util/Logger";
 
+const TAG = "Fetch"
 export default class Fetch {
-    static uploadImage(url, params) {
+    static uploadImage(fullUrl, params) {
         return new Promise(function (resolve, reject) {
-            console.log("uploadImage start")
+            Logger.log(TAG, "uploadImage start")
             let formData = new FormData();
             let file = {uri: params.uri, type: 'application/octet-stream', name: 'image.jpg'};
-            formData.append("file", file);
-            console.log("uploadImage start2", params)
+            formData.append("file", JSON.stringify(file));
+            Logger.log(TAG, "uploadImage start2", params)
             let extParams = GlobalCache.defaultParams
             for (let key in extParams) {
                 formData.append(key, extParams[key]);
             }
-            console.log("uploadImage start3 url:", (Api.IMAGE_HOST + url))
-            console.log("uploadImage start3 formData:", formData)
+            Logger.log(TAG, "uploadImage start3 url:", fullUrl)
+            Logger.log(TAG, "uploadImage start3 formData:", formData)
 
-            fetch(Api.IMAGE_HOST + url, {
+            fetch(fullUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'multipart/form-data;charset=utf-8',
@@ -25,7 +27,7 @@ export default class Fetch {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    console.log('uploadImage', responseData);
+                    Logger.log(TAG, 'uploadImage', responseData);
                     resolve(responseData);
                 })
                 .catch((err) => {
@@ -38,7 +40,7 @@ export default class Fetch {
     static post(url, params) {
         return new Promise((resolve, reject) => {
             url = Api.HOST + url
-            console.log("Fetch post:", url, params)
+            Logger.log(TAG, "Fetch post:", url, params)
             fetch(url,
                 {
                     method: 'POST',
@@ -50,7 +52,7 @@ export default class Fetch {
                 })
                 .then(response => response.json())
                 .then((result) => {
-                    console.log("Fetch result", result)
+                    Logger.log(TAG, "Fetch result", result)
                     resolve(result);
                 })
                 .catch(error => {
@@ -69,8 +71,8 @@ export default class Fetch {
                 })
                 .then(response => response.json())
                 .then((result) => {
-                    console.log("Fetch get:", url, params)
-                    console.log("Fetch result", result)
+                    Logger.log(TAG, "Fetch get:", url, params)
+                    Logger.log(TAG, "Fetch result", result)
                     resolve(result);
                 })
                 .catch(error => {
@@ -95,15 +97,13 @@ export default class Fetch {
     }
 
     static creteFormBody(data) {
-        var formBody = [];
-        for (var property in data) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(data[property]);
+        let formBody = [];
+        for (let property in data) {
+            let encodedKey = encodeURIComponent(property);
+            let encodedValue = encodeURIComponent(data[property]);
             formBody.push(encodedKey + "=" + encodedValue);
         }
         let result = formBody.join("&");
         return result
     }
-
-
 }

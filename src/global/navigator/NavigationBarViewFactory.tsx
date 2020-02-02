@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Logger from '~/global/util/Logger'
 
-interface ButtonConfig {
+export interface ButtonConfig {
     icon: string;
     text: string;
     callback: Function;

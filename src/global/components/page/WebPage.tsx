@@ -1,12 +1,10 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {connect} from "react-redux";
 import NavigationBar from "~/global/navigator/NavigationBar";
 import SafeAreaViewPlus from "~/global/components/SafeAreaViewPlus";
 import WebViewEx from "~/global/components/WebViewEx";
 import Logger from "~/global/util/Logger";
 import {goBack} from "~/global/navigator/NavigationManager";
-import {WebView} from "react-native-webview";
 
 const TAG = "WebPage"
 
@@ -21,7 +19,7 @@ interface State {
     canGoBack: boolean;
 }
 
-class WebPage extends PureComponent<Props, State> {
+export default class WebPage extends PureComponent<Props, State> {
     private mWebViewEx: WebViewEx
 
     constructor(props) {
@@ -72,10 +70,3 @@ const styles = StyleSheet.create({
         flex: 1
     },
 });
-
-export default connect(
-    (state) => ({
-        theme: state.themeReducer.theme
-    }),
-    (dispatch) => ({})
-)(WebPage)

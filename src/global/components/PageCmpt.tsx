@@ -3,14 +3,14 @@ import {StyleSheet, Text, View} from 'react-native';
 import {connect} from "react-redux";
 import NavigationBar from "~/global/navigator/NavigationBar";
 import SafeAreaViewPlus from "~/global/components/SafeAreaViewPlus";
-import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
+import NavigationBarViewFactory, {ButtonConfig} from "~/global/navigator/NavigationBarViewFactory";
 
 interface Props {
     title: string;
     backNav: object;
     overrideBackPress: Function;
     overrideNavBar: object;
-    rightNavButtonConfig: object;
+    rightNavButtonConfig: ButtonConfig | ButtonConfig[];
 }
 
 class PageCmpt extends React.PureComponent<Props, {}> {

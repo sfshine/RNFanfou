@@ -65,7 +65,7 @@ export default class StatusComponent extends PureComponent<Props> {
                                       marginTop: 5,
                                   }}
                                   onPress={() => {
-                                      navigateN(NavigationManager.mainNavigation, "PictureViewScreen", {images: [{url: item.photo.largeurl}]})
+                                      navigateN(NavigationManager.mainNavigation, "PictureViewPage", {images: [{url: item.photo.largeurl}]})
                                   }}>
                     <AutoHeightImage width={screenWidth * 0.8}
                                      height={screenWidth * 0.8 * 0.618}
