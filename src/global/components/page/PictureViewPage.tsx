@@ -8,6 +8,8 @@ import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
 import {goBack} from "~/global/navigator/NavigationManager";
+import {Text} from 'react-native'
+import {Modal} from "@ant-design/react-native";
 
 const TAG = "PictureViewPage"
 
@@ -20,21 +22,22 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
 
     render() {
         const {images} = this.props.navigation.state.params;
-        return <PageCmpt title={'查看图片'} backNav={this.props.navigation}
-                         rightNavButtonConfig={{
-                             text: "分享",
-                             callback: () => {
-                                 this.onShare(images).then()
-                             }
-                         }}>
+        return <PageCmpt backNav={this.props.navigation}>
             <ImageViewer
-                saveToLocalByLongPress={false}
+                enableSwipeDown={true}
+                onSwipeDown={() => {
+                    goBack(this.props)
+                }}
                 imageUrls={images}
                 onChange={(index) => {
                     this.currentIndex = index
                 }}
-                onClick={(onCancel) => {
-                    goBack(this.props)
+                saveToLocalByLongPress={false}
+                onLongPress={() => {
+                    Modal.operation([
+                        {text: '分享', onPress: () => this.onShare(images)},
+                        {text: '取消', onPress: () => Logger.log(TAG, '取消')},
+                    ]);
                 }}
             />
         </PageCmpt>
