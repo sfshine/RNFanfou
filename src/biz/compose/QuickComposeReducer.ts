@@ -1,8 +1,10 @@
 import {defaultReduce} from "~/biz/common/redux/Reducers";
 
 const defaultState = {}
-const PREFIX = "QuickComposeReducer"
+const TAG = "QuickComposeReducer"
 
 export default function QuickComposeReducer(state = defaultState, action) {
-    return defaultReduce(PREFIX, action, state, defaultState)
+    return defaultReduce(TAG, action, state, defaultState)
+}
+export const ACTIONS = {
 }

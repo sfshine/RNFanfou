@@ -2,16 +2,14 @@ import React, {PureComponent} from 'react';
 import {Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import SYImagePicker from "react-native-syan-image-picker";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from "react-redux";
 import {removeHtmlTag} from "../../global/util/StringUtil";
-import FanfouFetch from "~/biz/common/api/FanfouFetch";
-import {Api} from "~/biz/common/api/Api";
 import TipsUtil from "~/global/util/TipsUtil";
 import BaseProps from "~/global/base/BaseProps";
 import ArchModal from "~/global/util/ArchModal";
 import Logger from "~/global/util/Logger";
+import QuickComposeAction from "~/biz/compose/QuickComposeAction";
 
 export const COMPOSE_MODE = {
     Forward: 'Forward',
@@ -24,8 +22,8 @@ interface Props extends BaseProps {
 }
 
 interface State {
+    inputString: string,
     photos: Array<any>,
-    inputString: string
 }
 
 const TAG = "QuickComposeComponent"
@@ -37,18 +35,18 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         super(props);
         Logger.log(TAG, 'QuickComposeView constructor', this.props);
         this.state = {
+            inputString: '',
             photos: [],
-            inputString: ''
         };
     }
 
     render() {
-        Logger.log(TAG, "QuickComposeView render", this.props)
+        Logger.log(TAG, "render", this.props)
         const {data, theme} = this.props
+        let photos = this.state.photos
         if (!data) {
             return <Text>data = null</Text>
         }
-        const {photos} = this.state
         let item = data.status
         let mode = data.mode
         // <a href="http://fanfou.com/dailu321" className="former">名字</a>
@@ -64,24 +62,16 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             style={styles.textInput}/>
 
         let scrollView = <ScrollView contentContainerStyle={styles.scroll}>
-            {photos.map((photo, index) => {
+            {photos && photos.map((photo, index) => {
                 let source = {uri: photo.uri};
                 if (photo.enableBase64) {
                     source = {uri: photo.base64};
                 }
                 return (
-                    <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                        Alert.alert('提示', '确认删除这个图片？', [{
-                            text: '否', onPress: () => {
-                            }
-                        }, {
-                            text: '是', onPress: () => {
-                                this.setState({photos: []})
-                            }
-                        }])
-                    }}>
+                    <TouchableOpacity
+                        key={`image-${index}`}
+                        style={styles.toolsButton} activeOpacity={0.7} onPress={this.confirmDeletePicture}>
                         <Image
-                            key={`image-${index}`}
                             style={styles.image}
                             source={source}
                             resizeMode={"contain"}
@@ -92,7 +82,11 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         </ScrollView>
 
         let toolBar = <View style={[styles.toolsContainer, {backgroundColor: theme.brand_primary}]}>
-            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.handleAsyncSelectPhoto}>
+            <TouchableOpacity style={styles.toolsButton}
+                              activeOpacity={0.7}
+                              onPress={() => QuickComposeAction.onChoosePicture(
+                                  photos => this.setState({photos: photos}
+                                  ))}>
                 <AntDesign name={'picture'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
 
@@ -115,9 +109,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             <TouchableOpacity
                 style={styles.outSide}
                 activeOpacity={1}
-                onPress={() => {
-                    this.backPress()
-                }}/>
+                onPress={this.dismiss}/>
             {textInput}
             <View style={{backgroundColor: "#FFFFFF"}}>
                 {scrollView}
@@ -126,8 +118,20 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         </View>
     }
 
+    private confirmDeletePicture = () => {
+        Alert.alert('提示', '确认删除这个图片？',
+            [{
+                text: '否',
+                onPress: () => {
+                }
+            }, {
+                text: '是',
+                onPress: () => this.setState({photos: []})
+            }])
+    }
+
     onSendButtonClick = (data) => {
-        const {photos} = this.state
+        const photos = this.state.photos
         let item = data.status
         let mode = data.mode
         let input = this.state.inputString
@@ -135,79 +139,20 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             TipsUtil.toast("请输入内容")
             return
         }
-        TipsUtil.toastLoading('发送中...');
-        if (photos.length > 0) {
-            //api不支持 图片转发回复,通过拼接 用户名和消息walk around
-            FanfouFetch.post(Api.photos_upload,
-                {
-                    status: input + " " + this.placeHolder
-                }, {
-                    "photo": photos[0].uri
-                })
-                .then(json => {
-                    Logger.log(TAG, "发送成功", json)
-                    TipsUtil.toastSuccess("发送成功")
-                    setTimeout(() => {
-                        this.backPress()
-                    }, 1500)
-                })
-                .catch(error => {
-                    TipsUtil.toastFail("发送失败：" + error)
-                });
+        if (photos && photos.length > 0) {
+            QuickComposeAction.uploadImage(input, photos, this.placeHolder, this.dismiss)
         } else {
-            let msgBody = mode == COMPOSE_MODE.Forward ?
-                {
-                    status: input + " " + this.placeHolder,
-                    repost_status_id: item.id,
-                } : {
-                    status: "@" + item.user.name + " " + input,
-                    in_reply_to_status_id: item.id,
-                }
-            FanfouFetch.post(Api.statuses_update, msgBody)
-                .then(json => {
-                    Logger.log(TAG, json)
-                    TipsUtil.toastSuccess("发送成功")
-                    setTimeout(() => {
-                        this.backPress()
-                    }, 1500)
-                })
-                .catch(error => {
-                    TipsUtil.toastFail("发送失败：" + error)
-                })
+            QuickComposeAction.updateMessage(mode, input, item, this.placeHolder, this.dismiss)
         }
     }
 
-    handleAsyncSelectPhoto = async () => {
-        return SYImagePicker.asyncShowImagePicker({
-            imageCount: 1,
-            isCrop: false,
-            compress: false,
-        }).then(photos => {
-            if (!photos || photos.length == 0) {
-                Logger.log(TAG, "没有选择照片！")
-            } else {
-                Logger.log(TAG, "选择的图片", photos)
-                this.setState({
-                    photos: photos
-                })
-            }
-        }).catch(error => {
-            Logger.log(TAG, "选择图片失败：", error)
-            // Toast.show(error.message, 2)
-        })
-    };
 
-    clearInput() {
+    dismiss = () => {
+        Logger.log(TAG, "back")
         this.setState({
-            photos: [],
-            // textInputPlaceHolder: "再发一条！"
-            inputString: ''
+            inputString: '',
+            photos: []
         })
-    }
-
-    backPress = () => {
-        Logger.log(TAG, "Quick:backPress")
-        this.clearInput()
         this.props.modal.hide()
     }
 
@@ -283,5 +228,6 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = state => ({
     theme: state.themeReducer.theme,
+    photos: state.QuickComposeReducer.photos,
 });
 export default connect(mapStateToProps)(QuickComposeComponent);
