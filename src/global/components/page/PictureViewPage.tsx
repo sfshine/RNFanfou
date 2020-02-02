@@ -7,6 +7,7 @@ import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
+import {goBack} from "~/global/navigator/NavigationManager";
 
 const TAG = "PictureViewPage"
 
@@ -31,6 +32,9 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                 imageUrls={images}
                 onChange={(index) => {
                     this.currentIndex = index
+                }}
+                onClick={(onCancel) => {
+                    goBack(this.props)
                 }}
             />
         </PageCmpt>
