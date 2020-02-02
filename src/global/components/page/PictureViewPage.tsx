@@ -28,6 +28,7 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                 onSwipeDown={() => {
                     goBack(this.props)
                 }}
+                swipeDownThreshold={150}
                 // onClick={() => {
                 //     goBack(this.props)
                 // }}
@@ -51,9 +52,6 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
     renderImage = (props) => {
         return <Image resizeMethod="resize"
                       resizeMode="cover"
-                      style={{
-                          height: '100%', width: '100%'
-                      }}
                       {...props}>
         </Image>
     }
