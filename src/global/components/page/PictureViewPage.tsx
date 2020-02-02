@@ -7,6 +7,7 @@ import PageCmpt from "~/global/components/PageCmpt";
 import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
+import Fetch from "~/global/network/Fetch";
 
 const TAG = "PictureViewPage"
 
@@ -38,31 +39,19 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
 
     onShare = async (images) => {
         let loading = TipsUtil.toastLoading("请稍后...")
-        let fileUrl = await this.downloadFiles(images[this.currentIndex].url, `${RNFS.CachesDirectoryPath}/share_tmp.jpg`)
+        try {
+            let fileUrl = await Fetch.downloadFiles(images[this.currentIndex].url, `${RNFS.CachesDirectoryPath}/share_tmp.jpg`)
+            Logger.log(TAG, "onShare start:", fileUrl)
+            let res = await Share.open({url: fileUrl})
+            Logger.log(TAG, "onShare end: ", res)
+        } catch (e) {
+            if (e.toString().indexOf("User did not share") > 0) {
+                //no-op 用户取消了分享
+            } else {
+                TipsUtil.toastFail("分享失败，请重试" + e.toString())
+            }
+            Logger.error(TAG, 'err', e);
+        }
         TipsUtil.toastHide(loading)
-        Logger.log(TAG, "onShare start:", fileUrl)
-        let res = await Share.open({url: fileUrl})
-        Logger.log(TAG, "onShare end: ", res)
-    }
-
-    async downloadFiles(fromUrl, downloadDest) {
-        Logger.log(TAG, "downloadFiles start1:", fromUrl)
-        await requestPermission()
-        Logger.log(TAG, "downloadFiles start2:", fromUrl)
-        // 图片
-        const options = {
-            fromUrl: fromUrl,
-            toFile: downloadDest,
-            background: true,
-        };
-        return new Promise((resolve, reject) => {
-            RNFS.downloadFile(options).promise.then(res => {
-                Logger.log(TAG, 'downloadFile success: file://' + downloadDest)
-                resolve('file://' + downloadDest)
-            }).catch(err => {
-                Logger.error(TAG, 'err', err);
-                reject(err)
-            })
-        });
     }
 }

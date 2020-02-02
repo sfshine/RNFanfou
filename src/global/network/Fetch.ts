@@ -1,9 +1,31 @@
 import {Api} from "../../biz/common/api/Api"
 import {GlobalCache} from '../AppGlobal';
 import Logger from "~/global/util/Logger";
+import RNFS from "react-native-fs";
+import {requestPermission} from "~/global/util/SystemUtil";
 
 const TAG = "Fetch"
 export default class Fetch {
+    static downloadFiles(fromUrl, downloadDest) {
+        return new Promise(function (resolve, reject) {
+            Logger.log(TAG, "downloadFiles start1:", fromUrl)
+            const options = {
+                fromUrl: fromUrl,
+                toFile: downloadDest,
+                background: true,
+            };
+            requestPermission().then(success => {
+                Logger.log(TAG, "downloadFiles start2:", fromUrl)
+                return RNFS.downloadFile(options)
+            }).then(downloadSuccess => {
+                Logger.log(TAG, 'downloadFile success: file://' + downloadDest)
+                resolve('file://' + downloadDest)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     static uploadImage(fullUrl, params) {
         return new Promise(function (resolve, reject) {
             Logger.log(TAG, "uploadImage start")
