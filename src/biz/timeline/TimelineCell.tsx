@@ -8,6 +8,8 @@ import {Api} from "~/biz/common/api/Api";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import TipsUtil from "~/global/util/TipsUtil";
 import StatusComponent from "~/biz/timeline/components/StatusComponent";
+import {Portal} from "@ant-design/react-native";
+import QuickComposeComponent, {COMPOSE_MODE} from "~/biz/compose/QuickComposeComponent";
 
 const favoriteMap = {}
 
@@ -47,6 +49,7 @@ class TimelineCell extends PureComponent<Props, State> {
                 {<StatusComponent item={item} callback={this.props.callback}/>}
                 <View style={styles.toolsContainer}>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
+                        Portal.add(<QuickComposeComponent data={{status: item, mode: COMPOSE_MODE.Forward}}/>)
                     }}>
                         <Icon name={'export-variant'} size={16} style={{color: styles.tools_text.color}}/>
                         <Text style={styles.tools_text}>转发</Text>

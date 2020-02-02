@@ -5,6 +5,8 @@ import WebPage from "~/global/components/page/WebPage";
 import PictureViewPage from '~/global/components/page/PictureViewPage';
 import LoginPage from "~/biz/user/login/LoginPage";
 import MainPage from "~/biz/main/MainPage";
+import {View} from 'react-native';
+import React from "react";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -28,4 +30,4 @@ const RootNavigator = createStackNavigator({
         },
     }
 );
-export const AppContainer = createAppContainer(RootNavigator);
+export const AppContainer = <View>{createAppContainer(RootNavigator)} </View>

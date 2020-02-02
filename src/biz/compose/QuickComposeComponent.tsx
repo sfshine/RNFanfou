@@ -1,35 +1,25 @@
 import React from 'react';
-import {Alert, Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import FanfouFetch from "../../../global/network/FanfouFetch";
 import SYImagePicker from "react-native-syan-image-picker";
-import {photos_upload, statuses_update} from '../../../global/network/Api';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import NavigationUtil from "../../../global/navigator/NavigationUtil";
 import {connect} from "react-redux";
 import * as action from "./QuickComposeAction";
-import BackPressHelper from "../../../global/components/BackPressHelper";
 import {removeHtmlTag} from "../../global/util/StringUtil";
-import {showLoading, toast, toastFail, toastSuccess} from "../../../global/util/UIUtil";
+import BackPressComponent from "~/global/components/BackPressComponent";
+import {Portal} from "@ant-design/react-native";
+import FanfouFetch from "~/biz/common/api/FanfouFetch";
+import {Api} from "~/biz/common/api/Api";
+import TipsUtil from "~/global/util/TipsUtil";
+import HomeAction from "~/biz/test/main/home/HomeAction";
 
 export const COMPOSE_MODE = {
     Forward: 'Forward',
     Comment: 'Comment',
 }
 
-class QuickComposeComponent extends React.Component {
-    componentWillMount() {
-        console.log('QuickComposeComponent componentWillMount', this.props);
-    }
-
-    render() {
-        console.log('QuickComposeComponent render', this.props);
-        return this.props.data && this.props.isFocus ? <QuickComposeViewRedux/> : null
-    }
-}
-
-class QuickComposeView extends React.Component {
+export default class QuickComposeComponent extends React.Component {
     placeHolder = ''
 
     constructor(props) {
@@ -39,28 +29,15 @@ class QuickComposeView extends React.Component {
             photos: [],
             inputString: ''
         };
-        this.backPress = new BackPressHelper({
-            backPress: () => {
-                this.back()
-                return true
-            }
-        });
-    }
-
-    componentDidMount() {
-        console.log("QuickComposeView componentDidMount")
-        this.backPress.componentDidMount();
-    }
-
-    componentWillUnmount() {
-        this.backPress.componentWillUnmount();
-        console.log("QuickComposeView componentWillUnmount")
     }
 
     render() {
         console.log("QuickComposeView render", this.props)
-        const {photos} = this.state
         const {data, theme} = this.props
+        if (!data) {
+            return <Text>data = null</Text>
+        }
+        const {photos} = this.state
         let item = data.status
         let mode = data.mode
         // <a href="http://fanfou.com/dailu321" className="former">名字</a>
@@ -103,16 +80,17 @@ class QuickComposeView extends React.Component {
             })}
         </ScrollView>
 
-        let toolBar = <View style={[styles.toolsContainer, {backgroundColor: theme.themeColor}]}>
+        let toolBar = <View style={[styles.toolsContainer]}>
+            <BackPressComponent backPress={this.backPress}/>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.handleAsyncSelectPhoto}>
                 <AntDesign name={'picture'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                NavigationUtil.fromMainToPage("MentionScreen", {
-                    // selectNames: this.state.inputString,
-                    callback: this.onChooseMentions
-                })
+                // NavigationUtil.fromMainToPage("MentionScreen", {
+                //     // selectNames: this.state.inputString,
+                //     callback: this.onChooseMentions
+                // })
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
@@ -126,7 +104,7 @@ class QuickComposeView extends React.Component {
         return <View style={styles.container}>
             <TouchableOpacity style={styles.outSide} activeOpacity={1} onPress={
                 () => {
-                    this.back()
+                    this.backPress()
                 }
             }/>
             {textInput}
@@ -143,13 +121,13 @@ class QuickComposeView extends React.Component {
         let mode = data.mode
         let input = this.state.inputString
         if (mode == COMPOSE_MODE.Comment && input.length == 0 && photos.length == 0) {
-            toast("请输入内容")
+            TipsUtil.toast("请输入内容")
             return
         }
-        showLoading('发送中...');
+        TipsUtil.toastLoading('发送中...');
         if (photos.length > 0) {
             //api不支持 图片转发回复,通过拼接 用户名和消息walk around
-            FanfouFetch.post(photos_upload(),
+            FanfouFetch.post(Api.photos_upload,
                 {
                     status: input + " " + this.placeHolder
                 }, {
@@ -157,13 +135,13 @@ class QuickComposeView extends React.Component {
                 })
                 .then(json => {
                     console.log("发送成功", json)
-                    toastSuccess("发送成功")
+                    TipsUtil.toastSuccess("发送成功")
                     setTimeout(() => {
-                        this.back()
+                        this.backPress()
                     }, 1500)
                 })
                 .catch(error => {
-                    toastFail("发送失败：" + error)
+                    TipsUtil.toastFail("发送失败：" + error)
                 });
         } else {
             let msgBody = mode == COMPOSE_MODE.Forward ?
@@ -174,16 +152,16 @@ class QuickComposeView extends React.Component {
                     status: "@" + item.user.name + " " + input,
                     in_reply_to_status_id: item.id,
                 }
-            FanfouFetch.post(statuses_update(), msgBody)
+            FanfouFetch.post(Api.statuses_update, msgBody)
                 .then(json => {
                     console.log(json)
-                    toastSuccess("发送成功")
+                    TipsUtil.toastSuccess("发送成功")
                     setTimeout(() => {
-                        this.back()
+                        this.backPress()
                     }, 1500)
                 })
                 .catch(error => {
-                    toastFail("发送失败：" + error)
+                    TipsUtil.toastFail("发送失败：" + error)
                 })
         }
     }
@@ -195,9 +173,8 @@ class QuickComposeView extends React.Component {
             compress: false,
         }).then(photos => {
             if (!photos || photos.length == 0) {
-                reject("没有选择照片！")
-            }
-            else {
+                console.log("没有选择照片！")
+            } else {
                 console.log("选择的图片", photos)
                 this.setState({
                     photos: photos
@@ -217,10 +194,9 @@ class QuickComposeView extends React.Component {
         })
     }
 
-    back = () => {
-        console.log("Quick:back")
+    backPress = () => {
+        console.log("Quick:backPress")
         this.clearInput()
-        this.props.onShowQuickCompose(null)
     }
 
     onChooseMentions = (checkedMap) => {
@@ -293,20 +269,3 @@ const styles = StyleSheet.create({
         fontSize: 15,
     }
 })
-
-const QuickComposeViewRedux = connect(
-    (state) => ({
-        theme: state.themeReducer.theme,
-        data: state.quickComposeReducer.data
-    }),
-    (dispatch) => ({
-        onShowQuickCompose: (item) => dispatch(action.onShowQuickCompose(item))
-    })
-)(QuickComposeView)
-
-export default connect(
-    (state) => ({
-        data: state.quickComposeReducer.data
-    }),
-    (dispatch) => ({})
-)(QuickComposeComponent)

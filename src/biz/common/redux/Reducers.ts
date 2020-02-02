@@ -5,11 +5,13 @@ import themeReducer from '../../../global/theme/ThemeReducer';
 import LoginReducer from "~/biz/user/login/LoginReducer";
 import timelineReducer from "~/biz/timeline/TimelineReducer";
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
+import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
     LoginReducer: LoginReducer,
     TimelineReducer:TimelineReducer,
+    QuickComposeReducer: QuickComposeReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {
