@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {ImageViewer} from "react-native-image-zoom-viewer";
 import Share from "react-native-share";
-import {requestPermission} from "../../util/SystemUtil";
+import {requestPermission} from "~/global/util/SystemUtil";
 import RNFS from 'react-native-fs'
 import PageCmpt from "~/global/components/PageCmpt";
 import BaseProps from "~/global/base/BaseProps";
