@@ -6,16 +6,33 @@ import {requestPermission} from "~/global/util/SystemUtil";
 
 const TAG = "Fetch"
 export default class Fetch {
-    static downloadFiles(fromUrl, downloadDest) {
+    /**
+     * 文件下载
+     * @param fullUrl：文件网络地址
+     * @param downloadDest：目标路径
+     * @param begin：开始下载后可以获取到的一些信息
+     * begin: (res) => {
+                    console.log('begin', res);
+                    console.log('contentLength:', res.contentLength / 1024 / 1024, 'M');
+                },
+     * @param progress：下载进度
+     * progress: (res) => {
+                    let progress = res.bytesWritten / res.contentLength;
+                    console.log('progress:', progress);
+                }
+     */
+    static downloadFiles(fullUrl, downloadDest, begin?, progress?) {
         return new Promise(function (resolve, reject) {
-            Logger.log(TAG, "downloadFiles start1:", fromUrl)
+            Logger.log(TAG, "downloadFiles start1:", fullUrl)
             const options = {
-                fromUrl: fromUrl,
+                fromUrl: fullUrl,
                 toFile: downloadDest,
                 background: true,
+                begin: begin,
+                progress: progress
             };
             requestPermission().then(success => {
-                Logger.log(TAG, "downloadFiles start2:", fromUrl)
+                Logger.log(TAG, "downloadFiles start2:", fullUrl)
                 return RNFS.downloadFile(options)
             }).then(downloadSuccess => {
                 Logger.log(TAG, 'downloadFile success: file://' + downloadDest)
