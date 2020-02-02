@@ -27,6 +27,9 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                 onSwipeDown={() => {
                     goBack(this.props)
                 }}
+                onClick={() => {
+                    goBack(this.props)
+                }}
                 imageUrls={images}
                 onChange={(index) => {
                     this.currentIndex = index
@@ -38,6 +41,7 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                         {text: '取消', onPress: () => Logger.log(TAG, '取消')},
                     ]);
                 }}
+
             />
         </PageCmpt>
     }
