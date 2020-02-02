@@ -9,6 +9,7 @@ import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
 import {goBack} from "~/global/navigator/NavigationManager";
 import {Modal} from "@ant-design/react-native";
+import {Image} from "react-native";
 
 const TAG = "PictureViewPage"
 
@@ -27,9 +28,9 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                 onSwipeDown={() => {
                     goBack(this.props)
                 }}
-                onClick={() => {
-                    goBack(this.props)
-                }}
+                // onClick={() => {
+                //     goBack(this.props)
+                // }}
                 imageUrls={images}
                 onChange={(index) => {
                     this.currentIndex = index
@@ -41,11 +42,21 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
                         {text: '取消', onPress: () => Logger.log(TAG, '取消')},
                     ]);
                 }}
-
+                renderImage={this.renderImage}
             />
+
         </PageCmpt>
     }
 
+    renderImage = (props) => {
+        return <Image resizeMethod="resize"
+                      resizeMode="cover"
+                      style={{
+                          height: '100%', width: '100%'
+                      }}
+                      {...props}>
+        </Image>
+    }
     onShare = async (images) => {
         let loading = TipsUtil.toastLoading("请稍后...")
         try {
