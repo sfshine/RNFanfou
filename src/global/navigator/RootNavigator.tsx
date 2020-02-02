@@ -30,4 +30,4 @@ const RootNavigator = createStackNavigator({
         },
     }
 );
-export const AppContainer = <View>{createAppContainer(RootNavigator)} </View>
+export const AppContainer = createAppContainer(RootNavigator)

@@ -8,7 +8,6 @@ import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
 import {goBack} from "~/global/navigator/NavigationManager";
-import {Text} from 'react-native'
 import {Modal} from "@ant-design/react-native";
 
 const TAG = "PictureViewPage"

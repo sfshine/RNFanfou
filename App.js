@@ -9,16 +9,17 @@ import InitHelper from './src/global/util/InitHelper';
 export default class App extends PureComponent {
     constructor(props) {
         super(props);
-        InitHelper.init(GLOBAL).then(r => {});
+        InitHelper.init(GLOBAL).then(r => {
+        });
     }
 
     render() {
         return (
-            <ProviderANTD theme={ANTDThemeConfig}>
-                <Provider store={store}>
+            <Provider store={store}>
+                <ProviderANTD theme={ANTDThemeConfig}>
                     <AppContainer/>
-                </Provider>
-            </ProviderANTD>
+                </ProviderANTD>
+            </Provider>
         );
     }
 }

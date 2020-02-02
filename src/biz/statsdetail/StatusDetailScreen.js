@@ -10,7 +10,6 @@ import TimelineCell from "../timeline/TimelineCell";
 import RefreshListView from "../../global/components/refresh/RefreshListView";
 import * as action from "./StatusDetailAction";
 import QuickComposeComponent, {COMPOSE_MODE} from "../compose/QuickComposeComponent";
-import * as quickComposeAction from "../compose/QuickComposeAction";
 import FanfouFetch from "../../../global/network/FanfouFetch";
 import {statuses_destroy} from "../../../global/network/Api";
 import {Toast} from 'antd-mobile-rn';

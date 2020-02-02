@@ -1,30 +1,41 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import SYImagePicker from "react-native-syan-image-picker";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from "react-redux";
-import * as action from "./QuickComposeAction";
 import {removeHtmlTag} from "../../global/util/StringUtil";
-import BackPressComponent from "~/global/components/BackPressComponent";
-import {Portal} from "@ant-design/react-native";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
 import TipsUtil from "~/global/util/TipsUtil";
-import HomeAction from "~/biz/test/main/home/HomeAction";
+import BaseProps from "~/global/base/BaseProps";
+import ArchModal from "~/global/util/ArchModal";
+import Logger from "~/global/util/Logger";
 
 export const COMPOSE_MODE = {
     Forward: 'Forward',
     Comment: 'Comment',
 }
 
-export default class QuickComposeComponent extends React.Component {
+interface Props extends BaseProps {
+    data: any,
+    modal: ArchModal,
+}
+
+interface State {
+    photos: Array<any>,
+    inputString: string
+}
+
+const TAG = "QuickComposeComponent"
+
+class QuickComposeComponent extends PureComponent<Props, State> {
     placeHolder = ''
 
     constructor(props) {
         super(props);
-        console.log('QuickComposeView constructor', this.props);
+        Logger.log(TAG, 'QuickComposeView constructor', this.props);
         this.state = {
             photos: [],
             inputString: ''
@@ -32,7 +43,7 @@ export default class QuickComposeComponent extends React.Component {
     }
 
     render() {
-        console.log("QuickComposeView render", this.props)
+        Logger.log(TAG, "QuickComposeView render", this.props)
         const {data, theme} = this.props
         if (!data) {
             return <Text>data = null</Text>
@@ -80,8 +91,7 @@ export default class QuickComposeComponent extends React.Component {
             })}
         </ScrollView>
 
-        let toolBar = <View style={[styles.toolsContainer]}>
-            <BackPressComponent backPress={this.backPress}/>
+        let toolBar = <View style={[styles.toolsContainer, {backgroundColor: theme.brand_primary}]}>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.handleAsyncSelectPhoto}>
                 <AntDesign name={'picture'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
@@ -102,11 +112,12 @@ export default class QuickComposeComponent extends React.Component {
         </View>
 
         return <View style={styles.container}>
-            <TouchableOpacity style={styles.outSide} activeOpacity={1} onPress={
-                () => {
+            <TouchableOpacity
+                style={styles.outSide}
+                activeOpacity={1}
+                onPress={() => {
                     this.backPress()
-                }
-            }/>
+                }}/>
             {textInput}
             <View style={{backgroundColor: "#FFFFFF"}}>
                 {scrollView}
@@ -134,7 +145,7 @@ export default class QuickComposeComponent extends React.Component {
                     "photo": photos[0].uri
                 })
                 .then(json => {
-                    console.log("发送成功", json)
+                    Logger.log(TAG, "发送成功", json)
                     TipsUtil.toastSuccess("发送成功")
                     setTimeout(() => {
                         this.backPress()
@@ -154,7 +165,7 @@ export default class QuickComposeComponent extends React.Component {
                 }
             FanfouFetch.post(Api.statuses_update, msgBody)
                 .then(json => {
-                    console.log(json)
+                    Logger.log(TAG, json)
                     TipsUtil.toastSuccess("发送成功")
                     setTimeout(() => {
                         this.backPress()
@@ -173,15 +184,15 @@ export default class QuickComposeComponent extends React.Component {
             compress: false,
         }).then(photos => {
             if (!photos || photos.length == 0) {
-                console.log("没有选择照片！")
+                Logger.log(TAG, "没有选择照片！")
             } else {
-                console.log("选择的图片", photos)
+                Logger.log(TAG, "选择的图片", photos)
                 this.setState({
                     photos: photos
                 })
             }
         }).catch(error => {
-            console.log("选择图片失败：", error)
+            Logger.log(TAG, "选择图片失败：", error)
             // Toast.show(error.message, 2)
         })
     };
@@ -195,8 +206,9 @@ export default class QuickComposeComponent extends React.Component {
     }
 
     backPress = () => {
-        console.log("Quick:backPress")
+        Logger.log(TAG, "Quick:backPress")
         this.clearInput()
+        this.props.modal.hide()
     }
 
     onChooseMentions = (checkedMap) => {
@@ -269,3 +281,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     }
 })
+const mapStateToProps = state => ({
+    theme: state.themeReducer.theme,
+});
+export default connect(mapStateToProps)(QuickComposeComponent);
