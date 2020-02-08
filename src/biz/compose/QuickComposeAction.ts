@@ -28,12 +28,45 @@ export default class QuickComposeAction {
         })
     }
 
-    static uploadImage(input, photos, placeHolder, onSuccess) {
+
+    static createMessage(input, onSuccess) {
+        let msgBody = {status: input}
+        this.updateMessage(msgBody, onSuccess)
+    }
+
+    static comment(input, item, placeHolder, onSuccess) {
+        let msgBody = {
+            status: "@" + item.user.name + " " + input,
+            in_reply_to_status_id: item.id,
+        }
+        this.updateMessage(msgBody, onSuccess)
+    }
+
+    static forward(input, item, placeHolder, onSuccess) {
+        let msgBody = {
+            status: input + " " + placeHolder,
+            repost_status_id: item.id,
+        }
+        this.updateMessage(msgBody, onSuccess)
+    }
+
+    private static updateMessage(msgBody, onSuccess) {
+        let loading = TipsUtil.toastLoading('发送中...');
+        FanfouFetch.post(Api.statuses_update, msgBody)
+            .then(json => {
+                Logger.log(TAG, json)
+                TipsUtil.toastSuccess("发送成功", loading)
+                onSuccess()
+            })
+            .catch(error => TipsUtil.toastFail("发送失败：" + error))
+    }
+
+    static uploadImage(input, photos, onSuccess) {
         let loading = TipsUtil.toastLoading('发送中...');
         //api不支持 图片转发回复,通过拼接 用户名和消息walk around
         FanfouFetch.post(Api.photos_upload,
             {
-                status: input + (placeHolder ? " " + placeHolder : "")
+                status: input
             },
             {
                 "photo": photos[0].uri
@@ -43,35 +76,6 @@ export default class QuickComposeAction {
                 onSuccess()
             })
             .catch(error => TipsUtil.toastFail("发送失败：" + error, loading));
-    }
-
-    static createMessage(input, onSuccess) {
-        this.updateMessage(COMPOSE_MODE.Create, input, null, null, onSuccess)
-    }
-
-    static updateMessage(mode, input, item, placeHolder, onSuccess) {
-        let loading = TipsUtil.toastLoading('发送中...');
-        let msgBody = {}
-        if (mode == COMPOSE_MODE.Create) {
-            msgBody = {status: input}
-        } else if (mode == COMPOSE_MODE.Forward) {
-            msgBody = {
-                status: input + " " + placeHolder,
-                repost_status_id: item.id,
-            }
-        } else if (mode == COMPOSE_MODE.Comment) {
-            msgBody = {
-                status: "@" + item.user.name + " " + input,
-                in_reply_to_status_id: item.id,
-            }
-        }
-        FanfouFetch.post(Api.statuses_update, msgBody)
-            .then(json => {
-                Logger.log(TAG, json)
-                TipsUtil.toastSuccess("发送成功", loading)
-                onSuccess()
-            })
-            .catch(error => TipsUtil.toastFail("发送失败：" + error))
     }
 }
 

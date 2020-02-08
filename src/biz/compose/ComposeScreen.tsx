@@ -124,7 +124,7 @@ class ComposeScreen extends React.Component<Props, State> {
             return
         }
         if (photos && photos.length > 0) {
-            QuickComposeAction.uploadImage(inputString, photos, null, this.dismiss)
+            QuickComposeAction.uploadImage(inputString, photos, this.dismiss)
         } else {
             QuickComposeAction.createMessage(inputString, this.dismiss)
         }

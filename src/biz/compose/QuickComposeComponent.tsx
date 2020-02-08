@@ -135,9 +135,17 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             return
         }
         if (photos && photos.length > 0) {
-            QuickComposeAction.uploadImage(inputString, photos, this.placeHolder, this.dismiss)
+            if (mode == COMPOSE_MODE.Comment) {
+                QuickComposeAction.uploadImage(inputString + " " + this.placeHolder, photos, this.dismiss)
+            } else {
+                QuickComposeAction.uploadImage(inputString + " " + this.placeHolder, photos, this.dismiss)
+            }
         } else {
-            QuickComposeAction.updateMessage(mode, inputString, item, this.placeHolder, this.dismiss)
+            if (mode == COMPOSE_MODE.Comment) {
+                QuickComposeAction.comment(inputString, item, this.placeHolder, this.dismiss)
+            } else {
+                QuickComposeAction.forward(inputString, item, this.placeHolder, this.dismiss)
+            }
         }
     }
 
