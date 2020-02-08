@@ -19,7 +19,7 @@ export default class StatusComponent extends PureComponent<Props> {
         const {item, callback} = this.props;
         let userView = <TouchableOpacity activeOpacity={0.7} style={styles.userContainer}
                                          onPress={() => {
-                                             navigateN(NavigationManager.mainNavigation, "ProfileScreen", {user: item.user})
+                                             navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: item.user})
                                          }}>
             <Image source={{uri: item.user.profile_image_url_large}} style={styles.thumbnail}/>
             <View style={styles.userInfoContainer}>
@@ -83,7 +83,7 @@ export default class StatusComponent extends PureComponent<Props> {
         console.log("hrefDispatcher: " + url)
         // <a href="http://fanfou.com/dailu321" className="former">*/
         if (url.indexOf('http://fanfou.com/') == 0) {
-            navigateN(NavigationManager.mainNavigation, "ProfileScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "ProfilePage", {url: url})
 
         }
         // "#<a href="/q/%E6%B5%8B%E8%AF%95">测试</a>#"
@@ -92,7 +92,7 @@ export default class StatusComponent extends PureComponent<Props> {
         }
         // "<a href="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" title="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" rel="nofollow" target="_blank">https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg</a>"
         else {
-            navigateN(NavigationManager.mainNavigation, "WebViewScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "WebPage", {url: url})
         }
     }
 }

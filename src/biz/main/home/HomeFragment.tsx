@@ -11,7 +11,6 @@ import TimelineCmpt from "~/biz/timeline/TimelineCmpt";
  * @date 2020/02/01
  */
 interface Props extends BaseProps {
-    navigation: object;
 }
 
 interface State {

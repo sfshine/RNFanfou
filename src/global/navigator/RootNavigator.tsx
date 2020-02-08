@@ -7,6 +7,7 @@ import LoginPage from "~/biz/user/login/LoginPage";
 import MainPage from "~/biz/main/MainPage";
 import React from "react";
 import ComposePage from "~/biz/compose/ComposePage";
+import ProfilePage from "~/biz/user/profile/ProfilePage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -26,6 +27,9 @@ const RootNavigator = createStackNavigator({
         },
         ComposePage: {
             screen: ComposePage
+        },
+        ProfilePage: {
+            screen: ProfilePage
         }
     }, {
         defaultNavigationOptions: {

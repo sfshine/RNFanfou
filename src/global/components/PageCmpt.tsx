@@ -6,8 +6,8 @@ import SafeAreaViewPlus from "~/global/components/SafeAreaViewPlus";
 import NavigationBarViewFactory, {ButtonConfig} from "~/global/navigator/NavigationBarViewFactory";
 
 interface Props {
-    title: string;
-    backNav: object;
+    title?: string;
+    backNav?: object;
     overrideBackPress: Function;
     overrideNavBar: object;
     rightNavButtonConfig: ButtonConfig | ButtonConfig[];

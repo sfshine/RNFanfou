@@ -44,7 +44,7 @@ class TimelineCell extends PureComponent<Props, State> {
         this.state = {
             favorited: favoriteMap[item.id]
         }
-        let highLightColor = this.props.highLight ? theme.highLightColor : "#FFFFFF"
+        let highLightColor = this.props.highLight ? theme.brand_primary : "#FFFFFF"
         return (
             <View style={[styles.container, {backgroundColor: highLightColor}]}>
                 {<StatusComponent item={item} callback={this.props.callback}/>}

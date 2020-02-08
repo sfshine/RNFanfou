@@ -3,15 +3,16 @@ import Logger from "../../../global/util/Logger";
 import {RESET} from "../../../global/redux/ResetAction";
 import themeReducer from '../../../global/theme/ThemeReducer';
 import LoginReducer from "~/biz/user/login/LoginReducer";
-import timelineReducer from "~/biz/timeline/TimelineReducer";
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
 import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
+import ProfileReducer from "~/biz/user/profile/ProfileReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
     LoginReducer: LoginReducer,
-    TimelineReducer:TimelineReducer,
+    TimelineReducer: TimelineReducer,
     QuickComposeReducer: QuickComposeReducer,
+    ProfileReducer: ProfileReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {
