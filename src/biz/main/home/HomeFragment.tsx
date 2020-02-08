@@ -37,14 +37,10 @@ class HomeFragment extends React.PureComponent<Props, State> {
         return <PageCmpt title="主页" rightNavButtonConfig={{
             icon: "md-add",
             callback: () => {
-                navigateN(NavigationManager.mainNavigation, "ComposeScreen")
+                navigateN(NavigationManager.mainNavigation, "ComposePage")
             }
         }}>
             <TimelineCmpt/>
-            <TouchableOpacity style={[styles.composeButton, {backgroundColor: theme.themeColor}]} activeOpacity={0.7}
-                              onPress={this.compose}>
-                {/*<MaterialCommunityIcons style={{color: 'white'}} name={'plus'} size={35}/>*/}
-            </TouchableOpacity>
         </PageCmpt>
     }
 

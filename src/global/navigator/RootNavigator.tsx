@@ -6,7 +6,7 @@ import PictureViewPage from '~/global/components/page/PictureViewPage';
 import LoginPage from "~/biz/user/login/LoginPage";
 import MainPage from "~/biz/main/MainPage";
 import React from "react";
-import ComposeScreen from "~/biz/compose/ComposeScreen";
+import ComposePage from "~/biz/compose/ComposePage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -24,8 +24,8 @@ const RootNavigator = createStackNavigator({
         MainPage: {
             screen: MainPage
         },
-        ComposeScreen: {
-            screen: ComposeScreen
+        ComposePage: {
+            screen: ComposePage
         }
     }, {
         defaultNavigationOptions: {

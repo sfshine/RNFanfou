@@ -20,9 +20,9 @@ interface State {
     photos: Array<any>,
 }
 
-const TAG = "ComposeScreen"
+const TAG = "ComposePage"
 
-class ComposeScreen extends React.Component<Props, State> {
+class ComposePage extends React.Component<Props, State> {
     private selection
     private placeHolder = "你在做什么"
 
@@ -178,4 +178,4 @@ export default connect(
         theme: state.themeReducer.theme
     }),
     (dispatch) => ({})
-)(ComposeScreen)
+)(ComposePage)
