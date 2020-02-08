@@ -9,12 +9,7 @@ import TipsUtil from "~/global/util/TipsUtil";
 import BaseProps from "~/global/base/BaseProps";
 import ArchModal from "~/global/util/ArchModal";
 import Logger from "~/global/util/Logger";
-import QuickComposeAction from "~/biz/compose/QuickComposeAction";
-
-export const COMPOSE_MODE = {
-    Forward: 'Forward',
-    Comment: 'Comment',
-}
+import QuickComposeAction, {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 
 interface Props extends BaseProps {
     data: any,
@@ -134,15 +129,15 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         const photos = this.state.photos
         let item = data.status
         let mode = data.mode
-        let input = this.state.inputString
-        if (mode == COMPOSE_MODE.Comment && input.length == 0 && photos.length == 0) {
+        let inputString = this.state.inputString
+        if (mode == COMPOSE_MODE.Comment && inputString.length == 0 && photos.length == 0) {
             TipsUtil.toast("请输入内容")
             return
         }
         if (photos && photos.length > 0) {
-            QuickComposeAction.uploadImage(input, photos, this.placeHolder, this.dismiss)
+            QuickComposeAction.uploadImage(inputString, photos, this.placeHolder, this.dismiss)
         } else {
-            QuickComposeAction.updateMessage(mode, input, item, this.placeHolder, this.dismiss)
+            QuickComposeAction.updateMessage(mode, inputString, item, this.placeHolder, this.dismiss)
         }
     }
 

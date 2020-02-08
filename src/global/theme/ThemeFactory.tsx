@@ -20,8 +20,13 @@ export const ThemeConfigs = {
     Brown: '#795548',
     Grey: '#9E9E9E',
     BlueGrey: '#607D8B',
-    Black: '#000000'
+    Black: '#000000',
 };
+
+export interface ThemeConfig {
+    brand_primary: string,
+    color_text_base: string,
+}
 
 export default class ThemeFactory {
     /**
@@ -32,7 +37,7 @@ export default class ThemeFactory {
     static createTheme(primaryColor) {
         return {
             brand_primary: primaryColor,
-            color_text_base: "#FFFFFF"
-        }
+            color_text_base: '#FFFFFF',
+        };
     }
 }

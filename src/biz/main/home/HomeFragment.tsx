@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import * as React from "react";
 import BaseProps from "~/global/base/BaseProps";
-import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
+import NavigationManager, {navigate, navigateN} from "~/global/navigator/NavigationManager";
 import TimelineCmpt from "~/biz/timeline/TimelineCmpt";
 
 /**
@@ -34,7 +34,12 @@ class HomeFragment extends React.PureComponent<Props, State> {
 
     render() {
         const {theme} = this.props;
-        return <PageCmpt title="主页">
+        return <PageCmpt title="主页" rightNavButtonConfig={{
+            icon: "md-add",
+            callback: () => {
+                navigateN(NavigationManager.mainNavigation, "ComposeScreen")
+            }
+        }}>
             <TimelineCmpt/>
             <TouchableOpacity style={[styles.composeButton, {backgroundColor: theme.themeColor}]} activeOpacity={0.7}
                               onPress={this.compose}>

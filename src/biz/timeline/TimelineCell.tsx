@@ -8,9 +8,9 @@ import {Api} from "~/biz/common/api/Api";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import TipsUtil from "~/global/util/TipsUtil";
 import StatusComponent from "~/biz/timeline/components/StatusComponent";
-import {Portal} from "@ant-design/react-native";
-import QuickComposeComponent, {COMPOSE_MODE} from "~/biz/compose/QuickComposeComponent";
+import QuickComposeComponent from "~/biz/compose/QuickComposeComponent";
 import ArchModal from "~/global/util/ArchModal";
+import {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 
 const favoriteMap = {}
 
@@ -58,6 +58,9 @@ class TimelineCell extends PureComponent<Props, State> {
                         <Text style={styles.tools_text}>转发</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
+                        let archModel = new ArchModal()
+                        archModel.show(<QuickComposeComponent modal={archModel}
+                                                              data={{status: item, mode: COMPOSE_MODE.Comment}}/>)
                     }}>
                         <Icon name={'file-document-edit-outline'} size={16}
                               style={{color: styles.tools_text.color}}/>
