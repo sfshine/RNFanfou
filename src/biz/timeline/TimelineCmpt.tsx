@@ -41,13 +41,14 @@ class TimelineCmpt extends React.Component<Props> {
     };
 }
 
+const mTimelineAction = new TimelineAction()//TimelineAction缓存了PageNumber所以这里使用成员变量
 export default connect(
     (state) => ({
         actionData: state.TimelineReducer.actionData,
         ptrState: state.TimelineReducer.ptrState,
     }),
     (dispatch) => ({
-        loadMoreTimeline: (oldActionData) => dispatch(TimelineAction.loadMoreTimeline(oldActionData)),
-        refreshTimeline: () => dispatch(TimelineAction.refreshTimeline())
+        loadMoreTimeline: (oldActionData) => dispatch(mTimelineAction.loadMoreTimeline(oldActionData)),
+        refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline())
     })
 )(TimelineCmpt)

@@ -7,9 +7,9 @@ import TipsUtil from "~/global/util/TipsUtil";
 const PAGE_SIZE = 8
 const TAG = "TimelineAction"
 export default class TimelineAction {
-    private static pageNum: number;
+    private pageNum: number;
 
-    static refreshTimeline() {
+    refreshTimeline() {
         return async dispatch => {
             this.pageNum = 1
             dispatch(TIMELINE_ACTIONS.Refreshing())
@@ -28,7 +28,7 @@ export default class TimelineAction {
         }
     }
 
-    static loadMoreTimeline(oldPageData) {
+    loadMoreTimeline(oldPageData) {
         return async dispatch => {
             this.pageNum++
             dispatch(TIMELINE_ACTIONS.LoadingMore())

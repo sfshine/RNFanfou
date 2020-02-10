@@ -36,7 +36,7 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
                     }
                 }
             }
-            onEndReachedThreshold={0.1}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
+            onEndReachedThreshold={0.5}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
         />
     }
 
