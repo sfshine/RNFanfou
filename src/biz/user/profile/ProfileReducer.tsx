@@ -11,46 +11,43 @@ const TAG = "ProfileReducer"
 export default function ProfileReducer(state, action) {
     return defaultReduce(TAG, action, state, initialState)
 }
-
-export function profile_beginRefreshAction(userId) {
-    return {
-        type: TAG + "#" + "profile_beginRefreshAction",
-        loadState: RefreshState.Refreshing,
-        pageData: {},
-        userId: userId,
-    }
-}
-
-export function profile_refreshSuccessAction(userId, pageData, loadState) {
-    return {
-        type: TAG + "#" + "profile_refreshSuccessAction",
-        userId: userId,
-        pageData: pageData,
-        loadState: loadState
-    }
-}
-
-export function profile_beginLoadMoreAction() {
-    return {
-        type: TAG + "#" + "profile_beginLoadMoreAction",
-        loadState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
-    }
-}
-
-export function profile_loadMoreSuccessAction(userId, pageData, status) {
-    return {
-        type: TAG + "#" + "profile_loadMoreSuccessAction",
-        userId: userId,
-        pageData: pageData,
-        loadState: status
-    }
-}
-
-export function profile_loadFailAction(userId) {
-    return {
-        type: TAG + "#" + "profile_loadFailAction",
-        userId: userId,
-        loadState: RefreshState.LoadingMoreEnd,//有些拉取不到数据的异常情况是因为用户设置了不可见
-        pageData: {}
-    }
+export const USER_PROFILE_ACTIONS = {
+    Refreshing: () => {
+        return {
+            type: `${TAG}#Refreshing`,
+            ptrState: RefreshState.Refreshing,
+        }
+    },
+    Idle: (actionData) => {
+        return {
+            type: `${TAG}#Idle`,
+            actionData: actionData,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    RefreshingFailed: () => {
+        return {
+            type: `${TAG}#RefreshingFailed`,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    LoadingMore: () => {
+        return {
+            type: `${TAG}#LoadingMore`,
+            ptrState: RefreshState.LoadingMore,
+        }
+    },
+    LoadingMoreEnd: (actionData) => {
+        return {
+            type: `${TAG}#LoadingMoreEnd`,
+            actionData: actionData,
+            ptrState: RefreshState.LoadingMoreEnd,
+        }
+    },
+    LoadingMoreError: () => {
+        return {
+            type: `${TAG}#LoadingMoreError`,
+            ptrState: RefreshState.LoadingMoreError,
+        }
+    },
 }

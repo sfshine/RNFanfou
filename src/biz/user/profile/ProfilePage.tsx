@@ -3,38 +3,32 @@ import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from '
 import {connect} from "react-redux";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
 import TimelineCell from "../../timeline/TimelineCell";
-import * as action from "./ProfileAction";
 import RefreshState from "../../../global/components/refresh/RefreshState";
-import BaseProps from "~/global/base/BaseProps";
 import PageCmpt from "~/global/components/PageCmpt";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
 import Logger from "~/global/util/Logger";
 import {navigate} from "~/global/navigator/NavigationManager";
 import {FanfouUtil} from '~/biz/common/util/FanfouUtil';
-
-interface Props extends BaseProps {
-    refreshUserTimeline: Function,
-    loadMoreUserTimeline: Function,
-    pageData: any,
-}
+import BaseProps from "~/global/base/BaseProps";
+import ProfileAction from "~/biz/user/profile/ProfileAction";
+import {USER_PROFILE_ACTIONS} from "~/biz/user/profile/ProfileReducer";
 
 interface State {
     user: any,
-    following: boolean,
-    pageData: any,
-    loadState: string,
+    pageData: Array<any>,
+    ptrState: string,
 }
 
 const TAG = "ProfilePage"
-
 /**
  * 进入ProfilePage有两种方式
  * 1.点击用户头像,此时this.props.navigation.state.params.user不是空
  * 2.点击url,此时this.props.navigation.state.params.url非空,此时需要调用Api.users_show接口获取user信息
  */
-class ProfilePage extends React.Component<Props, State> {
+export default class ProfilePage extends React.Component<BaseProps, State> {
     private readonly url
+    private mProfileAction = new ProfileAction()
 
     constructor(props) {
         super(props)
@@ -43,16 +37,15 @@ class ProfilePage extends React.Component<Props, State> {
         this.url = url
         this.state = {
             user: user,
-            following: user ? user.following : false,
-            pageData: {},
-            loadState: RefreshState.Idle,
+            pageData: [],
+            ptrState: RefreshState.Idle,
         };
     }
 
     componentWillMount() {
         let url = this.url
         if (this.state.user) {
-            this.props.refreshUserTimeline(this.state.user.id)
+            this.onRefreshTimeline();
             Logger.log(TAG, "refreshUserTimeline now!!!")//测试发现setState以后这里不会重复执行也就是state [props变化后render会触发执行.
         } else if (url) {
             Logger.log(TAG, 'componentWillMount:', url);
@@ -62,9 +55,8 @@ class ProfilePage extends React.Component<Props, State> {
                 FanfouFetch.get(Api.users_show, {id: userId}).then(user => {
                     this.setState({
                         user: user,
-                        following: user.following,
                     })
-                    this.props.refreshUserTimeline(user.id)
+                    this.onRefreshTimeline();
                 }).catch(e => {
                     Logger.log(TAG, "获取用户信息失败")
                 })
@@ -72,40 +64,22 @@ class ProfilePage extends React.Component<Props, State> {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        Logger.log(TAG, "shouldComponentUpdate state:", this.state)
-        Logger.log(TAG, "nextProps:", nextProps)
-        // Logger.log(TAG,"nextState:", nextState)
-        let user = this.state.user
-        if (user && nextProps.userId == user.id) {
-            if ((nextProps.loadState !== this.state.loadState)
-                || JSON.stringify(nextProps.pageData) !== JSON.stringify(this.state.pageData)) {
-                this.setState({
-                    pageData: nextProps.pageData,
-                    loadState: nextProps.loadState
-                })
-                return false
-            }
-        }
-        return true
-    }
-
     render() {
         let user = this.state.user
         return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation}>
             {user ? <RefreshListView
                 ListHeaderComponent={this._renderHeader}
-                data={this.state.pageData.data ? this.state.pageData.data : []}
-                ptrState={this.state.loadState}
+                data={this.state.pageData}
+                ptrState={this.state.ptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
                     Logger.log(TAG, "onHeaderRefresh");
-                    this.props.refreshUserTimeline(user.id)
+                    this.onRefreshTimeline();
                 }}
                 onFooterRefresh={() => {
                     Logger.log(TAG, "onFooterRefresh");
-                    this.props.loadMoreUserTimeline(user.id, (this.props.pageData ? this.props.pageData : []))
+                    this.onLoadMoreTimeline()
                 }}
             /> : null}
         </PageCmpt>
@@ -179,6 +153,42 @@ class ProfilePage extends React.Component<Props, State> {
         )
     };
 
+    onStateChange = (action) => {
+        // Logger.log(TAG, "action", action)
+        let pageData = this.state.pageData
+        switch (action.ptrState) {
+            case RefreshState.Idle:
+            case RefreshState.LoadingMoreEnd:
+                pageData = action.actionData
+                break;
+            default:
+                break;
+        }
+        this.setState({
+            ptrState: action.ptrState,
+            pageData: pageData,
+        })
+    }
+
+    onRefreshTimeline = () => {
+        if (this.state.user) {
+            this.mProfileAction.refreshUserTimeline(this.state.user.id, (action) => {
+                this.onStateChange(action)
+            }).then()
+        } else {
+            Logger.error(TAG, "user is empty, cannot onRefreshTimeline")
+        }
+    }
+
+    onLoadMoreTimeline = () => {
+        if (this.state.user) {
+            this.mProfileAction.loadMoreUserTimeline(this.state.user.id, (this.state.pageData), (action) => {
+                this.onStateChange(action)
+            }).then()
+        } else {
+            Logger.error(TAG, "user is empty, cannot onRefreshTimeline")
+        }
+    }
 
     // renderRightButton() {
     //     return <View style={{flexDirection: 'row',}}>
@@ -256,17 +266,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-export default connect(
-    (state) => ({
-            theme: state.themeReducer.theme,
-            pageData: state.ProfileReducer.pageData,
-            loadState: state.ProfileReducer.loadState,
-            userId: state.ProfileReducer.userId,
-        }
-    ),
-    (dispatch) => ({
-        loadMoreUserTimeline: (userId, oldPageData) => dispatch(action.loadMoreUserTimeline(userId, oldPageData)),
-        refreshUserTimeline: (userId) => dispatch(action.refreshUserTimeline(userId))
-    })
-)(ProfilePage)

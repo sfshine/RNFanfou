@@ -87,8 +87,8 @@ public final class OAuth {
      */
     private String fetch(final RequestBuilder builder) throws IOException {
         OAuthRequest request = builder.build();
-        request.setConnectTimeout(5, TimeUnit.SECONDS);
-        request.setReadTimeout(10, TimeUnit.SECONDS);
+        request.setConnectTimeout(30, TimeUnit.SECONDS);
+        request.setReadTimeout(30, TimeUnit.SECONDS);
         if (mAccessToken != null) {
             mOAuthService.signRequest(mAccessToken, request);
         }
