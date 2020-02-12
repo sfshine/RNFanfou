@@ -6,7 +6,7 @@ import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
-import {Image, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import PhotoView from 'react-native-photo-view-ex';
 import {goBack} from "~/global/navigator/NavigationManager";
 
@@ -22,21 +22,22 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
     render() {
         const {images} = this.props.navigation.state.params;
         return <PageCmpt backNav={this.props.navigation} style={{backgroundColor: "#000000"}}>
+            <PhotoView
+                source={{uri: images[0].url}}
+                minimumZoomScale={0.5}
+                maximumZoomScale={10}
+                onTap={() => {
+                    goBack(this.props)
+                }}
+                onLoad={() => console.log("Image loaded!")}
+                style={{width: "100%", height: "100%"}}
+            />
             <TouchableOpacity
-                activeOpacity={1}
-                onLongPress={() => {
+                onPress={() => {
                     this.onShare(images).then()
-                }}>
-                <PhotoView
-                    source={{uri: images[0].url}}
-                    minimumZoomScale={0.5}
-                    maximumZoomScale={10}
-                    onTap={() => {
-                        goBack(this.props)
-                    }}
-                    onLoad={() => console.log("Image loaded!")}
-                    style={{width: "100%", height: "100%"}}
-                />
+                }}
+                style={styles.shareButton}>
+                <Text style={{color: "#FFFFFF"}}>分享</Text>
             </TouchableOpacity>
         </PageCmpt>
     }
@@ -59,3 +60,16 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
         TipsUtil.toastHide(loading)
     }
 }
+
+const styles = StyleSheet.create({
+    shareButton: {
+        width: "100%",
+        height: 45,
+        zIndex: 100,
+        position: 'absolute',
+        bottom: 8,
+        right: 10,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
+});
