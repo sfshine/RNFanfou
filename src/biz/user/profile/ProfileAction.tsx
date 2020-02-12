@@ -39,7 +39,7 @@ function loadTimeline(userId, pageData) {
             isRefresh ? dispatch(profile_refreshSuccessAction(userId, newPageData, endStatus)) : dispatch(profile_loadMoreSuccessAction(userId, newPageData, endStatus))
         }).catch((e) => {
             let errorMsg = "加载失败";
-            dispatch(profile_loadFailAction(userId, errorMsg));
+            dispatch(profile_loadFailAction(userId));
             Logger.log(TAG, errorMsg, e);
         }).done();
     }

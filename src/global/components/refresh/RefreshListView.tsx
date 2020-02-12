@@ -31,9 +31,7 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
             onEndReached={
                 () => {
                     Logger.log(TAG, "onEndReached");
-                    if (this.props.ptrState != RefreshState.LoadingMoreError) {
-                        this.beginFooterRefresh()
-                    }
+                    this.beginFooterRefresh()
                 }
             }
             onEndReachedThreshold={0.5}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
@@ -76,6 +74,8 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
         Logger.log(TAG, "beginHeaderRefresh");
         if (this.shouldStartHeaderRefreshing()) {
             this.startHeaderRefreshing();
+        } else {
+            Logger.log(TAG, "No need HeaderRefresh")
         }
     }
 
@@ -84,6 +84,8 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
         Logger.log(TAG, "beginFooterRefresh");
         if (this.shouldStartFooterRefreshing()) {
             this.startFooterRefreshing();
+        } else {
+            Logger.log(TAG, "No need FooterRefresh")
         }
     }
 
@@ -103,10 +105,8 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
      * 如果列表头部已经在刷新中了，就返回false
      */
     shouldStartHeaderRefreshing() {
-        if (this.props.ptrState === RefreshState.LoadingMore || this.props.ptrState === RefreshState.Refreshing) {
-            return false;
-        }
-        return true;
+        return this.props.ptrState == RefreshState.Idle || this.props.ptrState == RefreshState.LoadingMoreEnd || this.props.ptrState == RefreshState.LoadingMoreError;
+
     }
 
     /***
@@ -119,10 +119,6 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
      * 如果列表数据为空，则返回false（初始状态下列表是空的，这时候肯定不需要上拉加载更多，而应该执行下拉刷新）
      */
     shouldStartFooterRefreshing() {
-        if (this.props.ptrState === RefreshState.LoadingMore ||
-            this.props.ptrState === RefreshState.Refreshing) {
-            return false;
-        }
-        return true;
+        return this.props.ptrState == RefreshState.Idle
     }
 }

@@ -46,11 +46,10 @@ export function profile_loadMoreSuccessAction(userId, pageData, status) {
     }
 }
 
-export function profile_loadFailAction(userId, errorMessage) {
+export function profile_loadFailAction(userId) {
     return {
         type: TAG + "#" + "profile_loadFailAction",
         userId: userId,
-        errorMessage: errorMessage,
         loadState: RefreshState.LoadingMoreEnd,//有些拉取不到数据的异常情况是因为用户设置了不可见
         pageData: {}
     }
