@@ -11,6 +11,7 @@ interface Props {
     overrideBackPress: Function;
     overrideNavBar: object;
     rightNavButtonConfig: ButtonConfig | ButtonConfig[];
+    style: object;
 }
 
 class PageCmpt extends React.PureComponent<Props, {}> {
@@ -25,7 +26,7 @@ class PageCmpt extends React.PureComponent<Props, {}> {
          *  overrideNavBar：用户自定义的导航栏，优先级高于title
          */
         let {title, backNav, overrideBackPress, overrideNavBar, rightNavButtonConfig, children} = this.props;
-        return <SafeAreaViewPlus style={styles.container}
+        return <SafeAreaViewPlus style={[styles.container, this.props.style]}
                                  backNav={backNav}
                                  backPress={overrideBackPress}>
             {overrideNavBar ? overrideNavBar : (title && this.renderNavBar(title, backNav, rightNavButtonConfig))}

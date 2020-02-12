@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {ImageViewer} from "react-native-image-zoom-viewer";
 import Share from "react-native-share";
 import RNFS from 'react-native-fs'
 import PageCmpt from "~/global/components/PageCmpt";
@@ -6,9 +7,9 @@ import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import Fetch from "~/global/network/Fetch";
-import {Image, TouchableOpacity} from "react-native";
-import PhotoView from 'react-native-photo-view-ex';
 import {goBack} from "~/global/navigator/NavigationManager";
+import {Modal} from "@ant-design/react-native";
+import {Image} from "react-native";
 
 const TAG = "PictureViewPage"
 
@@ -21,26 +22,39 @@ export default class PictureViewPage extends PureComponent<BaseProps> {
 
     render() {
         const {images} = this.props.navigation.state.params;
-        return <PageCmpt backNav={this.props.navigation} style={{backgroundColor: "#000000"}}>
-            <TouchableOpacity
-                activeOpacity={1}
+        return <PageCmpt backNav={this.props.navigation}>
+            <ImageViewer
+                enableSwipeDown={true}
+                onSwipeDown={() => {
+                    goBack(this.props)
+                }}
+                swipeDownThreshold={150}
+                // onClick={() => {
+                //     goBack(this.props)
+                // }}
+                imageUrls={images}
+                onChange={(index) => {
+                    this.currentIndex = index
+                }}
+                saveToLocalByLongPress={false}
                 onLongPress={() => {
-                    this.onShare(images).then()
-                }}>
-                <PhotoView
-                    source={{uri: images[0].url}}
-                    minimumZoomScale={0.5}
-                    maximumZoomScale={10}
-                    onTap={() => {
-                        goBack(this.props)
-                    }}
-                    onLoad={() => console.log("Image loaded!")}
-                    style={{width: "100%", height: "100%"}}
-                />
-            </TouchableOpacity>
+                    Modal.operation([
+                        {text: '分享', onPress: () => this.onShare(images)},
+                        {text: '取消', onPress: () => Logger.log(TAG, '取消')},
+                    ]);
+                }}
+                renderImage={this.renderImage}
+            />
+
         </PageCmpt>
     }
 
+    renderImage = (props) => {
+        return <Image resizeMethod="resize"
+                      resizeMode="cover"
+                      {...props}>
+        </Image>
+    }
     onShare = async (images) => {
         let loading = TipsUtil.toastLoading("请稍后...")
         try {
