@@ -2,21 +2,35 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/Navigationbar";
-import RefreshListView2 from "../../global/components/refresh/RefreshListView2";
+import RefreshListView from "../../global/components/refresh/RefreshListView";
 import TimelineCell from "../timeline/TimelineCell";
 import * as action from "./SearchAction";
 import CommonViewFactory from "../../global/util/CommonViewFactory";
-import NavigationUtil from "../../global/navigator/NavigationUtil";
 import SafeAreaViewPlus from "../../global/components/SafeAreaViewPlus";
-import RefreshState from "../../global/components/refresh/RefreshState";
-import {toast} from "../../global/util/UIUtil";
 import EventType from "../common/event/EventType";
 import EventBus from "react-native-event-bus";
+import BaseProps from "~/global/base/BaseProps";
+import {goBack} from "~/global/navigator/NavigationManager";
+import TipsUtil from "~/global/util/TipsUtil";
 
-class SearchScreen extends React.Component {
+interface State {
+    queryId: string,
+    inputKey: string,
+}
+
+interface Props extends BaseProps {
+    search: Function,
+    loadMore: Function,
+    search_cancel: Function,
+    pageData: any,
+    loadState: string,
+}
+
+class SearchScreen extends React.Component<Props, State> {
     static defaultProps = {
         showBottomButton: true
     }
+    private input: any;
 
     constructor(props) {
         super(props)
@@ -26,9 +40,9 @@ class SearchScreen extends React.Component {
         }
     }
 
-    static defaultProps = {
-        loadState: RefreshState.NoMoreData,
-    }
+    // static defaultProps = {
+    //     loadState: RefreshState.NoMoreData,
+    // }
 
     componentWillMount() {
         console.log('SearchScreen componentWillMount', this.props);
@@ -48,7 +62,7 @@ class SearchScreen extends React.Component {
         let theme = this.props.theme
         let navigationBar = this.renderNavBar()
         let bottomButton = <TouchableOpacity
-            style={[styles.bottomButton, {backgroundColor: theme.themeColor}]}
+            style={[styles.bottomButton, {backgroundColor: theme.brand_primary}]}
             onPress={() => {
                 if (this.state.queryId) {
                     this.destroyKey();
@@ -62,8 +76,7 @@ class SearchScreen extends React.Component {
             style={{justifyContent: 'space-between'}}
             backPress={this.goBack}>
             {navigationBar}
-            <RefreshListView2
-                theme={this.props.theme}
+            <RefreshListView
                 data={this.props.pageData ? this.props.pageData.data : []}
                 ptrState={this.props.loadState}
                 renderItem={this._renderItem}
@@ -124,7 +137,7 @@ class SearchScreen extends React.Component {
                 </View>
             </TouchableOpacity>;
         return <View style={{
-            backgroundColor: theme.themeColor,
+            backgroundColor: theme.brand_primary,
             flexDirection: 'row',
             alignItems: 'center',
             width: '100%',
@@ -137,14 +150,14 @@ class SearchScreen extends React.Component {
     }
 
     goBack = () => {
-        NavigationUtil.goBack(this.props)
+        goBack(this.props)
         this.props.search_cancel()
         return true
     }
 
     destroyKey() {
         action.destroySearchWord(this.state.queryId).then(json => {
-            toast("取消成功")
+            TipsUtil.toast("取消成功")
             this.setState({
                 queryId: null
             })
@@ -156,7 +169,7 @@ class SearchScreen extends React.Component {
 
     saveKey() {
         action.createSearchWord(this.state.inputKey).then(json => {
-            toast("关注话题成功")
+            TipsUtil.toast("关注话题成功")
             this.setState({
                 queryId: json.id
             })

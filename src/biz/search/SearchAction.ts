@@ -1,11 +1,6 @@
-import FanfouFetch from "../../global/network/FanfouFetch";
-import RefreshState from "../../global/components/refresh/RefreshState";
-import {
-    saved_searches_list,
-    saved_searches_create,
-    search_public_timeline,
-    saved_searches_destroy
-} from "../../global/network/Api";
+import RefreshState from "~/global/components/refresh/RefreshState";
+import FanfouFetch from "~/biz/common/api/FanfouFetch";
+import {Api} from "~/biz/common/api/Api";
 
 const PAGE_SIZE = 20
 
@@ -13,7 +8,7 @@ export function search_cancel() {
     return {
         type: "search_cancel",
         pageData: null,
-        loadState: RefreshState.NoMoreData,
+        loadState: RefreshState.Refreshing,
     }
 }
 
@@ -36,10 +31,10 @@ function loadSearchTimeline(q, pageData) {
         console.log("loadSearchTimeline pageData", pageData);
         let isRefresh = pageData.page == 1
         isRefresh ? dispatch(search_beginRefreshAction()) : dispatch(search_beginLoadMoreAction());
-        FanfouFetch.get(search_public_timeline(), {page: pageData.page, q: q, format: 'html'}).then((json) => {
+        FanfouFetch.get(Api.search_public_timeline, {page: pageData.page, q: q, format: 'html'}).then((json) => {
             console.log("loadSearchTimeline json", json);
             //无论什么时候获取的数据不够一页就要显示没有更多数据了
-            let endStatus = json.length < PAGE_SIZE ? RefreshState.NoMoreData : RefreshState.Idle
+            let endStatus = json.length < PAGE_SIZE ? RefreshState.LoadingMoreEnd : RefreshState.Idle
             let newPageData = {page: pageData.page, data: [...pageData.data, ...json]}
             console.log("loadSearchTimeline newPageData", newPageData);
             isRefresh ? dispatch(search_refreshSuccessAction(newPageData, endStatus)) : dispatch(search_loadMoreSuccessAction(newPageData, endStatus))
@@ -86,13 +81,13 @@ function search_loadFailAction(errorMessage) {
     return {
         type: "search_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.Failure
+        loadState: RefreshState.Idle
     }
 }
 
 export function getSearchWordList() {
     return dispatch => {
-        FanfouFetch.get(saved_searches_list()).then(json => {
+        FanfouFetch.get(Api.saved_searches_list).then(json => {
             console.log("saved_searches_list json", json);
             dispatch({
                 type: "search_searches_list_success",
@@ -109,9 +104,9 @@ export function getSearchWordList() {
 }
 
 export function createSearchWord(query) {
-    return FanfouFetch.post(saved_searches_create(), {query: query});
+    return FanfouFetch.post(Api.saved_searches_create, {query: query});
 }
 
 export function destroySearchWord(queryId) {
-    return FanfouFetch.post(saved_searches_destroy(), {id: queryId})
+    return FanfouFetch.post(Api.saved_searches_destroy, {id: queryId})
 }

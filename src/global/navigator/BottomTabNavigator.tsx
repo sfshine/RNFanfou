@@ -7,6 +7,8 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import MePage from '../../biz/test/main/me/MePage';
 import HomeFragment from '../../biz/main/home/HomeFragment';
+import BaseProps from "~/global/base/BaseProps";
+import DiscoveryFragment from "~/biz/discovery/DiscoveryFragment";
 
 const TABS = {
     HomeFragment: {
@@ -20,25 +22,14 @@ const TABS = {
             ),
         },
     },
-    ProjectPage: {
-        screen: MePage,
+    DiscoveryFragment: {
+        screen: DiscoveryFragment,
         navigationOptions: {
-            tabBarLabel: '项目',
+            tabBarLabel: '发现',
             tabBarIcon: ({tintColor, focused}) => (
                 <Image style={{height: 20, width: 20}}
                        source={focused ?
                            require('#dianpu.png') : require('#dianpu1.png')}/>
-            ),
-        },
-    },
-    WXAccountPage: {
-        screen: MePage,
-        navigationOptions: {
-            tabBarLabel: '公众号',
-            tabBarIcon: ({tintColor, focused}) => (
-                <Image style={{height: 20, width: 20}}
-                       source={focused ?
-                           require('#dangan.png') : require('#dangan1.png')}/>
             ),
         },
     },
@@ -55,9 +46,9 @@ const TABS = {
     },
 };
 
-type Props = {};
+class BottomTabNavigator extends PureComponent<BaseProps> {
+    private Tabs: any;
 
-class BottomTabNavigator extends PureComponent<Props> {
     constructor(props) {
         super(props);
     }
@@ -70,7 +61,7 @@ class BottomTabNavigator extends PureComponent<Props> {
         return this.Tabs = createAppContainer(createBottomTabNavigator(
             TABS,
             {
-                swipeEnabled: false, //Android用
+                // swipeEnabled: false, //Android用
                 tabBarOptions: {
                     showIcon: true,
                     showLabel: true,

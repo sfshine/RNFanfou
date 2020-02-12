@@ -4,7 +4,7 @@ import Logger from "~/global/util/Logger";
 const TAG = "FanfouFetch"
 
 export default class FanfouFetch {
-    static get(url, params) {
+    static get(url, params?) {
         Logger.log(TAG, 'FanfouFetch url:', url);
         Logger.log(TAG, 'FanfouFetch params:', params);
         return FanfouModule.fetch('GET', url, params, {})

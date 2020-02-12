@@ -1,6 +1,6 @@
-import {statuses_public_timeline} from '../../../global/network/Api';
-import FanfouFetch from "../../../global/network/FanfouFetch";
-import RefreshState from "../../../global/components/refresh/RefreshState";
+import FanfouFetch from "~/biz/common/api/FanfouFetch";
+import {Api} from "~/biz/common/api/Api";
+import RefreshState from "~/global/components/refresh/RefreshState";
 
 export function refreshTimeline(oldPageList) {
     return loadPublicTimeline(oldPageList)
@@ -16,7 +16,7 @@ const COUNT = 100;
 function loadPublicTimeline(oldPageList) {
     return dispatch => {
         dispatch(public_beginRefreshAction())
-        FanfouFetch.get(statuses_public_timeline(), {msg_count: COUNT, format: 'html'}).then((json) => {
+        FanfouFetch.get(Api.statuses_public_timeline, {msg_count: COUNT, format: 'html'}).then((json) => {
             console.log("loadPublicTimeline json", json);
             let newPageList = mergeData(oldPageList, json)
             console.log("loadPublicTimeline newPageList", newPageList);
@@ -70,7 +70,7 @@ function public_refreshSuccessAction(pageList) {
     return {
         type: "public_refreshSuccessAction",
         pageList: pageList,
-        loadState: RefreshState.NoMoreData
+        loadState: RefreshState.Idle
     }
 }
 
@@ -93,6 +93,6 @@ function public_loadFailAction(errorMessage) {
     return {
         type: "public_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.FAILED
+        loadState: RefreshState.LoadingMoreError
     }
 }
