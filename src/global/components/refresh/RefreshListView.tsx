@@ -22,7 +22,7 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
             keyExtractor={this.props.keyExtractor}
             ListEmptyComponent={this._renderEmptyView()}
             ListHeaderComponent={this.props.ListHeaderComponent}
-            ListFooterComponent={() => this._renderFooter(data)}
+            ListFooterComponent={this.props.ListFooterComponent || this._renderFooter(data)}
             renderItem={this.props.renderItem}
             data={data}
             refreshing={this.props.ptrState === RefreshState.Refreshing}

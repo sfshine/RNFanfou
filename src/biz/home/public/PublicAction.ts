@@ -62,7 +62,7 @@ function mergeData(oldPageList, json) {
 function public_beginRefreshAction() {
     return {
         type: "public_beginRefreshAction",
-        loadState: RefreshState.Refreshing
+        ptrState: RefreshState.Refreshing
     }
 }
 
@@ -70,14 +70,14 @@ function public_refreshSuccessAction(pageList) {
     return {
         type: "public_refreshSuccessAction",
         pageList: pageList,
-        loadState: RefreshState.Idle
+        ptrState: RefreshState.Idle
     }
 }
 
 function public_beginLoadMoreAction() {
     return {
         type: "public_beginLoadMoreAction",
-        loadState: RefreshState.LoadingMore
+        ptrState: RefreshState.LoadingMore
     }
 }
 
@@ -85,7 +85,7 @@ function public_loadMoreSuccessAction(pageList) {
     return {
         type: "public_loadMoreSuccessAction",
         pageList: pageList,
-        loadState: RefreshState.Idle
+        ptrState: RefreshState.Idle
     }
 }
 
@@ -93,6 +93,6 @@ function public_loadFailAction(errorMessage) {
     return {
         type: "public_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.LoadingMoreError
+        ptrState: RefreshState.LoadingMoreError
     }
 }

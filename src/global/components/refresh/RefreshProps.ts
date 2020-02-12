@@ -3,6 +3,8 @@ import {ListRenderItem} from "react-native";
 
 export default interface RefreshProps {
     ListHeaderComponent?: ComponentType<any> | React.ReactElement | null,
+    ListFooterComponent?: ComponentType<any> | React.ReactElement | null,
+
     renderEmptyView?: Function | null,
     onFooterRefresh?: Function, // 上拉加载的方法
 

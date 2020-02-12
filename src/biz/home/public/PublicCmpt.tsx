@@ -8,6 +8,9 @@ import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
+import Logger from "~/global/util/Logger";
+import RefreshFooter from "~/global/components/refresh/RefreshFooter";
+import RefreshState from "~/global/components/refresh/RefreshState";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -49,6 +52,7 @@ class PublicCmpt extends React.Component<Props> {
             data={this.props.pageList ? this.props.pageList : []}
             renderItem={this._renderItem}
             keyExtractor={(item) => item.id}
+            ListFooterComponent={this._renderFooter(this.props.pageList)}
             onHeaderRefresh={() => {
                 console.log("onHeaderRefresh");
                 this.props.refreshTimeline(this.props.pageList)
@@ -57,6 +61,13 @@ class PublicCmpt extends React.Component<Props> {
         />
     }
 
+    _renderFooter = (data) => {
+        if (data.length > 0) {
+            return (<RefreshFooter ptrState={RefreshState.LoadingMoreEnd}/>)
+        } else {
+            return null
+        }
+    };
     _renderHeader = () => {
         if (!this.props.search_searches_list) return null
         console.log("_renderHeader")
@@ -127,7 +138,7 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         pageList: state.PublicReducer.pageList,
-        loadState: state.PublicReducer.loadState,
+        ptrState: state.PublicReducer.ptrState,
         // search_searches_list: state.searchReducer.search_searches_list,
     }),
     (dispatch) => ({
