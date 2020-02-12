@@ -5,6 +5,9 @@ import HTMLView from 'react-native-htmlview';
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import {formatDate} from "~/global/util/DateUtil";
+import Logger from "~/global/util/Logger";
+import {FanfouUtil} from "~/biz/common/util/FanfouUtil";
+import {connect} from "react-redux";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -13,9 +16,11 @@ interface Props extends BaseProps {
     callback: any,
 }
 
-export default class StatusComponent extends PureComponent<Props> {
+const TAG = "StatusComponent"
+
+class StatusComponent extends PureComponent<Props> {
     render() {
-        console.log("StatusComponent: ", this.props)
+        Logger.log(TAG, "StatusComponent: ", this.props)
         const {item, callback} = this.props;
         let userView = <TouchableOpacity activeOpacity={0.7} style={styles.userContainer}
                                          onPress={() => {
@@ -32,6 +37,7 @@ export default class StatusComponent extends PureComponent<Props> {
                         style={styles.source}
                         value={item.source}
                         onLinkPress={(url) => {
+                            this.hrefDispatcher(url)
                         }}
                         stylesheet={{
                             p: styles.source,
@@ -56,7 +62,7 @@ export default class StatusComponent extends PureComponent<Props> {
                     onLinkPress={(url) => this.hrefDispatcher(url)}
                     stylesheet={{
                         p: styles.text,
-                        a: [styles.text],
+                        a: [styles.text, {color: this.props.theme.brand_primary}],
                     }}/>
                 {item.photo &&
                 <TouchableOpacity activeOpacity={0.7}
@@ -80,9 +86,9 @@ export default class StatusComponent extends PureComponent<Props> {
     }
 
     hrefDispatcher = (url) => {
-        console.log("hrefDispatcher: " + url)
+        Logger.log(TAG, "hrefDispatcher: " + url)
         // <a href="http://fanfou.com/dailu321" className="former">*/
-        if (url.indexOf('http://fanfou.com/') == 0) {
+        if (FanfouUtil.isProfileUrl(url)) {
             navigateN(NavigationManager.mainNavigation, "ProfilePage", {url: url})
 
         }
@@ -148,3 +154,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEEEEE'
     },
 });
+
+export default connect(
+    (state) => ({
+        theme: state.themeReducer.theme,
+    }),
+    (dispatch) => ({})
+)(StatusComponent)

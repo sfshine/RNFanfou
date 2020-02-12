@@ -11,6 +11,7 @@ import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
 import Logger from "~/global/util/Logger";
 import {navigate} from "~/global/navigator/NavigationManager";
+import {FanfouUtil} from '~/biz/common/util/FanfouUtil';
 
 interface Props extends BaseProps {
     refreshUserTimeline: Function,
@@ -54,16 +55,16 @@ class ProfilePage extends React.Component<Props, State> {
             this.props.refreshUserTimeline(this.state.user.id)
             Logger.log(TAG, "refreshUserTimeline now!!!")//测试发现setState以后这里不会重复执行也就是state [props变化后render会触发执行.
         } else if (url) {
-            Logger.log(TAG, 'componentWillMount' + url);
+            Logger.log(TAG, 'componentWillMount:', url);
             /*<a href="http://fanfou.com/dailu321" className="former">*/
-            if (url.includes("http://fanfou.com/")) {
+            if (FanfouUtil.isProfileUrl(url)) {
                 let userId = url.substr(url.indexOf('com/') + 4, url.length)
                 FanfouFetch.get(Api.users_show, {id: userId}).then(user => {
                     this.setState({
                         user: user,
                         following: user.following,
                     })
-                    this.props.refreshUserTimeline(this.state.user.id)
+                    this.props.refreshUserTimeline(user.id)
                 }).catch(e => {
                     Logger.log(TAG, "获取用户信息失败")
                 })
@@ -177,6 +178,7 @@ class ProfilePage extends React.Component<Props, State> {
             }}/>
         )
     };
+
 
     // renderRightButton() {
     //     return <View style={{flexDirection: 'row',}}>

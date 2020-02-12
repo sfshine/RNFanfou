@@ -16,7 +16,7 @@ export function refreshUserTimeline(userId) {
 }
 
 export function loadMoreUserTimeline(userId, oldPageData) {
-    let nextPageData = {page: oldPageData.page + 1, data: [...oldPageData.data]}
+    let nextPageData = {page: oldPageData.page + 1, data: oldPageData.data ? [...oldPageData.data] : []}
     return loadTimeline(userId, nextPageData)
 }
 
