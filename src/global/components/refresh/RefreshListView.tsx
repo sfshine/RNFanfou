@@ -20,9 +20,9 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
         return <FlatList
             contentContainerStyle={{flexGrow: 1}}
             keyExtractor={this.props.keyExtractor}
-            ListEmptyComponent={this._renderEmptyView()}
             ListHeaderComponent={this.props.ListHeaderComponent}
-            ListFooterComponent={this.props.ListFooterComponent || this._renderFooter(data)}
+            ListEmptyComponent={this._renderEmptyView()}
+            ListFooterComponent={this._renderFooter(data)}
             renderItem={this.props.renderItem}
             data={data}
             refreshing={this.props.ptrState === RefreshState.Refreshing}
@@ -40,7 +40,7 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
     }
 
     _renderEmptyView() {
-        return this.props.renderEmptyView ? this.props.renderEmptyView() : this._renderDefaultEmptyView()
+        return this.props.ListEmptyComponent ? this.props.ListEmptyComponent : this._renderDefaultEmptyView()
     }
 
     _renderDefaultEmptyView = () => {
@@ -58,12 +58,12 @@ export default class RefreshListView extends PureComponent<RefreshProps, {}> {
     _renderFooter = (data) => {
         Logger.log(TAG, "_renderFooter", this.props.ptrState);
         if (data.length > 0) {
-            return (<RefreshFooter
-                    ptrState={this.props.ptrState}
-                    onRetryLoading={() => {
-                        this.beginFooterRefresh()
-                    }}
-                />
+            return (
+                this.props.ListFooterComponent ||
+                <RefreshFooter ptrState={this.props.ptrState}
+                               onRetryLoading={() => {
+                                   this.beginFooterRefresh()
+                               }}/>
             )
         } else {
             return null

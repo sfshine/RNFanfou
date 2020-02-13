@@ -26,7 +26,8 @@ class StatusComponent extends PureComponent<Props> {
                                          onPress={() => {
                                              navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: item.user})
                                          }}>
-            <Image source={{uri: item.user.profile_image_url_large}} style={styles.thumbnail}/>
+            <Image source={{uri: item.user.profile_image_url_large}}
+                   style={styles.thumbnail}/>
             <View style={styles.userInfoContainer}>
                 <View style={styles.userNameContainer}>
                     <Text style={styles.name}>{item.user.name}</Text>
@@ -54,7 +55,7 @@ class StatusComponent extends PureComponent<Props> {
                 if (callback) {
                     callback()
                 } else {
-                    navigateN(NavigationManager.mainNavigation, "StatusDetailScreen", {item: item})
+                    navigateN(NavigationManager.mainNavigation, "StatusDetailPage", {item: item})
                 }
             }}>
                 <HTMLView

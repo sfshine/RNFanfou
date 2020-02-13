@@ -12,8 +12,8 @@ interface Props {
 export default class RefreshEmptyView extends PureComponent<Props, {}> {
 
     static defaultProps = {
-        emptyViewMsg: "没有数据，下拉刷新试试～",
-        emptyViewLoadingMsg: "努力加载中～",
+        emptyViewMsg: "没有数据，下拉刷新试试",
+        emptyViewLoadingMsg: "努力加载中",
     };
 
     render() {
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     },
     emptyViewText: {
         marginTop: 10,
-        fontSize: 20,
+        fontSize: 15,
     }
 });

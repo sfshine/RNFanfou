@@ -8,6 +8,7 @@ import MainPage from "~/biz/main/MainPage";
 import React from "react";
 import ComposePage from "~/biz/compose/ComposePage";
 import ProfilePage from "~/biz/user/profile/ProfilePage";
+import StatusDetailPage from "~/biz/statsdetail/StatusDetailPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -30,6 +31,9 @@ const RootNavigator = createStackNavigator({
         },
         ProfilePage: {
             screen: ProfilePage
+        },
+        StatusDetailPage: {
+            screen: StatusDetailPage
         }
     }, {
         defaultNavigationOptions: {

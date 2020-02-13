@@ -6,6 +6,7 @@ import LoginReducer from "~/biz/user/login/LoginReducer";
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
 import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
 import PublicReducer from "~/biz/home/public/PublicReducer";
+import StatusDetailReducer from "~/biz/statsdetail/StatusDetailReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
     TimelineReducer: TimelineReducer,
     QuickComposeReducer: QuickComposeReducer,
     PublicReducer: PublicReducer,
+    StatusDetailReducer: StatusDetailReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {

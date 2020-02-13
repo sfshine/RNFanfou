@@ -67,7 +67,7 @@ export default class RefreshListViewFlickr extends PureComponent<RefreshProps, {
     }
 
     _renderEmptyView() {
-        return this.props.renderEmptyView ? this.props.renderEmptyView() : this._renderDefaultEmptyView()
+        return this.props.ListEmptyComponent ? this.props.ListEmptyComponent() : this._renderDefaultEmptyView()
     }
 
     _rowRenderer = (type, data) => {
