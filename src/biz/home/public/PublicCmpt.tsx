@@ -62,7 +62,7 @@ class PublicCmpt extends React.Component<Props> {
     }
 
     _renderFooter = (data) => {
-        if (data.length > 0) {
+        if (data && data.length > 0) {
             return (<RefreshFooter ptrState={RefreshState.LoadingMoreEnd}/>)
         } else {
             return null
