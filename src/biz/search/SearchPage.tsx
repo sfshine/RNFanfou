@@ -11,6 +11,7 @@ import TipsUtil from "~/global/util/TipsUtil";
 import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
 import {SearchAction} from "./SearchAction";
 import RefreshState from "~/global/components/refresh/RefreshState";
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 interface State {
     queryId: string,
@@ -50,7 +51,7 @@ class SearchPage extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        console.log('SearchPage componentWillMount', this.props);
+        console.log('SearchPage componentWillMount', this.state);
         let url = this.props.navigation.state.params.url
         let inputKey = ""
         if (url && url.indexOf('/q/') == 0) {
@@ -64,9 +65,10 @@ class SearchPage extends React.Component<Props, State> {
     }
 
     render() {
-        let theme = this.props.theme
-        let navigationBar = this.renderNavBar()
-        let bottomButton = <TouchableOpacity
+        let {theme, pageData, ptrState} = this.props
+        let listData = pageData ? pageData.data : []
+
+        let bottomButton = listData && listData.length > 0 && <TouchableOpacity
             style={[styles.bottomButton, {backgroundColor: theme.brand_primary}]}
             onPress={() => {
                 if (this.state.queryId) {
@@ -75,15 +77,16 @@ class SearchPage extends React.Component<Props, State> {
                     this.saveKey();
                 }
             }}>
-            <Text style={styles.buttonText}>{this.state.queryId ? '取消关注' : '关注话题'}</Text>
+            <Ionicons name={this.state.queryId ? "md-trash" : "md-add"} size={24} style={{color: 'white'}}/>
         </TouchableOpacity>
+        let navigationBar = this.renderNavBar()
         return <SafeAreaViewPlus
             style={{justifyContent: 'space-between'}}
             backPress={() => this.goBack()}>
             {navigationBar}
             <RefreshListView
-                data={this.props.pageData ? this.props.pageData.data : []}
-                ptrState={this.props.ptrState}
+                data={listData}
+                ptrState={ptrState}
                 renderItem={this._renderItem}
                 ListEmptyComponent={<View/>}
                 keyExtractor={(item) => item.id}
@@ -156,26 +159,30 @@ class SearchPage extends React.Component<Props, State> {
 
 
     destroyKey() {
+        let loading = TipsUtil.toastLoading("删除话题中")
         SearchAction.destroySearchWord(this.state.queryId).then(json => {
-            TipsUtil.toast("取消成功")
             this.setState({
                 queryId: null
             })
             this.props.getSearchWordList()
+            TipsUtil.toastSuccess("删除话题成功", loading)
         }).catch(e => {
             console.log("createSearchWord error:", e)
+            TipsUtil.toastFail("删除话题失败", loading)
         })
     }
 
     saveKey() {
+        let loading = TipsUtil.toastLoading("关注话题中")
         SearchAction.createSearchWord(this.state.inputKey).then(json => {
-            TipsUtil.toast("关注话题成功")
             this.setState({
                 queryId: json.id
             })
             this.props.getSearchWordList()
+            TipsUtil.toastSuccess("关注话题成功", loading)
         }).catch(e => {
             console.log("createSearchWord error:", e)
+            TipsUtil.toastFail("关注话题失败", loading)
         })
     }
 }
@@ -202,12 +209,21 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     bottomButton: {
-        margin: 5,
+        shadowRadius: 8,
+        shadowColor: '#aaaaaa',
+        shadowOpacity: 0.6,
+        shadowOffset: {width: 0, height: 3},
+
+        borderRadius: 22,
+        width: 45,
+        height: 45,
+        zIndex: 100,
+
+        position: 'absolute',
+        bottom: 8,
+        right: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: 0.9,
-        height: 40,
-        borderRadius: 3,
     },
 });
 
