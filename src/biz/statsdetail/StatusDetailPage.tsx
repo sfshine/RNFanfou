@@ -51,7 +51,7 @@ class StatusDetailPage extends React.Component<Props, State> {
 
         return <PageCmpt title="状态详情" backNav={this.props.navigation}>
             <RefreshListView
-                ListHeaderComponent={this._renderHeader(headerStatus)}
+                ListHeaderComponent={() => this._renderHeader(headerStatus)}
                 ListEmptyComponent={<View/>}
                 data={pageData}
                 ptrState={ptrState}

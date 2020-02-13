@@ -25,10 +25,11 @@ export default class StatusDetailAction {
                 let headerStatus = json[0]
                 for (let i = 0; i < json.length; i++) {
                     let item = json[i]
-                    if (headerStatus.rawid < item.rawid) {
+                    if (Date.parse(headerStatus.created_at) > Date.parse(item.created_at)) {
                         headerStatus = item
                     }
                 }
+                Logger.log(TAG, "headerStatus", headerStatus)
                 //算法上应该可以优化
                 for (var i = 0; i < json.length; i++) {
                     var item = json[i]
