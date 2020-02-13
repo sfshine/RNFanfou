@@ -36,7 +36,7 @@ class StatusDetailPage extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.props.refreshContextTimeline(this.statusFromPreviousPage.id);
+        this.props.refreshContextTimeline(this.statusFromPreviousPage);
     }
 
     componentWillUnmount(): void {
@@ -163,7 +163,7 @@ export default connect(
         msg_id: state.StatusDetailReducer.msg_id,
     }),
     (dispatch) => ({
-        refreshContextTimeline: (msgId) => dispatch(StatusDetailAction.loadStatusContextTimeline(msgId)),
+        refreshContextTimeline: (status) => dispatch(StatusDetailAction.loadStatusContextTimeline(status)),
         unLoadStatusCache: () => dispatch(StatusDetailAction.unLoadStatusCache()),
     }),
 )(StatusDetailPage);

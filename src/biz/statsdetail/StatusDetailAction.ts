@@ -14,15 +14,15 @@ export default class StatusDetailAction {
         }
     }
 
-    static loadStatusContextTimeline(msg_id) {
+    static loadStatusContextTimeline(status) {
         return dispatch => {
-            Logger.log(TAG, "refreshContextTimeline  msg_id", msg_id);
+            Logger.log(TAG, "refreshContextTimeline  status", status);
             // dispatch(statusDetail_beginRefreshAction())
-            FanfouFetch.get(Api.statuses_context_timeline, {id: msg_id, format: 'html'}).then((json) => {
+            FanfouFetch.get(Api.statuses_context_timeline, {id: status.id, format: 'html'}).then((json) => {
                 Logger.log(TAG, "refreshContextTimeline json", json);
                 let endStatus = RefreshState.LoadingMoreEnd
                 let newPageData = []
-                let headerStatus = json[0]
+                let headerStatus = status
                 for (let i = 0; i < json.length; i++) {
                     let item = json[i]
                     if (Date.parse(headerStatus.created_at) > Date.parse(item.created_at)) {
@@ -38,7 +38,7 @@ export default class StatusDetailAction {
                     }
                 }
                 Logger.log(TAG, "refreshContextTimeline newPageData", newPageData);
-                dispatch(statusDetail_refreshSuccessAction(msg_id, newPageData, headerStatus, endStatus))
+                dispatch(statusDetail_refreshSuccessAction(status.id, newPageData, headerStatus, endStatus))
             }).catch((e) => {
                 Logger.log(TAG, e);
                 let errorMsg = "加载失败";

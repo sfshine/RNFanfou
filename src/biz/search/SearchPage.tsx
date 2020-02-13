@@ -79,7 +79,7 @@ class SearchPage extends React.Component<Props, State> {
         </TouchableOpacity>
         return <SafeAreaViewPlus
             style={{justifyContent: 'space-between'}}
-            backPress={this.goBack}>
+            backPress={() => this.goBack()}>
             {navigationBar}
             <RefreshListView
                 data={this.props.pageData ? this.props.pageData.data : []}
@@ -108,7 +108,7 @@ class SearchPage extends React.Component<Props, State> {
         let backButton = NavigationBarViewFactory.createButton(
             {
                 icon: "md-arrow-back",
-                callback: () => goBack(this.props)
+                callback: () => this.goBack()
             });
         let inputView =
             <View style={styles.textInputWrapper}>

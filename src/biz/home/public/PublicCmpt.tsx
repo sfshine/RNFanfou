@@ -2,7 +2,6 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./PublicAction";
-import {getSearchWordList} from "../../search/SearchAction";
 
 import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
@@ -11,6 +10,7 @@ import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager
 import RefreshFooter from "~/global/components/refresh/RefreshFooter";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import Logger from "~/global/util/Logger";
+import {SearchAction} from "~/biz/search/SearchAction";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -145,6 +145,6 @@ export default connect(
     }),
     (dispatch) => ({
         refreshTimeline: (pageList) => dispatch(action.refreshTimeline(pageList)),
-        getSearchWordList: () => dispatch(getSearchWordList()),
+        getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),
     })
 )(PublicCmpt)
