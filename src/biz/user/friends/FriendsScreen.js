@@ -58,7 +58,7 @@ class FriendsScreen extends React.Component {
             <RefreshListView
                 theme={this.props.theme}
                 data={this.props.pageData}
-                ptrState={this.props.loadState}
+                ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
@@ -117,7 +117,7 @@ export default connect(
         theme: state.themeReducer.theme,
         bundle: state.friendsReducer.bundle,
         pageData: state.friendsReducer.bundle ? state.friendsReducer.bundle.data : [],
-        loadState: state.friendsReducer.loadState,
+        ptrState: state.friendsReducer.ptrState,
     }),
     (dispatch) => ({
         loadMoreFriends: (id, oldPageData) => dispatch(action.loadMoreFriends(id, oldPageData)),

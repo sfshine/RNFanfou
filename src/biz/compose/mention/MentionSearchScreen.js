@@ -21,7 +21,7 @@ class MentionSearchScreen extends React.Component {
     }
 
     static defaultProps = {
-        searchLoadState: RefreshState.NoMoreData,
+        searchptrState: RefreshState.NoMoreData,
     }
 
     componentWillUnmount() {
@@ -45,7 +45,7 @@ class MentionSearchScreen extends React.Component {
             <RefreshListView
                 theme={this.props.theme}
                 data={this.props.pageData ? this.props.pageData.data : {}}
-                ptrState={this.props.searchLoadState}
+                ptrState={this.props.searchptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
@@ -157,7 +157,7 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         searchPageData: state.mentionReducer.searchPageData,
-        searchLoadState: state.mentionReducer.searchLoadState,
+        searchptrState: state.mentionReducer.searchptrState,
     }),
     (dispatch) => ({
         searchUsersLoadMore: (text, oldPageData) => dispatch(action.searchUsersLoadMore(text, oldPageData)),

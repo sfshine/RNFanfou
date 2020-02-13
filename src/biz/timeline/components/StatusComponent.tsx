@@ -43,6 +43,7 @@ class StatusComponent extends PureComponent<Props> {
                         stylesheet={{
                             p: styles.source,
                             a: styles.source,
+                            b: styles.source,
                         }}
                     />
                     < Text style={styles.created_at}>{formatDate(new Date(item.created_at))}</Text>
@@ -64,6 +65,7 @@ class StatusComponent extends PureComponent<Props> {
                     stylesheet={{
                         p: styles.text,
                         a: [styles.text, {color: this.props.theme.brand_primary}],
+                        b: [styles.text, {color: "#FF0000"}],
                     }}/>
                 {item.photo &&
                 <TouchableOpacity activeOpacity={0.7}

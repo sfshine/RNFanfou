@@ -33,7 +33,7 @@ class ProfileScreen extends React.Component {
                 ListHeaderComponent={this._renderHeader}
                 theme={this.props.theme}
                 data={this.props.pageData ? this.props.pageData.data : []}
-                ptrState={this.props.loadState}
+                ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 stickyHeaderIndices={[1]}
@@ -90,7 +90,7 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         pageData: state.profileReducer.pageData,
-        loadState: state.profileReducer.loadState,
+        ptrState: state.profileReducer.ptrState,
     }),
     (dispatch) => ({
         loadMoreUserTimeline: (userId, oldPageData) => dispatch(action.loadMoreUserTimeline(userId, oldPageData)),

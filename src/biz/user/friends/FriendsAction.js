@@ -22,22 +22,22 @@ export function loadMoreFriends(id, oldBundle) {
 function friends_beginRefreshAction() {
     return {
         type: "friends_beginRefreshAction",
-        loadState: RefreshState.Refreshing
+        ptrState: RefreshState.Refreshing
     }
 }
 
-function friends_refreshSuccessAction(bundle, loadState) {
+function friends_refreshSuccessAction(bundle, ptrState) {
     return {
         type: "friends_refreshSuccessAction",
         bundle: bundle,
-        loadState: loadState
+        ptrState: ptrState
     }
 }
 
 function friends_beginLoadMoreAction() {
     return {
         type: "friends_beginLoadMoreAction",
-        loadState: RefreshState.LoadingMore
+        ptrState: RefreshState.LoadingMore
     }
 }
 
@@ -45,7 +45,7 @@ function friends_loadMoreSuccessAction(bundle, status) {
     return {
         type: "friends_loadMoreSuccessAction",
         bundle: bundle,
-        loadState: status
+        ptrState: status
     }
 }
 
@@ -53,6 +53,6 @@ function friends_loadFailAction(errorMessage) {
     return {
         type: "friends_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.Failure
+        ptrState: RefreshState.Failure
     }
 }

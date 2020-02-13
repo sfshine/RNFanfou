@@ -23,23 +23,23 @@ export function loadMoreTimeline(userId, oldBundle) {
 function favourite_beginRefreshAction() {
     return {
         type: "favourite_beginRefreshAction",
-        loadState: RefreshState.Refreshing,
+        ptrState: RefreshState.Refreshing,
         // pageData: {page: 1, data: []},
     }
 }
 
-function favourite_refreshSuccessAction(newBundle, loadState) {
+function favourite_refreshSuccessAction(newBundle, ptrState) {
     return {
         type: "favourite_refreshSuccessAction",
         newBundle: newBundle,
-        loadState: loadState
+        ptrState: ptrState
     }
 }
 
 function favourite_beginLoadMoreAction() {
     return {
         type: "favourite_beginLoadMoreAction",
-        loadState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
+        ptrState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
     }
 }
 
@@ -47,7 +47,7 @@ function favourite_loadMoreSuccessAction(newBundle, status) {
     return {
         type: "favourite_loadMoreSuccessAction",
         newBundle: newBundle,
-        loadState: status
+        ptrState: status
     }
 }
 
@@ -55,6 +55,6 @@ function favourite_loadFailAction(errorMessage) {
     return {
         type: "favourite_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.Failure
+        ptrState: RefreshState.Failure
     }
 }

@@ -72,7 +72,7 @@ class MentionScreen extends React.Component {
             <RefreshListView
                 theme={this.props.theme}
                 data={this.props.pageData ? this.props.pageData.data : {}}
-                ptrState={this.props.loadState}
+                ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
@@ -151,7 +151,7 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         pageData: state.mentionReducer.pageData,
-        loadState: state.mentionReducer.loadState,
+        ptrState: state.mentionReducer.ptrState,
     }),
     (dispatch) => ({
         loadMoreFriends: (oldPageData) => dispatch(action.loadMoreFriends(oldPageData)),

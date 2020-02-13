@@ -43,7 +43,7 @@ class FavouriteScreen extends React.Component {
             <RefreshListView2
                 theme={this.props.theme}
                 data={this.props.newBundle ? this.props.newBundle.pageData : []}
-                ptrState={this.props.loadState}
+                ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
@@ -76,7 +76,7 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         newBundle: state.favouriteReducer.newBundle,
-        loadState: state.favouriteReducer.loadState,
+        ptrState: state.favouriteReducer.ptrState,
     }),
     (dispatch) => ({
         loadMoreTimeline: (id, oldPageData) => dispatch(action.loadMoreTimeline(id, oldPageData)),

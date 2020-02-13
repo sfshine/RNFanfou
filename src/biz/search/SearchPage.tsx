@@ -4,14 +4,13 @@ import {connect} from "react-redux";
 import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/NavigationBar";
 import RefreshListView from "../../global/components/refresh/RefreshListView";
 import TimelineCell from "../timeline/TimelineCell";
-import * as action from "./SearchAction";
 import SafeAreaViewPlus from "../../global/components/SafeAreaViewPlus";
-import EventType from "../common/event/EventType";
-import EventBus from "react-native-event-bus";
 import BaseProps from "~/global/base/BaseProps";
 import {goBack} from "~/global/navigator/NavigationManager";
 import TipsUtil from "~/global/util/TipsUtil";
 import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
+import {SearchAction} from "./SearchAction";
+import RefreshState from "~/global/components/refresh/RefreshState";
 
 interface State {
     queryId: string,
@@ -22,13 +21,17 @@ interface Props extends BaseProps {
     search: Function,
     loadMore: Function,
     search_cancel: Function,
+    getSearchWordList: Function,
     pageData: any,
-    loadState: string,
+    ptrState: string,
 }
+
+const action = new SearchAction()
 
 class SearchPage extends React.Component<Props, State> {
     static defaultProps = {
-        showBottomButton: true
+        showBottomButton: true,
+        ptrState: RefreshState.Idle,
     }
     private input: any;
 
@@ -40,9 +43,11 @@ class SearchPage extends React.Component<Props, State> {
         }
     }
 
-    // static defaultProps = {
-    //     loadState: RefreshState.NoMoreData,
-    // }
+    goBack = () => goBack(this.props)
+
+    componentWillUnmount(): void {
+        this.props.search_cancel()
+    }
 
     componentWillMount() {
         console.log('SearchPage componentWillMount', this.props);
@@ -78,8 +83,9 @@ class SearchPage extends React.Component<Props, State> {
             {navigationBar}
             <RefreshListView
                 data={this.props.pageData ? this.props.pageData.data : []}
-                ptrState={this.props.loadState}
+                ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
+                ListEmptyComponent={<View/>}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
                     console.log("onHeaderRefresh");
@@ -94,12 +100,7 @@ class SearchPage extends React.Component<Props, State> {
         </SafeAreaViewPlus>
     }
 
-    _renderItem = (data) => {
-        let item = data.item;
-        return (
-            <TimelineCell item={item}/>
-        )
-    };
+    _renderItem = (data) => <TimelineCell item={data.item}/>
 
     renderNavBar() {
         const {theme} = this.props;
@@ -153,31 +154,26 @@ class SearchPage extends React.Component<Props, State> {
         </View>
     }
 
-    goBack = () => {
-        goBack(this.props)
-        this.props.search_cancel()
-        return true
-    }
 
     destroyKey() {
-        action.destroySearchWord(this.state.queryId).then(json => {
+        SearchAction.destroySearchWord(this.state.queryId).then(json => {
             TipsUtil.toast("取消成功")
             this.setState({
                 queryId: null
             })
-            EventBus.getInstance().fireEvent(EventType.refreshKeywords, {isCreate: false})
+            this.props.getSearchWordList()
         }).catch(e => {
             console.log("createSearchWord error:", e)
         })
     }
 
     saveKey() {
-        action.createSearchWord(this.state.inputKey).then(json => {
+        SearchAction.createSearchWord(this.state.inputKey).then(json => {
             TipsUtil.toast("关注话题成功")
             this.setState({
                 queryId: json.id
             })
-            EventBus.getInstance().fireEvent(EventType.refreshKeywords, {isCreate: true})
+            this.props.getSearchWordList()
         }).catch(e => {
             console.log("createSearchWord error:", e)
         })
@@ -219,11 +215,12 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         pageData: state.SearchReducer.pageData,
-        loadState: state.SearchReducer.loadState
+        ptrState: state.SearchReducer.ptrState
     }),
     (dispatch) => ({
-        search_cancel: () => dispatch(action.search_cancel()),
+        search_cancel: () => dispatch(SearchAction.search_cancel()),
         loadMore: (text, oldPageData) => dispatch(action.loadMore(text, oldPageData)),
-        search: (text) => dispatch(action.search(text))
+        search: (text) => dispatch(action.search(text)),
+        getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),
     })
 )(SearchPage)

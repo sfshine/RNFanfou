@@ -62,22 +62,22 @@ function loadUsers(api, pageData) {
 function mention_beginRefreshAction() {
     return {
         type: "mention_beginRefreshAction",
-        loadState: RefreshState.Refreshing
+        ptrState: RefreshState.Refreshing
     }
 }
 
-function mention_refreshSuccessAction(pageData, loadState) {
+function mention_refreshSuccessAction(pageData, ptrState) {
     return {
         type: "mention_refreshSuccessAction",
         pageData: pageData,
-        loadState: loadState
+        ptrState: ptrState
     }
 }
 
 function mention_beginLoadMoreAction() {
     return {
         type: "mention_beginLoadMoreAction",
-        loadState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
+        ptrState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
     }
 }
 
@@ -85,7 +85,7 @@ function mention_loadMoreSuccessAction(pageData, status) {
     return {
         type: "mention_loadMoreSuccessAction",
         pageData: pageData,
-        loadState: status
+        ptrState: status
     }
 }
 
@@ -93,21 +93,21 @@ function mention_loadFailAction(errorMessage) {
     return {
         type: "mention_loadFailAction",
         errorMessage: errorMessage,
-        loadState: RefreshState.Failure
+        ptrState: RefreshState.Failure
     }
 }
 
 function mention_search_beginRefreshAction() {
     return {
         type: "mention_search_beginRefreshAction",
-        searchLoadState: RefreshState.Refreshing
+        searchptrState: RefreshState.Refreshing
     }
 }
 
 function mention_search_beginLoadMoreAction() {
     return {
         type: "mention_search_beginLoadMoreAction",
-        searchLoadState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
+        searchptrState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
     }
 }
 
@@ -115,15 +115,15 @@ function mention_search_loadFailAction(errorMessage) {
     return {
         type: "mention_search_loadFailAction",
         searchErrorMessage: errorMessage,
-        searchLoadState: RefreshState.Failure
+        searchptrState: RefreshState.Failure
     }
 }
 
-function mention_search_refreshSuccessAction(pageData, loadState) {
+function mention_search_refreshSuccessAction(pageData, ptrState) {
     return {
         type: "mention_search_refreshSuccessAction",
         searchPageData: pageData,
-        searchLoadState: loadState
+        searchptrState: ptrState
     }
 }
 
@@ -131,6 +131,6 @@ function mention_search_loadMoreSuccessAction(pageData, status) {
     return {
         type: "mention_search_loadMoreSuccessAction",
         searchPageData: pageData,
-        searchLoadState: status
+        searchptrState: status
     }
 }

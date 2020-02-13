@@ -33,12 +33,15 @@ class HomeFragment extends React.PureComponent<Props, State> {
 
     render() {
         const {theme} = this.props;
-        return <PageCmpt title="主页" rightNavButtonConfig={{
-            icon: "md-add",
-            callback: () => {
-                navigateN(NavigationManager.mainNavigation, "ComposePage")
-            }
-        }}>
+        return <PageCmpt title="主页"
+                         rightNavButtonConfig={[{
+                             icon: "md-search",
+                             callback: () => navigateN(NavigationManager.mainNavigation, "SearchPage")
+                         }, {
+                             icon: "md-add",
+                             callback: () => navigateN(NavigationManager.mainNavigation, "ComposePage")
+                         }
+                         ]}>
             <TimelineCmpt/>
         </PageCmpt>
     }
