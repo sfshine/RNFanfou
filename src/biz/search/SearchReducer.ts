@@ -7,6 +7,6 @@ const initialState = {
     hasLogin: false,
 };
 const PREFIX = "search_"
-export default function searchReducer(state, action) {
+export default function SearchReducer(state, action) {
     return defaultReduce(PREFIX, action, state, initialState)
 }

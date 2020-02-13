@@ -9,6 +9,7 @@ import React from "react";
 import ComposePage from "~/biz/compose/ComposePage";
 import ProfilePage from "~/biz/user/profile/ProfilePage";
 import StatusDetailPage from "~/biz/statsdetail/StatusDetailPage";
+import SearchPage from "~/biz/search/SearchPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -34,6 +35,9 @@ const RootNavigator = createStackNavigator({
         },
         StatusDetailPage: {
             screen: StatusDetailPage
+        },
+        SearchPage: {
+            screen: SearchPage
         }
     }, {
         defaultNavigationOptions: {

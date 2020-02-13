@@ -7,6 +7,7 @@ import TimelineReducer from "~/biz/timeline/TimelineReducer";
 import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
 import PublicReducer from "~/biz/home/public/PublicReducer";
 import StatusDetailReducer from "~/biz/statsdetail/StatusDetailReducer";
+import SearchReducer from "~/biz/search/SearchReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
     QuickComposeReducer: QuickComposeReducer,
     PublicReducer: PublicReducer,
     StatusDetailReducer: StatusDetailReducer,
+    SearchReducer: SearchReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {

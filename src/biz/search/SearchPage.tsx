@@ -1,17 +1,17 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
-import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/Navigationbar";
+import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/NavigationBar";
 import RefreshListView from "../../global/components/refresh/RefreshListView";
 import TimelineCell from "../timeline/TimelineCell";
 import * as action from "./SearchAction";
-import CommonViewFactory from "../../global/util/CommonViewFactory";
 import SafeAreaViewPlus from "../../global/components/SafeAreaViewPlus";
 import EventType from "../common/event/EventType";
 import EventBus from "react-native-event-bus";
 import BaseProps from "~/global/base/BaseProps";
 import {goBack} from "~/global/navigator/NavigationManager";
 import TipsUtil from "~/global/util/TipsUtil";
+import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
 
 interface State {
     queryId: string,
@@ -26,7 +26,7 @@ interface Props extends BaseProps {
     loadState: string,
 }
 
-class SearchScreen extends React.Component<Props, State> {
+class SearchPage extends React.Component<Props, State> {
     static defaultProps = {
         showBottomButton: true
     }
@@ -45,12 +45,12 @@ class SearchScreen extends React.Component<Props, State> {
     // }
 
     componentWillMount() {
-        console.log('SearchScreen componentWillMount', this.props);
+        console.log('SearchPage componentWillMount', this.props);
         let url = this.props.navigation.state.params.url
         let inputKey = ""
         if (url && url.indexOf('/q/') == 0) {
             inputKey = decodeURI(url.substr('/q/'.length, url.length))
-            console.log("SearchScreen " + inputKey)
+            console.log("SearchPage " + inputKey)
             this.props.search(inputKey)
         }
         this.setState({
@@ -104,7 +104,11 @@ class SearchScreen extends React.Component<Props, State> {
     renderNavBar() {
         const {theme} = this.props;
         const placeholder = "请输入";
-        let backButton = CommonViewFactory.getLeftBackButton(this.goBack);
+        let backButton = NavigationBarViewFactory.createButton(
+            {
+                icon: "md-arrow-back",
+                callback: () => goBack(this.props)
+            });
         let inputView =
             <View style={styles.textInputWrapper}>
                 <TextInput
@@ -214,12 +218,12 @@ const styles = StyleSheet.create({
 export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
-        pageData: state.searchReducer.pageData,
-        loadState: state.searchReducer.loadState
+        pageData: state.SearchReducer.pageData,
+        loadState: state.SearchReducer.loadState
     }),
     (dispatch) => ({
         search_cancel: () => dispatch(action.search_cancel()),
         loadMore: (text, oldPageData) => dispatch(action.loadMore(text, oldPageData)),
         search: (text) => dispatch(action.search(text))
     })
-)(SearchScreen)
+)(SearchPage)

@@ -8,9 +8,9 @@ import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
-import Logger from "~/global/util/Logger";
 import RefreshFooter from "~/global/components/refresh/RefreshFooter";
 import RefreshState from "~/global/components/refresh/RefreshState";
+import Logger from "~/global/util/Logger";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -20,6 +20,8 @@ interface Props extends BaseProps {
     search_searches_list: Array<any>,
 }
 
+const TAG = "PublicCmpt"
+
 class PublicCmpt extends React.Component<Props> {
     private scrollview: any;
 
@@ -28,13 +30,13 @@ class PublicCmpt extends React.Component<Props> {
     }
 
     componentWillMount() {
-        console.log('PublicCmpt componentWillMount', this.props);
+        Logger.log(TAG, 'PublicCmpt componentWillMount', this.props);
         this.props.refreshTimeline([])
         this.props.getSearchWordList()
     }
 
     componentDidMount() {
-        console.log('PublicCmpt componentDidMount', this.props);
+        Logger.log(TAG, 'PublicCmpt componentDidMount', this.props);
         // EventBus.getInstance().addListener(EventType.refreshKeywords, this.listener = data => {
         //     this.onSearchCallback(data)
         // })
@@ -45,7 +47,7 @@ class PublicCmpt extends React.Component<Props> {
     }
 
     render() {
-        console.log("PublicCmpt render", this.props);
+        Logger.log(TAG, "PublicCmpt render", this.props);
         return <RefreshListView
             ListHeaderComponent={this._renderHeader}
             ptrState={this.props.ptrState}
@@ -54,7 +56,7 @@ class PublicCmpt extends React.Component<Props> {
             keyExtractor={(item) => item.id}
             ListFooterComponent={this._renderFooter(this.props.pageList)}
             onHeaderRefresh={() => {
-                console.log("onHeaderRefresh");
+                Logger.log(TAG, "onHeaderRefresh");
                 this.props.refreshTimeline(this.props.pageList)
                 this.props.getSearchWordList()
             }}
@@ -70,19 +72,19 @@ class PublicCmpt extends React.Component<Props> {
     };
     _renderHeader = () => {
         if (!this.props.search_searches_list) return null
-        console.log("_renderHeader")
+        Logger.log(TAG, "_renderHeader")
         let keywordViews = []
         let keywords = this.props.search_searches_list
-        console.log("_renderHeader", keywords)
+        Logger.log(TAG, "_renderHeader", keywords)
         for (let i = 0; i < keywords.length; i++) {
             keywordViews.push(
                 <TouchableOpacity key={i} style={styles.keywordItem} onPress={
-                    () => navigateN(NavigationManager.mainNavigation, "SearchScreen", {
+                    () => navigateN(NavigationManager.mainNavigation, "SearchPage", {
                         url: `/q/${keywords[i].query}`,
                         queryId: keywords[i].id,
                     })
                 }>
-                    <Text>#{keywords[i].query}#</Text>
+                    <Text>{keywords[i].query}</Text>
                 </TouchableOpacity>
             );
         }
@@ -139,7 +141,7 @@ export default connect(
         theme: state.themeReducer.theme,
         pageList: state.PublicReducer.pageList,
         ptrState: state.PublicReducer.ptrState,
-        // search_searches_list: state.searchReducer.search_searches_list,
+        search_searches_list: state.SearchReducer.search_searches_list,
     }),
     (dispatch) => ({
         refreshTimeline: (pageList) => dispatch(action.refreshTimeline(pageList)),

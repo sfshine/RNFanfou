@@ -4,8 +4,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Logger from '~/global/util/Logger'
 
 export interface ButtonConfig {
-    icon: string;
-    text: string;
+    icon?: string;
+    text?: string;
     callback: Function;
 }
 
