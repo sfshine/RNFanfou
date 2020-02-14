@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
-import {StyleSheet, TouchableOpacity, View, Clipboard} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import BaseProps from "~/global/base/BaseProps";
 import {Api} from "~/biz/common/api/Api";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
@@ -10,8 +11,6 @@ import StatusComponent from "~/biz/timeline/components/StatusComponent";
 import QuickComposeComponent from "~/biz/compose/QuickComposeComponent";
 import ArchModal from "~/global/util/ArchModal";
 import {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
-import {Modal} from "@ant-design/react-native";
-import {removeHtmlTag} from "~/global/util/StringUtil";
 
 const favoriteMap = {}
 
@@ -21,16 +20,29 @@ interface Props extends BaseProps {
     callback: any,
 }
 
-export default class TimelineCell extends PureComponent<Props> {
+interface State {
+    favorited: boolean
+}
+
+class TimelineCell extends PureComponent<Props, State> {
     constructor(props) {
         super(props)
+        this.state = {
+            favorited: false
+        }
     }
 
 
     render() {
-        let {item} = this.props;
-        if (item.id ! in favoriteMap) {
+        let {item, theme} = this.props;
+        // console.log("TimelineCell render item: ", item)
+        // console.log("TimelineCell render favoriteMap: ", favoriteMap)
+        if (!(item.id in favoriteMap)) {
             favoriteMap[item.id] = item.favorited
+        }
+        // console.log("TimelineCell render favoriteMap 2: ", favoriteMap)
+        this.state = {
+            favorited: favoriteMap[item.id]
         }
         let highLightColor = this.props.highLight ? "#EEEEEE" : "#FFFFFF"
         return (
@@ -42,44 +54,37 @@ export default class TimelineCell extends PureComponent<Props> {
                         archModel.show(<QuickComposeComponent modal={archModel}
                                                               data={{status: item, mode: COMPOSE_MODE.Forward}}/>)
                     }}>
-                        <Icon name={'at'} size={23} style={{color: styles.tools_text.color}}/>
+                        <Icon name={'export-variant'} size={16} style={{color: styles.tools_text.color}}/>
+                        <Text style={styles.tools_text}>转发</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                         let archModel = new ArchModal()
                         archModel.show(<QuickComposeComponent modal={archModel}
                                                               data={{status: item, mode: COMPOSE_MODE.Comment}}/>)
                     }}>
-                        <Icon name={'chat-processing'} size={23} style={{color: styles.tools_text.color}}/>
+                        <Icon name={'file-document-edit-outline'} size={16}
+                              style={{color: styles.tools_text.color}}/>
+                        <Text style={styles.tools_text}>评论</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7}
-                                      onPress={() => this.showMoreOptions(item)}>
-                        <Icon name={'dots-horizontal'} size={23} style={{color: styles.tools_text.color}}/>
+                                      onPress={() => this.favorite(item)}>
+                        <MaterialIcons name={this.state.favorited ? 'favorite' : 'favorite-border'} size={16}
+                                       style={{color: styles.tools_text.color}}/>
+                        <Text style={styles.tools_text}>收藏</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         )
     }
 
-    showMoreOptions = (status) => {
-        Modal.operation([{
-            text: "收藏",
-            onPress: () => this.favorite(status)
-        }, {
-            text: "复制",
-            onPress: () => Clipboard.setString(removeHtmlTag(status.text))
-        }])
-    }
-
-    favorite = (status) => {
+    favorite(status) {
         let url = favoriteMap[status.id] ? Api.favorites_destroy : Api.favorites_create
         FanfouFetch.post(url + status.id).then(json => {
-                if (favoriteMap[status.id]) {
-                    TipsUtil.toastSuccess("取消收藏成功!")
-
-                } else {
-                    TipsUtil.toastSuccess("收藏成功!")
-                }
-                favoriteMap[status.id] = !favoriteMap[status.id]
+                favoriteMap[status.id] = !this.state.favorited
+                this.setState({
+                    favorited: favoriteMap[status.id]
+                })
+                console.log("TimelineCell render favorite op : ", favoriteMap)
             }
         ).catch(err => {
             TipsUtil.toastFail("操作失败")
@@ -98,15 +103,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     toolsContainer: {
-        paddingTop: 5,
-        paddingBottom: 5,
-        justifyContent: 'flex-end',
-        borderBottomWidth: 0.3,
-        borderBottomColor: '#AAAAAA',
+        marginTop: 10,
+        justifyContent: 'space-around',
+        borderTopWidth: 0.3,
+        borderTopColor: '#AAAAAA',
         flexDirection: 'row',
     },
     toolsButton: {
-        paddingLeft: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
         paddingTop: 3,
         paddingBottom: 3,
         alignItems: "center",
@@ -120,3 +125,9 @@ const styles = StyleSheet.create({
     }
 });
 
+export default connect(
+    (state) => ({
+        theme: state.themeReducer.theme,
+    }),
+    (dispatch) => ({})
+)(TimelineCell)

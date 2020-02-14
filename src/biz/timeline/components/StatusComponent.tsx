@@ -8,6 +8,8 @@ import {formatDate} from "~/global/util/DateUtil";
 import Logger from "~/global/util/Logger";
 import {FanfouUtil} from "~/biz/common/util/FanfouUtil";
 import {connect} from "react-redux";
+import Row from "~/global/components/element/Row";
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -26,29 +28,34 @@ class StatusComponent extends PureComponent<Props> {
                                          onPress={() => {
                                              navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: item.user})
                                          }}>
-            <Image source={{uri: item.user.profile_image_url_large}}
-                   style={styles.thumbnail}/>
-            <View style={styles.userInfoContainer}>
-                <View style={styles.userNameContainer}>
-                    <Text style={styles.name}>{item.user.name}</Text>
-                    <Text style={styles.unique_id}>{"@" + item.user.id}</Text>
+            <Row style={{flex: 1}}>
+                <Image source={{uri: item.user.profile_image_url_large}}
+                       style={styles.thumbnail}/>
+                <View style={styles.userInfoContainer}>
+                    <View style={styles.userNameContainer}>
+                        <Text style={styles.name}>{item.user.name}</Text>
+                        <Row>
+                            <Text style={styles.location}>{item.location}</Text>
+                            <Ionicons name={"ios-pin"} size={16} style={[styles.location, {marginLeft: 5}]}/>
+                        </Row>
+                    </View>
+                    <Row>
+                        <HTMLView
+                            style={styles.source}
+                            value={item.source}
+                            onLinkPress={(url) => {
+                                this.hrefDispatcher(url)
+                            }}
+                            stylesheet={{
+                                p: styles.source,
+                                a: styles.source,
+                                b: styles.source,
+                            }}
+                        />
+                        < Text style={styles.created_at}>{formatDate(new Date(item.created_at))}</Text>
+                    </Row>
                 </View>
-                <View style={styles.userNameContainer}>
-                    <HTMLView
-                        style={styles.source}
-                        value={item.source}
-                        onLinkPress={(url) => {
-                            this.hrefDispatcher(url)
-                        }}
-                        stylesheet={{
-                            p: styles.source,
-                            a: styles.source,
-                            b: styles.source,
-                        }}
-                    />
-                    < Text style={styles.created_at}>{formatDate(new Date(item.created_at))}</Text>
-                </View>
-            </View>
+            </Row>
         </TouchableOpacity>
 
         let statusView =
@@ -123,13 +130,16 @@ const styles = StyleSheet.create({
     userInfoContainer: {
         marginLeft: 8,
         justifyContent: 'center',
+        flex: 1,
     },
     userNameContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        flex: 1,
     },
     name: {
-        fontSize: 13,
+        fontSize: 14,
         color: '#333333',
     },
     unique_id: {
@@ -156,6 +166,10 @@ const styles = StyleSheet.create({
     msgImage: {
         backgroundColor: '#EEEEEE'
     },
+    location: {
+        fontSize: 12,
+        color: '#777777',
+    }
 });
 
 export default connect(

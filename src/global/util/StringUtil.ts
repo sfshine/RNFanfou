@@ -2,7 +2,7 @@ import Logger from "~/global/util/Logger"
 
 const TAG = "StringUtil"
 
-export function removeHtmlTag(htmlText): String {
+export function removeHtmlTag(htmlText): string {
     return htmlText.replace(/<[^>]+>/g, '')
 }
 
