@@ -34,10 +34,10 @@ class StatusComponent extends PureComponent<Props> {
                 <View style={styles.userInfoContainer}>
                     <View style={styles.userNameContainer}>
                         <Text style={styles.name}>{item.user.name}</Text>
-                        <Row>
+                        {item.location ? <Row>
                             <Text style={styles.location}>{item.location}</Text>
                             <Ionicons name={"ios-pin"} size={16} style={[styles.location, {marginLeft: 5}]}/>
-                        </Row>
+                        </Row> : null}
                     </View>
                     <Row>
                         <HTMLView
