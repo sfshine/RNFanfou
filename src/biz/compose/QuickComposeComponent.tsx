@@ -10,6 +10,7 @@ import BaseProps from "~/global/base/BaseProps";
 import ArchModal from "~/global/util/ArchModal";
 import Logger from "~/global/util/Logger";
 import QuickComposeAction, {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
+import BackPressComponent from "~/global/components/BackPressComponent";
 
 interface Props extends BaseProps {
     data: any,
@@ -101,6 +102,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         </View>
 
         return <View style={styles.container}>
+            <BackPressComponent backPress={this.dismiss}/>
             <TouchableOpacity
                 style={styles.outSide}
                 activeOpacity={1}
@@ -157,6 +159,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             photos: []
         })
         this.props.modal.hide()
+        return true
     }
 
     onChooseMentions = (checkedMap) => {
