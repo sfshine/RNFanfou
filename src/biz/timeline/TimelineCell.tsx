@@ -17,8 +17,8 @@ const favoriteMap = {}
 
 interface Props extends BaseProps {
     item: any,
-    highLight: boolean,
-    callback: any,
+    highLight?: boolean,
+    callback?: any,
 }
 
 export default class TimelineCell extends PureComponent<Props> {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
-import RefreshListView from "../../../global/components/refresh/RefreshListView";
+import RefreshListViewFlickr from "../../../global/components/refresh/RefreshListViewFlickr";
 import TimelineCell from "../../timeline/TimelineCell";
 import RefreshState from "../../../global/components/refresh/RefreshState";
 import PageCmpt from "~/global/components/PageCmpt";
@@ -67,8 +67,8 @@ export default class ProfilePage extends React.Component<BaseProps, State> {
     render() {
         let user = this.state.user
         return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation}>
-            {user ? <RefreshListView
-                ListHeaderComponent={this._renderHeader}
+            {user ? <RefreshListViewFlickr
+                ListHeaderComponent={this._renderHeader()}
                 data={this.state.pageData}
                 ptrState={this.state.ptrState}
                 renderItem={this._renderItem}
@@ -147,9 +147,7 @@ export default class ProfilePage extends React.Component<BaseProps, State> {
         // Logger.log(TAG,"data", data)
         let item = data.item;
         return (
-            <TimelineCell item={item} onPress={() => {
-                Logger.log(TAG, '点击了Item----' + item.title);
-            }}/>
+            <TimelineCell item={item}/>
         )
     };
 
