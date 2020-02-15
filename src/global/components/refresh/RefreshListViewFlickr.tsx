@@ -40,13 +40,13 @@ export default class RefreshListViewFlickr extends RefreshListBase {
     render() {
         Logger.log(TAG, "render:", this.props);
         let data = this.props.data ? this.props.data : []
+        let exProps = {}
+        this.props.ListHeaderComponent && (exProps["externalScrollView"] = this.ScrollViewWithHeader)
+        // @ts-ignore
         return <RecyclerListView
-            // @ts-ignore
-            externalScrollView={this.ScrollViewWithHeader}
             renderFooter={() => this._renderFooter()}
-            data={data}
             layoutProvider={this.layoutProvider}
-            dataProvider={this.dataProvider.cloneWithRows(this.props.data)}
+            dataProvider={this.dataProvider.cloneWithRows(data)}
             rowRenderer={this._rowRenderer}
             forceNonDeterministicRendering={true}
             scrollViewProps={{
@@ -65,6 +65,7 @@ export default class RefreshListViewFlickr extends RefreshListBase {
             }
             }
             onEndReachedThreshold={0.3}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
+            {...exProps}
         />
     }
 
