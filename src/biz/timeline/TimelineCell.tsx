@@ -35,7 +35,8 @@ export default class TimelineCell extends PureComponent<Props> {
         let highLightColor = this.props.highLight ? "#EEEEEE" : "#FFFFFF"
         return (
             <View style={[styles.container, {backgroundColor: highLightColor}]}>
-                {<StatusComponent item={item} callback={this.props.callback}/>}
+                {<StatusComponent item={item} callback={this.props.callback}
+                                  onLongPress={() => this.showMoreOptions(item)}/>}
                 <View style={styles.toolsContainer}>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                         let archModel = new ArchModal()

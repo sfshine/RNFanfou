@@ -16,6 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 interface Props extends BaseProps {
     item: any,
     callback: any,
+    onLongPress: () => {},
 }
 
 const TAG = "StatusComponent"
@@ -59,13 +60,15 @@ class StatusComponent extends PureComponent<Props> {
         </TouchableOpacity>
 
         let statusView =
-            <TouchableOpacity activeOpacity={0.7} style={styles.msgContainer} onPress={() => {
-                if (callback) {
-                    callback()
-                } else {
-                    navigateN(NavigationManager.mainNavigation, "StatusDetailPage", {item: item})
-                }
-            }}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.msgContainer}
+                              onLongPress={this.props.onLongPress}
+                              onPress={() => {
+                                  if (callback) {
+                                      callback()
+                                  } else {
+                                      navigateN(NavigationManager.mainNavigation, "StatusDetailPage", {item: item})
+                                  }
+                              }}>
                 <HTMLView
                     value={'<p>' + item.text + "</p>"}
                     onLinkPress={(url) => this.hrefDispatcher(url)}
