@@ -36,19 +36,15 @@ export default class TimelineCell extends PureComponent<Props> {
         return (
             <View style={[styles.container, {backgroundColor: highLightColor}]}>
                 {<StatusComponent item={item} callback={this.props.callback}
-                                  onLongPress={() => this.showMoreOptions(item)}/>}
+                                  onLongPress={() => this.showLongPressOptions(item)}/>}
                 <View style={styles.toolsContainer}>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                        let archModel = new ArchModal()
-                        archModel.show(<QuickComposeComponent modal={archModel}
-                                                              data={{status: item, mode: COMPOSE_MODE.Forward}}/>)
+                        this.quickSend(item, COMPOSE_MODE.Forward)
                     }}>
                         <Icon name={'at'} size={23} style={{color: styles.tools_text.color}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                        let archModel = new ArchModal()
-                        archModel.show(<QuickComposeComponent modal={archModel}
-                                                              data={{status: item, mode: COMPOSE_MODE.Comment}}/>)
+                        this.quickSend(item, COMPOSE_MODE.Comment)
                     }}>
                         <Icon name={'chat-processing'} size={23} style={{color: styles.tools_text.color}}/>
                     </TouchableOpacity>
@@ -61,14 +57,43 @@ export default class TimelineCell extends PureComponent<Props> {
         )
     }
 
+    quickSend = (status, mode) => {
+        let archModel = new ArchModal()
+        archModel.show(<QuickComposeComponent modal={archModel} data={{status: status, mode: mode}}/>)
+    }
+
+    showLongPressOptions = (status) => {
+        Modal.operation([
+            {
+                text: "转发",
+                onPress: () => this.quickSend(status, COMPOSE_MODE.Forward)
+
+            }, {
+                text: "评论",
+                onPress: () => this.quickSend(status, COMPOSE_MODE.Comment)
+            },
+            {
+                text: favoriteMap[status.id] ? "取消收藏" : "收藏",
+                onPress: () => this.favorite(status)
+            }, {
+                text: "复制",
+                onPress: () => this.copy(status)
+            }])
+    }
+
     showMoreOptions = (status) => {
         Modal.operation([{
-            text: "收藏",
+            text: favoriteMap[status.id] ? "取消收藏" : "收藏",
             onPress: () => this.favorite(status)
         }, {
             text: "复制",
-            onPress: () => Clipboard.setString(removeHtmlTag(status.text))
+            onPress: () => this.copy(status)
         }])
+    }
+
+    copy = (status) => {
+        Clipboard.setString(removeHtmlTag(status.text))
+        TipsUtil.toastSuccess("复制成功")
     }
 
     favorite = (status) => {
