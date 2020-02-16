@@ -13,7 +13,14 @@ class DiscoveryFragment extends React.Component {
     }
 
     render() {
-        return <PageCmpt title="发现">
+        return <PageCmpt title="发现" rightNavButtonConfig={[{
+            icon: "md-search",
+            callback: () => navigateN(NavigationManager.mainNavigation, "SearchPage")
+        }, {
+            icon: "md-add",
+            callback: () => navigateN(NavigationManager.mainNavigation, "ComposePage")
+        }
+        ]}>
             <PublicPage/>
         </PageCmpt>
     }

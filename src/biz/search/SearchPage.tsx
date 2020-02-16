@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import {NAV_BAR_HEIGHT_ANDROID} from "../../global/navigator/NavigationBar";
-import RefreshListView from "../../global/components/refresh/RefreshListView";
+import RefreshListViewFlickr from "../../global/components/refresh/RefreshListViewFlickr";
 import TimelineCell from "../timeline/TimelineCell";
 import SafeAreaViewPlus from "../../global/components/SafeAreaViewPlus";
 import BaseProps from "~/global/base/BaseProps";
@@ -32,7 +32,7 @@ const action = new SearchAction()
 class SearchPage extends React.Component<Props, State> {
     static defaultProps = {
         showBottomButton: true,
-        ptrState: RefreshState.Idle,
+        ptrState: RefreshState.Init,
     }
     private input: any;
 
@@ -84,7 +84,7 @@ class SearchPage extends React.Component<Props, State> {
             style={{justifyContent: 'space-between'}}
             backPress={() => this.goBack()}>
             {navigationBar}
-            <RefreshListView
+            <RefreshListViewFlickr
                 data={listData}
                 ptrState={ptrState}
                 renderItem={this._renderItem}

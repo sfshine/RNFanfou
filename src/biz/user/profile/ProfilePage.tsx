@@ -20,21 +20,31 @@ interface State {
     ptrState: string,
 }
 
+interface Props extends BaseProps {
+    userFromMePage: any
+}
+
 const TAG = "ProfilePage"
 /**
- * 进入ProfilePage有两种方式
+ * 进入ProfilePage有3种方式
  * 1.点击用户头像,此时this.props.navigation.state.params.user不是空
  * 2.点击url,此时this.props.navigation.state.params.url非空,此时需要调用Api.users_show接口获取user信息
+ * 3.从主页的我的TAB进入
  */
-export default class ProfilePage extends React.Component<BaseProps, State> {
+export default class ProfilePage extends React.Component<Props, State> {
     private readonly url
     private mProfileAction = new ProfileAction()
 
     constructor(props) {
         super(props)
         Logger.log(TAG, 'constructor', this.props);
-        let {user, url} = this.props.navigation.state.params;
-        this.url = url
+        let user = this.props.userFromMePage
+        if (!user) {
+            user = this.props.navigation.state.params.user
+            if (!user) {
+                this.url = this.props.navigation.state.params.url
+            }
+        }
         this.state = {
             user: user,
             pageData: [],

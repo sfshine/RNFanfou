@@ -3,6 +3,7 @@ import {Image} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 import MePage from '../../biz/test/main/me/MePage';
@@ -16,9 +17,7 @@ const TABS = {
         navigationOptions: {
             tabBarLabel: '首页',
             tabBarIcon: ({tintColor, focused}) => (
-                <Image style={{height: 20, width: 20}}
-                       source={focused ?
-                           require('#shouye.png') : require('#shouye1.png')}/>
+                <Icon name={'alpha-f-box'} size={24} c style={{color: tintColor}}/>
             ),
         },
     },
@@ -27,9 +26,7 @@ const TABS = {
         navigationOptions: {
             tabBarLabel: '发现',
             tabBarIcon: ({tintColor, focused}) => (
-                <Image style={{height: 20, width: 20}}
-                       source={focused ?
-                           require('#dianpu.png') : require('#dianpu1.png')}/>
+                <Icon name={'earth'} size={24} c style={{color: tintColor}}/>
             ),
         },
     },
@@ -38,9 +35,8 @@ const TABS = {
         navigationOptions: {
             tabBarLabel: '我的',
             tabBarIcon: ({tintColor, focused}) => (
-                <Image style={{height: 20, width: 20}}
-                       source={focused ?
-                           require('#wode.png') : require('#wode1.png')}/>
+                <Icon name={'account'} size={24} c style={{color: tintColor}}/>
+
             ),
         },
     },
