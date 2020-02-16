@@ -47,7 +47,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         let mode = data.mode
         // <a href="http://fanfou.com/dailu321" className="former">名字</a>
         let text = removeHtmlTag(item.text)
-        this.placeHolder = (mode == COMPOSE_MODE.Forward ? "转:@" : "评论: @") + item.user.name + " " + text
+        this.placeHolder = (mode == COMPOSE_MODE.Forward ? "转@" : "评论@") + item.user.name + " " + text
         let textInput = <TextInput
             multiline={true}
             autoFocus={true}
