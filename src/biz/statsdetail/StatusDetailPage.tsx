@@ -13,6 +13,8 @@ import {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 import {GlobalCache} from "~/global/AppGlobal";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import Logger from "~/global/util/Logger";
+import ArchModal from "~/global/util/ArchModal";
+import QuickComposeComponent from "~/biz/compose/QuickComposeComponent";
 
 interface Props extends BaseProps {
     refreshContextTimeline: Function,
@@ -83,21 +85,21 @@ class StatusDetailPage extends React.Component<Props, State> {
         );
     };
     _onStatusClick = (status) => {
-        this.onShowQuickCompose({status: status, mode: COMPOSE_MODE.Comment});
+        this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
     };
 
     renderToolbar(status) {
         const {theme} = this.props;
         return <View style={[styles.toolsContainer, {backgroundColor: theme.brand_primary}]}>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                this.onShowQuickCompose({status: status, mode: COMPOSE_MODE.Comment});
+                this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
             }
             }>
                 <AntDesign name={'message1'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                this.onShowQuickCompose({status: status, mode: COMPOSE_MODE.Forward});
+                this.onShowQuickCompose(status, COMPOSE_MODE.Forward);
             }}>
                 <AntDesign name={'retweet'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
@@ -123,8 +125,9 @@ class StatusDetailPage extends React.Component<Props, State> {
         </View>;
     }
 
-    private onShowQuickCompose(param: { status: any; mode: string }) {
-
+    private onShowQuickCompose(status: any, mode: string) {
+        let archModel = new ArchModal()
+        archModel.show(<QuickComposeComponent modal={archModel} data={{status: status, mode: mode}}/>)
     }
 }
 
