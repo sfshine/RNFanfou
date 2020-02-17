@@ -107,7 +107,7 @@ class StatusComponent extends PureComponent<Props> {
         }
         // "#<a href="/q/%E6%B5%8B%E8%AF%95">测试</a>#"
         else if (url.indexOf('/q/') == 0) {
-            navigateN(NavigationManager.mainNavigation, "SearchScreen", {url: url})
+            navigateN(NavigationManager.mainNavigation, "SearchPage", {url: url})
         }
         // "<a href="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" title="https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg" rel="nofollow" target="_blank">https://mp.weixin.qq.com/s/5LToZDjXlVmTZnj0kgApUg</a>"
         else {
