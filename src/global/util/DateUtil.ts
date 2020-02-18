@@ -10,8 +10,11 @@
  *formatDate(new Date(), 'yyyy-MM-dd 第q季度 www HH:mm:ss:SSS');//2016-09-02 第3季度 星期五 13:19:15:792
  *formatDate(1472793615764); // 2016-09-02 13:20:15
  */
+export function formatDateStr(dateStr: string, fmt?) {
+    return formatDate(new Date(dateStr), fmt)
+}
 
-export function formatDate(date?, fmt?) {
+export function formatDate(date?: Date, fmt?) {
     date = date == undefined ? new Date() : date;
     date = typeof date == 'number' ? new Date(date) : date;
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';

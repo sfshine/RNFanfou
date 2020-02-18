@@ -4,7 +4,7 @@ import AutoHeightImage from "~/global/components/AutoHeightImage";
 import HTMLView from 'react-native-htmlview';
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
-import {formatDate} from "~/global/util/DateUtil";
+import {formatDateStr} from "~/global/util/DateUtil";
 import Logger from "~/global/util/Logger";
 import {FanfouUtil} from "~/biz/common/util/FanfouUtil";
 import {connect} from "react-redux";
@@ -53,7 +53,7 @@ class StatusComponent extends PureComponent<Props> {
                                 b: styles.source,
                             }}
                         />
-                        < Text style={styles.created_at}>{formatDate(new Date(item.created_at))}</Text>
+                        < Text style={styles.created_at}>{formatDateStr(item.created_at)}</Text>
                     </Row>
                 </View>
             </Row>
