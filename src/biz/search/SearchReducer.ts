@@ -1,7 +1,5 @@
 import {defaultReduce} from "~/biz/common/redux/Reducers";
 import RefreshState from "~/global/components/refresh/RefreshState";
-import FanfouFetch from "~/biz/common/api/FanfouFetch";
-import {Api} from "~/biz/common/api/Api";
 
 const initialState = {
     loading: false,
@@ -9,47 +7,68 @@ const initialState = {
     isSuccess: false,
     hasLogin: false,
 };
-const PREFIX = "search_"
+const TAG = "SearchReducer"
 export default function SearchReducer(state, action) {
-    return defaultReduce(PREFIX, action, state, initialState)
+    return defaultReduce(TAG, action, state, initialState)
 }
 
-export function search_beginRefreshAction() {
-    return {
-        type: "search_beginRefreshAction",
-        ptrState: RefreshState.Refreshing,
-        // pageData: {page: 1, data: []},
-    }
-}
+export const SEARCH_ACTIONS = {
+    Refreshing: () => {
+        return {
+            type: `${TAG}#Refreshing`,
+            ptrState: RefreshState.Refreshing,
+        }
+    },
+    Idle: (pageData) => {
+        return {
+            type: `${TAG}#Idle`,
+            pageData: pageData,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    RefreshingFailed: () => {
+        return {
+            type: `${TAG}#RefreshingFailed`,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    LoadingMore: () => {
+        return {
+            type: `${TAG}#LoadingMore`,
+            ptrState: RefreshState.LoadingMore,
 
-export function search_refreshSuccessAction(pageData, ptrState) {
-    return {
-        type: "search_refreshSuccessAction",
-        pageData: pageData,
-        ptrState: ptrState
-    }
-}
-
-export function search_beginLoadMoreAction() {
-    return {
-        type: "search_beginLoadMoreAction",
-        ptrState: RefreshState.LoadingMore //其实在Idle状态就展示LoadingMoreView,本状态先预留
-    }
-}
-
-
-export function search_loadMoreSuccessAction(pageData, status) {
-    return {
-        type: "search_loadMoreSuccessAction",
-        pageData: pageData,
-        ptrState: status
-    }
-}
-
-export function search_loadFailAction(errorMessage) {
-    return {
-        type: "search_loadFailAction",
-        errorMessage: errorMessage,
-        ptrState: RefreshState.Idle
+        }
+    },
+    LoadingMoreEnd: (pageData) => {
+        return {
+            type: `${TAG}#LoadingMoreEnd`,
+            pageData: pageData,
+            ptrState: RefreshState.LoadingMoreEnd,
+        }
+    },
+    LoadingMoreError: () => {
+        return {
+            type: `${TAG}#LoadingMoreError`,
+            ptrState: RefreshState.LoadingMoreError,
+        }
+    },
+    SEARCH_CANCEL: () => {
+        return {
+            type: `${TAG}#SEARCH_CANCEL`,
+            pageData: null,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    SearchesListSuccess: (json) => {
+        return {
+            type: `${TAG}#search_searches_list_success`,
+            search_searches_list: json
+        }
+    },
+    SearchListFail: (err) => {
+        return {
+            type: `${TAG}#search_searches_list_success`,
+            errorMessage: err,
+        }
     }
 }

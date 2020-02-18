@@ -12,6 +12,7 @@ import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactor
 import {SearchAction} from "./SearchAction";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import {SEARCH_ACTIONS} from "~/biz/search/SearchReducer";
 
 interface State {
     queryId: string,
@@ -23,7 +24,7 @@ interface Props extends BaseProps {
     loadMore: Function,
     search_cancel: Function,
     getSearchWordList: Function,
-    pageData: any,
+    pageData: [],
     ptrState: string,
 }
 
@@ -66,7 +67,7 @@ class SearchPage extends React.Component<Props, State> {
 
     render() {
         let {theme, pageData, ptrState} = this.props
-        let listData = pageData ? pageData.data : []
+        let listData = pageData ? pageData : []
 
         let bottomButton = listData && listData.length > 0 && <TouchableOpacity
             style={[styles.bottomButton, {backgroundColor: theme.brand_primary}]}
@@ -234,7 +235,7 @@ export default connect(
         ptrState: state.SearchReducer.ptrState
     }),
     (dispatch) => ({
-        search_cancel: () => dispatch(SearchAction.search_cancel()),
+        search_cancel: () => dispatch(SEARCH_ACTIONS.SEARCH_CANCEL()),
         loadMore: (text, oldPageData) => dispatch(action.loadMore(text, oldPageData)),
         search: (text) => dispatch(action.search(text)),
         getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),

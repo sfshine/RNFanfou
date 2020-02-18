@@ -74,21 +74,6 @@ function public_refreshSuccessAction(pageList) {
     }
 }
 
-function public_beginLoadMoreAction() {
-    return {
-        type: "public_beginLoadMoreAction",
-        ptrState: RefreshState.LoadingMore
-    }
-}
-
-function public_loadMoreSuccessAction(pageList) {
-    return {
-        type: "public_loadMoreSuccessAction",
-        pageList: pageList,
-        ptrState: RefreshState.Idle
-    }
-}
-
 function public_loadFailAction(errorMessage) {
     return {
         type: "public_loadFailAction",
