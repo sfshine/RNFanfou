@@ -106,22 +106,26 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
             {user.url ? <Text style={styles.profile_description}> {user.url}</Text> : null}
             <Text style={styles.profile_description}>{user.description}</Text>
             <View style={styles.profile_numbers}>
-                <View style={styles.profile_number_cell}>
+                <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
+                    TipsUtil.toast("现在就在消息页")
+                }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.statuses_count}
                     </Text>
                     <Text style={styles.profile_number_cell_name}>
                         消息
                     </Text>
-                </View>
-                <View style={styles.profile_number_cell}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
+                    navigate(this.props, "GalleryPage", {user: this.state.user})
+                }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.photo_count}
                     </Text>
                     <Text style={styles.profile_number_cell_name}>
                         照片
                     </Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
                     navigate(this.props, "FavouritePage", {user: this.state.user})
                 }

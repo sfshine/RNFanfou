@@ -9,7 +9,7 @@ import RefreshProps from "~/global/components/refresh/RefreshProps";
 const TAG = "RefreshListBase"
 
 
-export default class RefreshListBase extends PureComponent<RefreshProps, {}> {
+export default class RefreshListBase<P extends RefreshProps> extends PureComponent<P, {}> {
     static defaultProps = {
         ptrState: RefreshState.Refreshing,
     }

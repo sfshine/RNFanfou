@@ -4,12 +4,18 @@ import Logger from "../../util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState"
 import {DataProvider, LayoutProvider, RecyclerListView} from "recyclerlistview";
 import RefreshListBase from "~/global/components/refresh/RefreshListBase";
+import RefreshProps from "~/global/components/refresh/RefreshProps";
 
 const TAG = "RefreshListViewFlickr"
 
 const screenWidth = Dimensions.get('window').width;
 
-export default class RefreshListViewFlickr extends RefreshListBase {
+interface FRefreshProps extends RefreshProps {
+    customLayoutProvider?: LayoutProvider,
+    customDataProvider?: DataProvider
+}
+
+export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps> {
     static defaultProps = {
         ptrState: RefreshState.Refreshing,
     }
@@ -39,14 +45,17 @@ export default class RefreshListViewFlickr extends RefreshListBase {
 
     render() {
         Logger.log(TAG, "render:", this.props);
+
+        let customLayoutProvider = this.props.customLayoutProvider
+        let customDataProvider = this.props.customDataProvider
         let data = this.props.data ? this.props.data : []
         let exProps = {}
         this.props.ListHeaderComponent && (exProps["externalScrollView"] = this.ScrollViewWithHeader)
         // @ts-ignore
         return <RecyclerListView
             renderFooter={() => this._renderFooter()}
-            layoutProvider={this.layoutProvider}
-            dataProvider={this.dataProvider.cloneWithRows(data)}
+            layoutProvider={customLayoutProvider ? customLayoutProvider : this.layoutProvider}
+            dataProvider={customDataProvider ? customDataProvider : this.dataProvider.cloneWithRows(data)}
             rowRenderer={this._rowRenderer}
             forceNonDeterministicRendering={true}
             scrollViewProps={{

@@ -12,6 +12,7 @@ import StatusDetailPage from "~/biz/statsdetail/StatusDetailPage";
 import SearchPage from "~/biz/search/SearchPage";
 import FriendsPage from "~/biz/user/friends/FriendsPage";
 import FavouritePage from "~/biz/user/favourite/FavouritePage";
+import GalleryPage from "~/biz/user/gallery/GalleryPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -46,6 +47,9 @@ const RootNavigator = createStackNavigator({
         },
         FavouritePage: {
             screen: FavouritePage
+        },
+        GalleryPage: {
+            screen: GalleryPage
         }
     }, {
         defaultNavigationOptions: {
