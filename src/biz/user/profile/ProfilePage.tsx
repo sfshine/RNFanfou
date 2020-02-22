@@ -230,7 +230,7 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
                     })
                 }
             }).catch(e => {
-                TipsUtil.toastFail("取关/关注操作失败,请重试", following)
+                TipsUtil.toastFail("取关/关注操作失败,请重试", loading)
             })
         }
     }
