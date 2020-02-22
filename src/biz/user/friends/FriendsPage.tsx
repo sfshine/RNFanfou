@@ -6,6 +6,7 @@ import UserCell from "~/biz/compose/UserCell";
 import PageCmpt from "~/global/components/PageCmpt";
 import RefreshListViewFlickr from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
+import {navigate} from "~/global/navigator/NavigationManager";
 
 interface Props extends BaseProps {
     refreshFriends: Function,
@@ -53,7 +54,7 @@ class FriendsPage extends PureComponent<Props> {
     }
 
     _renderItem = (data) => {
-        return (<UserCell user={data.item}/>)
+        return (<UserCell user={data.item} onPress={() => navigate(this.props, "ProfilePage", {user: data.item})}/>)
     }
 }
 
