@@ -1,4 +1,5 @@
 import {defaultReduce} from "~/biz/common/redux/Reducers"
+import RefreshState from "~/global/components/refresh/RefreshState";
 
 const TAG = "GalleryReducer"
 
@@ -7,16 +8,44 @@ export default function GalleryReducer(state, action) {
     return defaultReduce(TAG, action, state, defaultState)
 }
 
-export const ACTIONS = {
-    success: (actionData) => {
+export const GALLERY_ACTIONS = {
+    Refreshing: () => {
         return {
-            type: TAG + "#SUCCESS",
-            actionData: actionData,
+            type: `${TAG}#Refreshing`,
+            ptrState: RefreshState.Refreshing,
         }
     },
-    failed: () => {
+    Idle: (actionData) => {
         return {
-            type: TAG + "#FAILED",
+            type: `${TAG}#Idle`,
+            actionData: actionData,
+            ptrState: RefreshState.Idle,
         }
-    }
+    },
+    RefreshingFailed: () => {
+        return {
+            type: `${TAG}#RefreshingFailed`,
+            ptrState: RefreshState.Idle,
+        }
+    },
+    LoadingMore: () => {
+        return {
+            type: `${TAG}#LoadingMore`,
+            ptrState: RefreshState.LoadingMore,
+
+        }
+    },
+    LoadingMoreEnd: (actionData) => {
+        return {
+            type: `${TAG}#LoadingMoreEnd`,
+            actionData: actionData,
+            ptrState: RefreshState.LoadingMoreEnd,
+        }
+    },
+    LoadingMoreError: () => {
+        return {
+            type: `${TAG}#LoadingMoreError`,
+            ptrState: RefreshState.LoadingMoreError,
+        }
+    },
 }

@@ -31,6 +31,7 @@ export const Api = {
     saved_searches_create: "/saved_searches/create",
     saved_searches_destroy: "/saved_searches/destroy",
     favorites: "/favorites",
+    user_timeline: "/photos/user_timeline",
 }
 
 export var switchHost = (host: string) => {

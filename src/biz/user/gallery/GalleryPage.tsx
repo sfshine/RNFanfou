@@ -1,34 +1,42 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Image, View} from 'react-native';
 import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import GalleryAction from "./GalleryAction";
 import * as React from "react";
+import BaseProps from "~/global/base/BaseProps";
+import RefreshGridViewFlickr from "~/global/components/refresh/RefreshGridViewFlickr";
+import Logger from "~/global/util/Logger";
 
 /**
  * @author Alex
  * @date 2020/02/22
  */
-interface Props {
-    navigation: object;
-    actionData: object;
+interface Props extends BaseProps {
+    actionData: [];
     onPageLoaded: Function;
+    ptrState: string,
 }
 
 interface State {
     name: string
 }
 
+const TAG = "GalleryPage"
+const action = new GalleryAction()
+
 class GalleryPage extends React.PureComponent<Props, State> {
     static defaultProps = {
         actionData: []
     }
+    private readonly user
 
     constructor(props) {
         super(props);
+        this.user = this.props.navigation.state.params.user
     }
 
     componentDidMount(): void {
-        this.props.onPageLoaded(0)
+        this.props.onPageLoaded(this.user.id)
     }
 
     render() {
@@ -38,21 +46,39 @@ class GalleryPage extends React.PureComponent<Props, State> {
     }
 
     renderContent = () => {
-        return <View><Text>{JSON.stringify(this.props.actionData)}</Text></View>
+        return <RefreshGridViewFlickr
+            data={this.props.actionData}
+            ptrState={this.props.ptrState}
+            onHeaderRefresh={() => this.props.onPageLoaded(this.user.id)}
+            onFooterRefresh={
+                () => {
+                }
+            }
+            renderItem={this.renderItem}>
+        </RefreshGridViewFlickr>
+    }
+
+    renderItem = (data) => {
+        Logger.log(TAG, "data", data)
+        return <View style={{alignItems: "center", margin: 2}}>
+            <Image
+                style={{
+                    width: 150,
+                    height: 90,
+                    alignSelf: "center",
+                }}
+                source={{uri: data.item.photo.largeurl}}/>
+        </View>
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
 export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
         actionData: state.GalleryReducer.actionData,
+        ptrState: state.GalleryReducer.ptrState,
     }),
     (dispatch) => ({
-        onPageLoaded: (pageNum) => dispatch(GalleryAction.onPageLoaded(pageNum))
+        onPageLoaded: (userId) => dispatch(action.onPageLoaded(userId))
     })
 )(GalleryPage)
