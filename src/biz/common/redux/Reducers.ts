@@ -9,6 +9,7 @@ import PublicReducer from "~/biz/home/public/PublicReducer";
 import StatusDetailReducer from "~/biz/statsdetail/StatusDetailReducer";
 import SearchReducer from "~/biz/search/SearchReducer";
 import FriendsReducer from "~/biz/user/friends/FriendsReducer";
+import FavouriteReducer from "~/biz/user/favourite/FavouriteReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
     StatusDetailReducer: StatusDetailReducer,
     SearchReducer: SearchReducer,
     FriendsReducer: FriendsReducer,
+    FavouriteReducer: FavouriteReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {

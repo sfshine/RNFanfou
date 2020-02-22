@@ -11,7 +11,7 @@ export function refreshTimeline(oldPageList) {
  * @param paging
  * @returns {Function}
  */
-const COUNT = 20;
+const COUNT = 50;
 
 function loadPublicTimeline(oldPageList) {
     return dispatch => {

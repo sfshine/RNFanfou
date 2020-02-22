@@ -123,7 +123,7 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
                     </Text>
                 </View>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FavouriteScreen", {user: this.state.user})
+                    navigate(this.props, "FavouritePage", {user: this.state.user})
                 }
                 }>
                     <Text style={styles.profile_number_cell_num}>
