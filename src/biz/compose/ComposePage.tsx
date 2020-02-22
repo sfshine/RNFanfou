@@ -39,6 +39,7 @@ class ComposePage extends React.PureComponent<Props, State> {
         let textInput = <TextInput
             onSelectionChange={(event) => this.selection = event.nativeEvent.selection}
             autoFocus={true}
+            multiline={true}
             placeholder={this.placeHolder}
             value={this.state.inputString}
             onChangeText={text => this.setState({inputString: text})}
