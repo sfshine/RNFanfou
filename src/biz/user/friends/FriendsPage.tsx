@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import FriendsAction from "./FriendsAction";
 import UserCell from "~/biz/compose/UserCell";
 import PageCmpt from "~/global/components/PageCmpt";
-import RefreshListView from "~/global/components/refresh/RefreshListViewFlickr";
+import RefreshListViewFlickr from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
 
 interface Props extends BaseProps {
@@ -35,7 +35,7 @@ class FriendsPage extends PureComponent<Props> {
     render() {
         console.log("TimelinePage render", this.props);
         return <PageCmpt title={`${this.user.name}的${this.isFollowers ? "粉丝" : "好友"}`} backNav={this.props.navigation}>
-            <RefreshListView
+            <RefreshListViewFlickr
                 data={this.props.pageData}
                 ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
@@ -53,8 +53,7 @@ class FriendsPage extends PureComponent<Props> {
     }
 
     _renderItem = (data) => {
-        let user = data.item;
-        return (<UserCell showCheckBox={false} user={user} theme={this.props.theme}/>)
+        return (<UserCell user={data.item}/>)
     }
 }
 

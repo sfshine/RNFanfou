@@ -5,7 +5,7 @@ import RefreshState from "~/global/components/refresh/RefreshState"
 import {DataProvider, LayoutProvider, RecyclerListView} from "recyclerlistview";
 import RefreshListBase from "~/global/components/refresh/RefreshListBase";
 
-const TAG = "RefreshListView"
+const TAG = "RefreshListViewFlickr"
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -20,7 +20,7 @@ export default class RefreshListViewFlickr extends RefreshListBase {
         },
         (type, dim) => {
             dim.width = screenWidth
-            dim.height = 180;
+            dim.height = 100;
         }
     );
     dataProvider = new DataProvider((r1, r2) => {
