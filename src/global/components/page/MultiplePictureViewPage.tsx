@@ -10,32 +10,40 @@ import Fetch from "~/global/network/Fetch";
 import {goBack} from "~/global/navigator/NavigationManager";
 import {Modal} from "@ant-design/react-native";
 import {Image} from "react-native";
+import {IImageInfo} from "react-native-image-zoom-viewer/built/image-viewer.type";
 
 const TAG = "PictureViewPage"
 
-export default class PictureViewPage extends PureComponent<BaseProps> {
+export default class MultiplePictureViewPage extends PureComponent<BaseProps> {
     currentIndex = 0
 
     componentDidMount(): void {
         Logger.log(TAG, "componentDidMount", this.props)
     }
 
+    private generateImageInfos(pageData) {
+        let images: IImageInfo[] = []
+        for (let item of pageData) {
+            images.push({url: item.photo.largeurl})
+        }
+        return images
+    }
+
     render() {
-        const {images} = this.props.navigation.state.params;
-        return <PageCmpt backNav={this.props.navigation}>
+        const {pageData, index} = this.props.navigation.state.params;
+        let images = this.generateImageInfos(pageData)
+        return <PageCmpt title={"查看图片"} backNav={this.props.navigation}>
             <ImageViewer
                 enableSwipeDown={true}
                 onSwipeDown={() => {
                     goBack(this.props)
                 }}
                 swipeDownThreshold={150}
-                // onClick={() => {
-                //     goBack(this.props)
-                // }}
                 imageUrls={images}
                 onChange={(index) => {
                     this.currentIndex = index
                 }}
+                index={index}
                 saveToLocalByLongPress={false}
                 onLongPress={() => {
                     Modal.operation([

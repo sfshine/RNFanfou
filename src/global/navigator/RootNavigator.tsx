@@ -13,6 +13,7 @@ import SearchPage from "~/biz/search/SearchPage";
 import FriendsPage from "~/biz/user/friends/FriendsPage";
 import FavouritePage from "~/biz/user/favourite/FavouritePage";
 import GalleryPage from "~/biz/user/gallery/GalleryPage";
+import MultiplePictureViewPage from "~/global/components/page/MultiplePictureViewPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -23,6 +24,9 @@ const RootNavigator = createStackNavigator({
         },
         PictureViewPage: {
             screen: PictureViewPage
+        },
+        MultiplePictureViewPage: {
+            screen: MultiplePictureViewPage
         },
         LoginPage: {
             screen: LoginPage

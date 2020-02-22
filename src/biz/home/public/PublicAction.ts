@@ -44,7 +44,7 @@ function mergeData(oldPageList, json) {
     let headData = oldPageList[0]
     let index = json.length
     console.log("mergeData for loop ")
-    for (var i = index - 1; i > -1; i--) {
+    for (let i = index - 1; i > -1; i--) {
         console.log("mergeData for loop  headData.id = " + headData.id + " json.id=" + json[i].id)
         if (headData.id === json[i].id) {
             index = i

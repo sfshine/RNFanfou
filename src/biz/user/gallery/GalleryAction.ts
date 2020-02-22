@@ -9,7 +9,7 @@ import FanfouFetch from "~/biz/common/api/FanfouFetch";
  * @date 2020/01/05
  */
 const TAG = "GalleryAction";
-const PAGE_SIZE = 11
+const PAGE_SIZE = 24
 
 export default class GalleryAction {
     private pageNum: number;
@@ -22,7 +22,8 @@ export default class GalleryAction {
                 let response = await FanfouFetch.get(Api.user_timeline, {
                     id: userId,
                     page: this.pageNum,
-                    format: 'html'
+                    format: 'html',
+                    count: PAGE_SIZE,
                 })
                 if (!response) {
                     throw "JSON数据异常"
@@ -45,7 +46,8 @@ export default class GalleryAction {
                 let response = await FanfouFetch.get(Api.user_timeline, {
                     id: userId,
                     page: this.pageNum,
-                    format: 'html'
+                    format: 'html',
+                    count: PAGE_SIZE,
                 })
                 if (!response) {
                     throw "JSON数据异常"

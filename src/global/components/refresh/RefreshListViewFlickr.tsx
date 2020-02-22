@@ -51,8 +51,9 @@ export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps
         let data = this.props.data ? this.props.data : []
         let exProps = {}
         this.props.ListHeaderComponent && (exProps["externalScrollView"] = this.ScrollViewWithHeader)
-        // @ts-ignore
         return <RecyclerListView
+            // @ts-ignore
+            style={this.props.style}
             renderFooter={() => this._renderFooter()}
             layoutProvider={customLayoutProvider ? customLayoutProvider : this.layoutProvider}
             dataProvider={customDataProvider ? customDataProvider : this.dataProvider.cloneWithRows(data)}

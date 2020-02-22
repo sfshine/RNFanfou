@@ -6,10 +6,9 @@ import {DataProvider, LayoutProvider, RecyclerListView} from "recyclerlistview";
 import RefreshListBase from "~/global/components/refresh/RefreshListBase";
 import RefreshProps from "~/global/components/refresh/RefreshProps";
 import RefreshListViewFlickr from "~/global/components/refresh/RefreshListViewFlickr";
+import {screenWidth} from "~/global/util/ScreenUtil";
 
 const TAG = "RefreshGridViewFlickr"
-
-const screenWidth = Dimensions.get('window').width;
 
 export default class RefreshGridViewFlickr extends PureComponent<RefreshProps> {
     layoutProvider = new LayoutProvider(
@@ -18,7 +17,7 @@ export default class RefreshGridViewFlickr extends PureComponent<RefreshProps> {
         },
         (type, dim) => {
             dim.width = screenWidth / 3;
-            dim.height = 150;
+            dim.height = screenWidth / 3;
         }
     );
 
