@@ -8,11 +8,11 @@ import PageCmpt from "~/global/components/PageCmpt";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
 import Logger from "~/global/util/Logger";
-import {navigate} from "~/global/navigator/NavigationManager";
 import {FanfouUtil} from '~/biz/common/util/FanfouUtil';
 import BaseProps from "~/global/base/BaseProps";
 import ProfileAction from "~/biz/user/profile/ProfileAction";
-import {USER_PROFILE_ACTIONS} from "~/biz/user/profile/ProfileReducer";
+import {navigate} from "~/global/navigator/NavigationManager";
+import TipsUtil from "~/global/util/TipsUtil";
 
 interface State {
     user: any,
@@ -32,7 +32,7 @@ const TAG = "ProfilePage"
  * 3.从主页的我的TAB进入
  */
 export default class ProfilePage extends React.Component<Props, State> {
-    private readonly url
+    private readonly userId
     private mProfileAction = new ProfileAction()
 
     constructor(props) {
@@ -41,8 +41,15 @@ export default class ProfilePage extends React.Component<Props, State> {
         let user = this.props.userFromMePage
         if (!user) {
             user = this.props.navigation.state.params.user
-            if (!user) {
-                this.url = this.props.navigation.state.params.url
+        }
+        if (user) {
+            this.userId = user.id
+        } else {
+            let url = this.props.navigation.state.params.url
+            if (FanfouUtil.isProfileUrl(url)) {
+                this.userId = url.substr(url.indexOf('com/') + 4, url.length)
+            } else {
+                TipsUtil.toastFail("获取不到用户信息,请重试.")
             }
         }
         this.state = {
@@ -52,25 +59,19 @@ export default class ProfilePage extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
-        let url = this.url
+    componentDidMount() {
         if (this.state.user) {
             this.onRefreshTimeline();
             Logger.log(TAG, "refreshUserTimeline now!!!")//测试发现setState以后这里不会重复执行也就是state [props变化后render会触发执行.
-        } else if (url) {
-            Logger.log(TAG, 'componentWillMount:', url);
-            /*<a href="http://fanfou.com/dailu321" className="former">*/
-            if (FanfouUtil.isProfileUrl(url)) {
-                let userId = url.substr(url.indexOf('com/') + 4, url.length)
-                FanfouFetch.get(Api.users_show, {id: userId}).then(user => {
-                    this.setState({
-                        user: user,
-                    })
-                    this.onRefreshTimeline();
-                }).catch(e => {
-                    Logger.log(TAG, "获取用户信息失败")
+        } else if (this.userId) {
+            FanfouFetch.get(Api.users_show, {id: this.userId}).then(user => {
+                this.setState({
+                    user: user,
                 })
-            }
+                this.onRefreshTimeline();
+            }).catch(e => {
+                Logger.log(TAG, "获取用户信息失败")
+            })
         }
     }
 
@@ -130,7 +131,7 @@ export default class ProfilePage extends React.Component<Props, State> {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FriendsScreen", {user: this.state.user, isFollowers: false})
+                    navigate(this.props, "FriendsPage", {user: this.state.user, isFollowers: false})
                 }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.friends_count}
@@ -140,7 +141,7 @@ export default class ProfilePage extends React.Component<Props, State> {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FriendsScreen", {user: this.state.user, isFollowers: true})
+                    navigate(this.props, "FriendsPage", {user: this.state.user, isFollowers: true})
                 }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.followers_count}

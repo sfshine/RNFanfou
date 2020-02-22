@@ -1,4 +1,5 @@
 import {NavigationActions, StackActions} from 'react-navigation';
+import TipsUtil from "~/global/util/TipsUtil";
 
 export default class NavigationManager {
     static mainNavigation;
@@ -11,13 +12,17 @@ export function navigate(props, page, params?) {
 }
 
 export function navigateN(navigation, page, params?) {
-    navigation.navigate(
-        {
-            key: page + Math.random() * 10000,
-            routeName: page,
-            params: params ? {...params} : {}
-        }
-    )
+    if (navigation) {
+        navigation.navigate(
+            {
+                key: page + Math.random() * 10000,
+                routeName: page,
+                params: params ? {...params} : {}
+            }
+        )
+    } else {
+        TipsUtil.toastFail("跳转页面失败")
+    }
 }
 
 export function navigateResetN(navigation, page) {

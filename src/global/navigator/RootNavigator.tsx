@@ -10,6 +10,7 @@ import ComposePage from "~/biz/compose/ComposePage";
 import ProfilePage from "~/biz/user/profile/ProfilePage";
 import StatusDetailPage from "~/biz/statsdetail/StatusDetailPage";
 import SearchPage from "~/biz/search/SearchPage";
+import FriendsPage from "~/biz/user/friends/FriendsPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -38,6 +39,9 @@ const RootNavigator = createStackNavigator({
         },
         SearchPage: {
             screen: SearchPage
+        },
+        FriendsPage: {
+            screen: FriendsPage
         }
     }, {
         defaultNavigationOptions: {

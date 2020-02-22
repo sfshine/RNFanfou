@@ -6,9 +6,9 @@ import BaseProps from "~/global/base/BaseProps";
 
 interface Props extends BaseProps {
     user: any,
-    checkMap: boolean,
-    showCheckBox: any,
-    onPress: (event: GestureResponderEvent) => void;
+    checkMap?: boolean,
+    showCheckBox?: any,
+    onPress?: (event: GestureResponderEvent) => void;
 }
 
 export default class UserCell extends PureComponent<Props> {
@@ -42,7 +42,7 @@ export default class UserCell extends PureComponent<Props> {
             name={checked ? 'ios-checkbox' : 'md-square-outline'}
             size={20}
             style={{
-                color: theme.themeColor,
+                color: theme.brand_primary,
             }}/>
     }
 

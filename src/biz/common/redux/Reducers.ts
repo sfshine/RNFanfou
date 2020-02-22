@@ -8,6 +8,7 @@ import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
 import PublicReducer from "~/biz/home/public/PublicReducer";
 import StatusDetailReducer from "~/biz/statsdetail/StatusDetailReducer";
 import SearchReducer from "~/biz/search/SearchReducer";
+import FriendsReducer from "~/biz/user/friends/FriendsReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
     PublicReducer: PublicReducer,
     StatusDetailReducer: StatusDetailReducer,
     SearchReducer: SearchReducer,
+    FriendsReducer: FriendsReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {
