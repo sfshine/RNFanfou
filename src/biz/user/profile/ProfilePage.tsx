@@ -107,13 +107,13 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
             <Text style={styles.profile_description}>{user.description}</Text>
             <View style={styles.profile_numbers}>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    TipsUtil.toast("现在就在消息页")
+                    TipsUtil.toast("现在就在状态页")
                 }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.statuses_count}
                     </Text>
                     <Text style={styles.profile_number_cell_name}>
-                        消息
+                        状态
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
