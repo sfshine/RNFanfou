@@ -35,7 +35,7 @@ class FriendsPage extends PureComponent<Props> {
 
     render() {
         console.log("TimelinePage render", this.props);
-        return <PageCmpt title={`${this.user.name}的${this.isFollowers ? "粉丝" : "好友"}`} backNav={this.props.navigation}>
+        return <PageCmpt title={`${this.user.name}的${this.isFollowers ? "粉丝" : "关注"}`} backNav={this.props.navigation}>
             <RefreshListViewFlickr
                 data={this.props.pageData}
                 ptrState={this.props.ptrState}
