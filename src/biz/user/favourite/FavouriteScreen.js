@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import * as action from "./FavouriteAction";
 import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView2 from "../../../global/components/refresh/RefreshListView2";
-import NavigationBar from "../../../global/navigator/Navigationbar";
+import NavigationBar from "../../../global/navigator/NavigationBar";
 import SafeAreaViewPlus from "../../../global/components/SafeAreaViewPlus";
 import NavigationUtil from "../../../global/navigator/NavigationUtil";
 

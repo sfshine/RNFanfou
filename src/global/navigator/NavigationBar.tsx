@@ -1,28 +1,26 @@
 import React, {PureComponent} from 'react';
-import {DeviceInfo, Platform, StatusBar, StyleSheet, Text, View, ViewPropTypes} from 'react-native';
-import {PropTypes} from 'prop-types';
+import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
 import NavigationBarViewFactory from '~/global/navigator/NavigationBarViewFactory';
 import connect from 'react-redux/es/connect/connect';
 import {goBackN} from './NavigationManager';
 import Row from '../components/element/Row';
+import BaseProps from "~/global/base/BaseProps";
 
 const NAV_BAR_HEIGHT_IOS = 44;//导航栏在iOS中的高度
 export const NAV_BAR_HEIGHT_ANDROID = 44;//导航栏在Android中的高度
-const STATUS_BAR_HEIGHT = DeviceInfo.isIPhoneX_deprecated ? 0 : 20;//状态栏的高度
+// const STATUS_BAR_HEIGHT = DeviceInfo.isIPhoneX_deprecated ? 0 : 20;//状态栏的高度
+const STATUS_BAR_HEIGHT = 20;//状态栏的高度
 
-class NavigationBar extends PureComponent {
-    //提供属性的类型检查
-    static propTypes = {
-        title: PropTypes.string,
-        titleView: PropTypes.element,
-        rightButton: PropTypes.element,
-        leftButton: PropTypes.element,
-        backNav: PropTypes.object,
-        statusBarHide: PropTypes.bool,
-    };
-    //设置默认属性
-    static defaultProps = {};
+interface Props extends BaseProps {
+    titleView: any,
+    title: any,
+    leftButton: any,
+    rightButton: any,
+    backNav: any,
+    statusBarHide: boolean,
+}
 
+class NavigationBar extends PureComponent<Props> {
     render() {
         let theme = this.props.theme;
         let styleWithTheme = {
@@ -72,6 +70,7 @@ class NavigationBar extends PureComponent {
             barStyle: 'light-content',
             animated: true,
         };
+        // @ts-ignore
         let statusBar = this.props.statusBarHide ? null : <StatusBar {...statusBarCfg} />;
         return statusBar;
     };
