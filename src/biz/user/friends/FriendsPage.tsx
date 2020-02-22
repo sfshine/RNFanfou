@@ -7,6 +7,8 @@ import PageCmpt from "~/global/components/PageCmpt";
 import RefreshListViewFlickr from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
 import {navigate} from "~/global/navigator/NavigationManager";
+import {LayoutProvider} from "recyclerlistview";
+import {screenWidth} from "~/global/util/ScreenUtil";
 
 interface Props extends BaseProps {
     refreshFriends: Function,
@@ -28,6 +30,16 @@ class FriendsPage extends PureComponent<Props> {
         this.isFollowers = this.props.navigation.state.params.isFollowers
     }
 
+    layoutProvider = new LayoutProvider(index => {
+            // console.log("RefreshListViewlayoutProvider invoke", index)
+            return 0
+        },
+        (type, dim) => {
+            dim.width = screenWidth
+            dim.height = 60;
+        }
+    );
+
     componentWillMount() {
         console.log('FriendsPage componentWillMount', this.props);
         this.props.refreshFriends(this.user.id)
@@ -37,6 +49,7 @@ class FriendsPage extends PureComponent<Props> {
         console.log("TimelinePage render", this.props);
         return <PageCmpt title={`${this.user.name}的${this.isFollowers ? "粉丝" : "关注"}`} backNav={this.props.navigation}>
             <RefreshListViewFlickr
+                customLayoutProvider={this.layoutProvider}
                 data={this.props.pageData}
                 ptrState={this.props.ptrState}
                 renderItem={this._renderItem}
