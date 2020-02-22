@@ -77,7 +77,10 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
 
     render() {
         let user = this.state.user
-        return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation}>
+        return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation} rightNavButtonConfig={{
+            icon: user && user.following ? "deleteuser" : "adduser",
+            callback: this.operateFriendShip
+        }}>
             {user ? <RefreshListViewFlickr
                 ListHeaderComponent={this._renderHeader()}
                 data={this.state.pageData}
@@ -210,23 +213,27 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
     //     </View>
     // }
     //
-    // operateFriendShip = () => {
-    //     let following = this.state.following
-    //     following ? Toast.show("取消关注中...", 2, false) : Toast.show("关注中...", 2, false)
-    //     let url = following ? friendships_destroy() : friendships_create()
-    //     FanfouFetch.post(url, {id: this.state.user.id}).then(user => {
-    //         Logger.log(TAG, "operateFriendShip:" + user)
-    //         following ? Toast.success("取关成功", 2, false) : Toast.success("关注成功", 2, false)
-    //         if (user) {
-    //             this.setState({
-    //                 following: !following
-    //             })
-    //         }
-    //     }).catch(e => {
-    //         Logger.log(TAG, "取关/关注操作失败:", e)
-    //         Toast.fail("操作失败", 2, false)
-    //     })
-    // }
+    operateFriendShip = () => {
+        let user = this.state.user
+        if (!user) {
+            TipsUtil.toastFail("获取用户信息错误,请重试")
+        } else {
+            let following = user.following
+            let loading = TipsUtil.toastLoading(following ? "取消关注中..." : "关注中...")
+            let url = following ? Api.friendships_destroy : Api.friendships_create
+            FanfouFetch.post(url, {id: user.id}).then(user => {
+                Logger.log(TAG, "operateFriendShip:" + user)
+                TipsUtil.toastSuccess(following ? "取关成功" : "关注成功", loading)
+                if (user) {
+                    this.setState({
+                        user: user
+                    })
+                }
+            }).catch(e => {
+                TipsUtil.toastFail("取关/关注操作失败,请重试", following)
+            })
+        }
+    }
 }
 
 const styles = StyleSheet.create({

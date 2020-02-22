@@ -111,7 +111,7 @@ class SearchPage extends React.PureComponent<Props, State> {
         const placeholder = "请输入";
         let backButton = NavigationBarViewFactory.createButton(
             {
-                icon: "md-arrow-back",
+                icon: "arrowleft",
                 callback: () => this.goBack()
             });
         let inputView =

@@ -14,10 +14,10 @@ class DiscoveryFragment extends React.PureComponent {
 
     render() {
         return <PageCmpt title="发现" rightNavButtonConfig={[{
-            icon: "md-search",
+            icon: "search1",
             callback: () => navigateN(NavigationManager.mainNavigation, "SearchPage")
         }, {
-            icon: "md-add",
+            icon: "plus",
             callback: () => navigateN(NavigationManager.mainNavigation, "ComposePage")
         }
         ]}>
