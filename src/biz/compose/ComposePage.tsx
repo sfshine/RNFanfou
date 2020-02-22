@@ -22,7 +22,7 @@ interface State {
 
 const TAG = "ComposePage"
 
-class ComposePage extends React.Component<Props, State> {
+class ComposePage extends React.PureComponent<Props, State> {
     private selection
     private placeHolder = "你在做什么"
 

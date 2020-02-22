@@ -30,7 +30,7 @@ interface Props extends BaseProps {
 
 const action = new SearchAction()
 
-class SearchPage extends React.Component<Props, State> {
+class SearchPage extends React.PureComponent<Props, State> {
     static defaultProps = {
         showBottomButton: true,
         ptrState: RefreshState.Init,

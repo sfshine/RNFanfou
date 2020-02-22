@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import PageCmpt from "~/global/components/PageCmpt";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 
-class DiscoveryFragment extends React.Component {
+class DiscoveryFragment extends React.PureComponent {
 
     componentWillMount() {
         console.log('SearchScreen componentWillMount', this.props);

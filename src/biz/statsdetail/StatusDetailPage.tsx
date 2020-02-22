@@ -29,7 +29,7 @@ interface State {
 
 const TAG = "StatusDetailPage"
 
-class StatusDetailPage extends React.Component<Props, State> {
+class StatusDetailPage extends React.PureComponent<Props, State> {
     private readonly statusFromPreviousPage
 
     constructor(props) {

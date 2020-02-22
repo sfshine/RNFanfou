@@ -12,7 +12,7 @@ interface Props extends BaseProps {
     loadMoreTimeline: Function,
 }
 
-class TimelineCmpt extends React.Component<Props> {
+class TimelineCmpt extends React.PureComponent<Props> {
 
     componentWillMount() {
         this.props.refreshTimeline()

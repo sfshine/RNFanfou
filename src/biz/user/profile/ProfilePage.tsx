@@ -31,7 +31,7 @@ const TAG = "ProfilePage"
  * 2.点击url,此时this.props.navigation.state.params.url非空,此时需要调用Api.users_show接口获取user信息
  * 3.从主页的我的TAB进入
  */
-export default class ProfilePage extends React.Component<Props, State> {
+export default class ProfilePage extends React.PureComponent<Props, State> {
     private readonly userId
     private mProfileAction = new ProfileAction()
 
