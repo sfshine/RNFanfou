@@ -1,12 +1,13 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import PublicPage from "../home/public/PublicCmpt";
-import Icon from 'react-native-vector-icons/EvilIcons';
 import PageCmpt from "~/global/components/PageCmpt";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
+import BaseProps from "~/global/base/BaseProps";
+import ComposeButton from "~/biz/main/cmpt/ComposeButton";
 
-class DiscoveryFragment extends React.PureComponent {
+class DiscoveryFragment extends React.PureComponent<BaseProps> {
 
     componentWillMount() {
         console.log('SearchScreen componentWillMount', this.props);
@@ -22,23 +23,10 @@ class DiscoveryFragment extends React.PureComponent {
         }
         ]}>
             <PublicPage/>
+            <ComposeButton/>
         </PageCmpt>
     }
 
-
-    renderRightButton() {
-        return (<TouchableOpacity
-                onPress={() => {
-                    navigateN(NavigationManager.mainNavigation, "SearchScreen")
-                }}>
-                <Icon
-                    name={'search'}
-                    size={26}
-                    style={{color: 'white', marginRight: 20}}
-                />
-            </TouchableOpacity>
-        )
-    }
 }
 
 const styles = StyleSheet.create({
