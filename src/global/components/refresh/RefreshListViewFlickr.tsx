@@ -13,6 +13,7 @@ const screenWidth = Dimensions.get('window').width;
 interface FRefreshProps extends RefreshProps {
     customLayoutProvider?: LayoutProvider,
     customDataProvider?: DataProvider
+    extendedState?: any,
 }
 
 export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps> {
@@ -74,6 +75,7 @@ export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps
                 this.beginFooterRefresh()
             }
             }
+            extendedState={this.props.extendedState}
             onEndReachedThreshold={0.3}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
             {...exProps}
         />

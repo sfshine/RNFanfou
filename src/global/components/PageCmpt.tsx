@@ -6,12 +6,12 @@ import SafeAreaViewPlus from "~/global/components/SafeAreaViewPlus";
 import NavigationBarViewFactory, {ButtonConfig} from "~/global/navigator/NavigationBarViewFactory";
 
 interface Props {
-    title?: string;
+    title: string;
     backNav?: object;
-    overrideBackPress: Function;
-    overrideNavBar: object;
-    rightNavButtonConfig: ButtonConfig | ButtonConfig[];
-    style: object;
+    overrideBackPress?: Function;
+    overrideNavBar?: object;
+    rightNavButtonConfig?: ButtonConfig | ButtonConfig[];
+    style?: object;
 }
 
 class PageCmpt extends React.PureComponent<Props, {}> {

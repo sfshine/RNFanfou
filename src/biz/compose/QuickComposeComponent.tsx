@@ -11,6 +11,7 @@ import ArchModal from "~/global/util/ArchModal";
 import Logger from "~/global/util/Logger";
 import QuickComposeAction, {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 import BackPressComponent from "~/global/components/BackPressComponent";
+import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 
 interface Props extends BaseProps {
     data: any,
@@ -87,10 +88,9 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                // NavigationUtil.fromMainToPage("MentionScreen", {
-                //     // selectNames: this.state.inputString,
-                //     callback: this.onChooseMentions
-                // })
+                navigateN(NavigationManager.mainNavigation, "MentionPage", {
+                    callback: this.onChooseMentions
+                })
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
@@ -175,8 +175,6 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             inputString: curInputStr + names
         })
     }
-
-
 }
 
 const styles = StyleSheet.create({

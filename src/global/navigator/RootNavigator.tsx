@@ -14,6 +14,7 @@ import FriendsPage from "~/biz/user/friends/FriendsPage";
 import FavouritePage from "~/biz/user/favourite/FavouritePage";
 import GalleryPage from "~/biz/user/gallery/GalleryPage";
 import MultiplePictureViewPage from "~/global/components/page/MultiplePictureViewPage";
+import MentionPage from "~/biz/compose/mention/MentionPage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -54,6 +55,9 @@ const RootNavigator = createStackNavigator({
         },
         GalleryPage: {
             screen: GalleryPage
+        },
+        MentionPage: {
+            screen: MentionPage
         }
     }, {
         defaultNavigationOptions: {

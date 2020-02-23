@@ -4,6 +4,7 @@ import CheckBox from 'react-native-check-box'
 import Icon from "react-native-vector-icons/Ionicons";
 import BaseProps from "~/global/base/BaseProps";
 import {connect} from 'react-redux';
+import Logger from "~/global/util/Logger";
 
 interface Props extends BaseProps {
     user: any,
@@ -14,7 +15,7 @@ interface Props extends BaseProps {
 
 class UserCell extends PureComponent<Props> {
     render() {
-        // console.log("UserCell: ", this.props)
+        Logger.log("UserCell", this.props)
         const {user, checkMap, showCheckBox} = this.props;
         return <TouchableOpacity activeOpacity={0.7} style={styles.userContainer} onPress={this.props.onPress}>
             <View style={styles.userInfoContainer}>
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     userInfoContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        maxWidth: "70%",
     },
     userNameContainer: {
         marginLeft: 8,
@@ -87,7 +89,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 14,
         color: '#333333',
-        maxWidth: 250,
     },
     unique_id: {
         marginLeft: 5,

@@ -69,14 +69,14 @@ class StatusComponent extends PureComponent<Props> {
                                       navigateN(NavigationManager.mainNavigation, "StatusDetailPage", {item: item})
                                   }
                               }}>
-                <HTMLView
+                {item.text ? <HTMLView
                     value={'<p>' + item.text + "</p>"}
                     onLinkPress={(url) => this.hrefDispatcher(url)}
                     stylesheet={{
                         p: styles.text,
                         a: [styles.text, {color: this.props.theme.brand_primary}],
                         b: [styles.text, {color: "#FF0000"}],
-                    }}/>
+                    }}/> : null}
                 {item.photo &&
                 <TouchableOpacity activeOpacity={0.7}
                                   style={{

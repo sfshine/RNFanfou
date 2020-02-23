@@ -92,7 +92,7 @@ class ComposePage extends React.PureComponent<Props, State> {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                navigate(this.props, "MentionScreen", {
+                navigate(this.props, "MentionPage", {
                     callback: this.onChooseMentions
                 })
             }}>
