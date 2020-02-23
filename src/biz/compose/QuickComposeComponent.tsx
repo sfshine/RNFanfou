@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,7 +11,7 @@ import ArchModal from "~/global/util/ArchModal";
 import Logger from "~/global/util/Logger";
 import QuickComposeAction, {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 import BackPressComponent from "~/global/components/BackPressComponent";
-import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
+import MentionPage from "~/biz/compose/mention/MentionPage";
 
 interface Props extends BaseProps {
     data: any,
@@ -88,9 +88,10 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                navigateN(NavigationManager.mainNavigation, "MentionPage", {
-                    callback: this.onChooseMentions
-                })
+                // @ts-ignore
+                this.refs["textInput"].blur()
+                let archModal = new ArchModal()
+                archModal.show(<MentionPage callback={this.onChooseMentions} modal={archModal}/>)
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
@@ -163,7 +164,9 @@ class QuickComposeComponent extends PureComponent<Props, State> {
     }
 
     onChooseMentions = (checkedMap) => {
-        if (!checkedMap) return
+        // @ts-ignore
+        this.refs["textInput"].focus()
+        if (!checkedMap && Object.keys(checkedMap).length < 1) return
         let names = ''
         Object.keys(checkedMap).forEach(function (name) {
             if (checkedMap[name]) {

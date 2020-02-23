@@ -4,10 +4,11 @@ import RefreshListView from "../../../global/components/refresh/RefreshListViewF
 import UserCell from "../UserCell";
 import PageCmpt from "~/global/components/PageCmpt";
 import BaseProps from "~/global/base/BaseProps";
-import {goBack} from "~/global/navigator/NavigationManager";
 import MentionAction from "~/biz/compose/mention/MentionAction";
 import Logger from "~/global/util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState";
+import ArchModal from "~/global/util/ArchModal";
+import {Keyboard} from "react-native";
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -17,6 +18,8 @@ interface Props extends BaseProps {
     loadMoreFriends: Function,
     pageData: [],
     ptrState: string,
+    callback: Function,
+    modal: ArchModal,
 }
 
 interface State {
@@ -29,6 +32,7 @@ class MentionPage extends React.PureComponent<Props, State> {
         this.state = {
             checkedMap: {},
         }
+        Keyboard.dismiss()
     }
 
     componentDidMount() {
@@ -40,7 +44,7 @@ class MentionPage extends React.PureComponent<Props, State> {
         pageData = pageData ? pageData : []
         ptrState = ptrState ? ptrState : RefreshState.Refreshing
         return <PageCmpt title={"选择好友"} backNav={this.props.navigation} rightNavButtonConfig={{
-            icon: "check",
+            icon: Object.keys(this.state.checkedMap).length > 0 ? "check" : "close",
             callback: this.sure
         }}>
             <RefreshListView
@@ -62,8 +66,8 @@ class MentionPage extends React.PureComponent<Props, State> {
     }
 
     sure = () => {
-        this.props.navigation.state.params.callback(this.state.checkedMap)
-        goBack(this.props)
+        this.props.callback(this.state.checkedMap)
+        this.props.modal.remove()
     };
 
     _renderItem = (data) => {
@@ -79,7 +83,7 @@ class MentionPage extends React.PureComponent<Props, State> {
                                   tmpMap[key] = stateMap[key];
                               }
                               if (tmpMap[user.name]) {
-                                  tmpMap[user.name] = false
+                                  delete tmpMap[user.name]
                               } else {
                                   tmpMap[user.name] = true //表示选中, user.name是唯一的
                               }

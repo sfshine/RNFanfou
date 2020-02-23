@@ -55,9 +55,6 @@ const RootNavigator = createStackNavigator({
         },
         GalleryPage: {
             screen: GalleryPage
-        },
-        MentionPage: {
-            screen: MentionPage
         }
     }, {
         defaultNavigationOptions: {

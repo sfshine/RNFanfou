@@ -10,6 +10,8 @@ import QuickComposeAction from "~/biz/compose/QuickComposeAction";
 import TipsUtil from "~/global/util/TipsUtil";
 import {goBack, navigate} from "~/global/navigator/NavigationManager";
 import PageCmpt from "~/global/components/PageCmpt";
+import ArchModal from "~/global/util/ArchModal";
+import MentionPage from "~/biz/compose/mention/MentionPage";
 
 interface Props extends BaseProps {
     data: any,
@@ -92,9 +94,8 @@ class ComposePage extends React.PureComponent<Props, State> {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                navigate(this.props, "MentionPage", {
-                    callback: this.onChooseMentions
-                })
+                let archModal = new ArchModal()
+                archModal.show(<MentionPage callback={this.onChooseMentions} modal={archModal}/>)
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
