@@ -20,32 +20,36 @@ interface Props extends BaseProps {
 interface State {
     inputString: string,
     photos: Array<any>,
+    selection: any,
 }
 
 const TAG = "ComposePage"
 
 class ComposePage extends React.PureComponent<Props, State> {
-    private selection
     private placeHolder = "你在做什么"
 
     constructor(props) {
         super(props);
         this.state = {
             photos: [],
-            inputString: ''
+            inputString: '',
+            selection: null,
         };
     }
 
     render() {
-        const {photos} = this.state;
+        let {photos, selection, inputString} = this.state;
         let textInput = <TextInput
+            selection={selection}
             ref="textInput"
-            onSelectionChange={(event) => this.selection = event.nativeEvent.selection}
+            onSelectionChange={() => this.setState({selection: null})}
             autoFocus={true}
             multiline={true}
             placeholder={this.placeHolder}
-            value={this.state.inputString}
-            onChangeText={text => this.setState({inputString: text})}
+            value={inputString}
+            onChangeText={text => this.setState({
+                inputString: text,
+            })}
             style={styles.textInput}/>
 
         let scrollView = <ScrollView contentContainerStyle={styles.scroll}>
@@ -125,14 +129,9 @@ class ComposePage extends React.PureComponent<Props, State> {
     onHashButtonClick = () => {
         let curInputStr = this.state.inputString + "##"
         this.setState({
-            inputString: curInputStr
+            inputString: curInputStr,
+            selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
         })
-        setTimeout(() => {
-            // @ts-ignore
-            this.refs["textInput"].setNativeProps({
-                selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
-            })
-        }, 10)
     }
     onSendButtonClick = () => {
         const {photos, inputString} = this.state

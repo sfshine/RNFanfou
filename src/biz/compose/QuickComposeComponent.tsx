@@ -21,6 +21,7 @@ interface Props extends BaseProps {
 interface State {
     inputString: string,
     photos: Array<any>,
+    selection: any,
 }
 
 const TAG = "QuickComposeComponent"
@@ -34,6 +35,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
         this.state = {
             inputString: '',
             photos: [],
+            selection: null,
         };
     }
 
@@ -54,6 +56,8 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             autoFocus={true}
             ref="textInput"
             placeholder={this.placeHolder}
+            selection={this.state.selection}
+            onSelectionChange={() => this.setState({selection: null})}
             onChangeText={text => this.setState({inputString: text})}
             value={this.state.inputString}
             style={styles.textInput}/>
@@ -133,14 +137,9 @@ class QuickComposeComponent extends PureComponent<Props, State> {
     onHashButtonClick = () => {
         let curInputStr = this.state.inputString + "##"
         this.setState({
-            inputString: curInputStr
+            inputString: curInputStr,
+            selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
         })
-        setTimeout(() => {
-            // @ts-ignore
-            this.refs["textInput"].setNativeProps({
-                selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
-            })
-        }, 10)
     }
     onSendButtonClick = (data) => {
         const photos = this.state.photos
@@ -179,7 +178,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
 
     onChooseMentions = (checkedMap) => {
         // @ts-ignore
-        this.refs["textInput"].focus()
+        if (this.refs["textInput"]) this.refs["textInput"].focus()
         if (!checkedMap && Object.keys(checkedMap).length < 1) return
         let names = ''
         Object.keys(checkedMap).forEach(function (name) {
