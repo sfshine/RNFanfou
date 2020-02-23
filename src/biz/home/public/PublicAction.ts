@@ -11,12 +11,12 @@ export function refreshTimeline(oldPageList) {
  * @param paging
  * @returns {Function}
  */
-const COUNT = 50;
+const COUNT = 60;
 
 function loadPublicTimeline(oldPageList) {
     return dispatch => {
         dispatch(public_beginRefreshAction())
-        FanfouFetch.get(Api.statuses_public_timeline, {msg_count: COUNT, format: 'html'}).then((json) => {
+        FanfouFetch.get(Api.statuses_public_timeline, {count: COUNT, format: 'html'}).then((json) => {
             console.log("loadPublicTimeline json", json);
             let newPageList = mergeData(oldPageList, json)
             console.log("loadPublicTimeline newPageList", newPageList);
