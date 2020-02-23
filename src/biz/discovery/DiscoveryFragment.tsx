@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import PageCmpt from "~/global/components/PageCmpt";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 
-class DiscoveryFragment extends React.Component {
+class DiscoveryFragment extends React.PureComponent {
 
     componentWillMount() {
         console.log('SearchScreen componentWillMount', this.props);
@@ -14,10 +14,10 @@ class DiscoveryFragment extends React.Component {
 
     render() {
         return <PageCmpt title="发现" rightNavButtonConfig={[{
-            icon: "md-search",
+            icon: "search1",
             callback: () => navigateN(NavigationManager.mainNavigation, "SearchPage")
         }, {
-            icon: "md-add",
+            icon: "plus",
             callback: () => navigateN(NavigationManager.mainNavigation, "ComposePage")
         }
         ]}>

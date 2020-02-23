@@ -11,7 +11,7 @@ export function refreshTimeline(oldPageList) {
  * @param paging
  * @returns {Function}
  */
-const COUNT = 100;
+const COUNT = 50;
 
 function loadPublicTimeline(oldPageList) {
     return dispatch => {
@@ -44,7 +44,7 @@ function mergeData(oldPageList, json) {
     let headData = oldPageList[0]
     let index = json.length
     console.log("mergeData for loop ")
-    for (var i = index - 1; i > -1; i--) {
+    for (let i = index - 1; i > -1; i--) {
         console.log("mergeData for loop  headData.id = " + headData.id + " json.id=" + json[i].id)
         if (headData.id === json[i].id) {
             index = i
@@ -69,21 +69,6 @@ function public_beginRefreshAction() {
 function public_refreshSuccessAction(pageList) {
     return {
         type: "public_refreshSuccessAction",
-        pageList: pageList,
-        ptrState: RefreshState.Idle
-    }
-}
-
-function public_beginLoadMoreAction() {
-    return {
-        type: "public_beginLoadMoreAction",
-        ptrState: RefreshState.LoadingMore
-    }
-}
-
-function public_loadMoreSuccessAction(pageList) {
-    return {
-        type: "public_loadMoreSuccessAction",
         pageList: pageList,
         ptrState: RefreshState.Idle
     }

@@ -1,7 +1,6 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import Logger from '~/global/util/Logger'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export interface ButtonConfig {
     icon?: string;
@@ -27,7 +26,7 @@ export default class NavigationBarViewFactory {
     static createButton(config: ButtonConfig) {
         if (config.icon) {
             return this.createButtonWithView(
-                <Ionicons name={config.icon} size={24} style={{color: 'white'}}/>, config.callback)
+                <AntDesign name={config.icon} size={24} style={{color: 'white'}}/>, config.callback)
         } else {
             return this.createButtonWithView(
                 <Text style={{fontSize: 15, color: '#FFFFFF'}}>{config.text}</Text>, config.callback)

@@ -22,7 +22,7 @@ interface Props extends BaseProps {
 
 const TAG = "PublicCmpt"
 
-class PublicCmpt extends React.Component<Props> {
+class PublicCmpt extends React.PureComponent<Props> {
     private scrollview: any;
 
     constructor(props) {

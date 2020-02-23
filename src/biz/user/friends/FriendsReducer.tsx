@@ -1,5 +1,5 @@
-import {defaultReduce} from "~/biz/common/redux/Reducers";
 import RefreshState from "~/global/components/refresh/RefreshState";
+import {defaultReduce} from "~/biz/common/redux/Reducers";
 
 const initialState = {
     loading: false,
@@ -7,22 +7,22 @@ const initialState = {
     isSuccess: false,
     hasLogin: false,
 };
-const TAG = "SearchReducer"
-export default function SearchReducer(state, action) {
+const TAG = "friends_"
+export default function FriendsReducer(state = initialState, action) {
     return defaultReduce(TAG, action, state, initialState)
 }
 
-export const SEARCH_ACTIONS = {
+export const FRIENDS_ACTIONS = {
     Refreshing: () => {
         return {
             type: `${TAG}#Refreshing`,
             ptrState: RefreshState.Refreshing,
         }
     },
-    Idle: (pageData) => {
+    Idle: (actionData) => {
         return {
             type: `${TAG}#Idle`,
-            pageData: pageData,
+            actionData: actionData,
             ptrState: RefreshState.Idle,
         }
     },
@@ -39,10 +39,10 @@ export const SEARCH_ACTIONS = {
 
         }
     },
-    LoadingMoreEnd: (pageData) => {
+    LoadingMoreEnd: (actionData) => {
         return {
             type: `${TAG}#LoadingMoreEnd`,
-            pageData: pageData,
+            actionData: actionData,
             ptrState: RefreshState.LoadingMoreEnd,
         }
     },
@@ -52,23 +52,4 @@ export const SEARCH_ACTIONS = {
             ptrState: RefreshState.LoadingMoreError,
         }
     },
-    SEARCH_CANCEL: () => {
-        return {
-            type: `${TAG}#SEARCH_CANCEL`,
-            pageData: null,
-            ptrState: RefreshState.Idle,
-        }
-    },
-    SearchesListSuccess: (json) => {
-        return {
-            type: `${TAG}#search_searches_list_success`,
-            search_searches_list: json
-        }
-    },
-    SearchListFail: (err) => {
-        return {
-            type: `${TAG}#search_searches_list_success`,
-            errorMessage: err,
-        }
-    }
 }

@@ -1,14 +1,24 @@
-import {defaultReduce} from "~/biz/common/redux/Reducers"
 import RefreshState from "~/global/components/refresh/RefreshState";
 
-const TAG = "HomeReducer"
-
-const defaultState = {}
-export default function homeReducer(state, action) {
-    return defaultReduce(TAG, action, state, defaultState)
+const initialState = {
+    loading: false,
+    errorMessage: '',
+    isSuccess: false,
+    hasLogin: false,
+};
+const TAG = "FavouriteReducer"
+export default function FavouriteReducer(state = initialState, action) {
+    if (action.type.startsWith(TAG)) {
+        console.log(action.type, action);
+        return {
+            ...state,
+            ...action
+        };
+    }
+    return state
 }
 
-export const ACTIONS = {
+export const FAV_ACTIONS = {
     Refreshing: () => {
         return {
             type: `${TAG}#Refreshing`,

@@ -10,7 +10,7 @@ import RefreshListBase from "~/global/components/refresh/RefreshListBase";
 const TAG = "RefreshListView"
 
 
-export default class RefreshListView extends RefreshListBase {
+export default class RefreshListView extends RefreshListBase<RefreshProps> {
     static defaultProps = {
         ptrState: RefreshState.Refreshing,
     }

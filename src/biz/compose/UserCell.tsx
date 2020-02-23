@@ -3,15 +3,16 @@ import {GestureResponderEvent, Image, StyleSheet, Text, TouchableOpacity, View} 
 import CheckBox from 'react-native-check-box'
 import Icon from "react-native-vector-icons/Ionicons";
 import BaseProps from "~/global/base/BaseProps";
+import {connect} from 'react-redux';
 
 interface Props extends BaseProps {
     user: any,
-    checkMap: boolean,
-    showCheckBox: any,
-    onPress: (event: GestureResponderEvent) => void;
+    checkMap?: boolean,
+    showCheckBox?: any,
+    onPress?: (event: GestureResponderEvent) => void;
 }
 
-export default class UserCell extends PureComponent<Props> {
+class UserCell extends PureComponent<Props> {
     render() {
         // console.log("UserCell: ", this.props)
         const {user, checkMap, showCheckBox} = this.props;
@@ -42,11 +43,18 @@ export default class UserCell extends PureComponent<Props> {
             name={checked ? 'ios-checkbox' : 'md-square-outline'}
             size={20}
             style={{
-                color: theme.themeColor,
+                color: theme.brand_primary,
             }}/>
     }
 
 }
+
+export default connect(
+    (state) => ({
+        theme: state.themeReducer.theme,
+    }),
+    (dispatch) => ({})
+)(UserCell)
 
 const styles = StyleSheet.create({
     userContainer: {

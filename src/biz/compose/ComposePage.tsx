@@ -22,7 +22,7 @@ interface State {
 
 const TAG = "ComposePage"
 
-class ComposePage extends React.Component<Props, State> {
+class ComposePage extends React.PureComponent<Props, State> {
     private selection
     private placeHolder = "你在做什么"
 
@@ -39,6 +39,7 @@ class ComposePage extends React.Component<Props, State> {
         let textInput = <TextInput
             onSelectionChange={(event) => this.selection = event.nativeEvent.selection}
             autoFocus={true}
+            multiline={true}
             placeholder={this.placeHolder}
             value={this.state.inputString}
             onChangeText={text => this.setState({inputString: text})}

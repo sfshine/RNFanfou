@@ -1,64 +1,75 @@
-import RefreshState from "~/global/components/refresh/RefreshState";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
-import {
-    search_beginLoadMoreAction, search_beginRefreshAction,
-    search_loadFailAction,
-    search_loadMoreSuccessAction,
-    search_refreshSuccessAction
-} from "~/biz/search/SearchReducer";
+import Logger from "~/global/util/Logger";
+import TipsUtil from "~/global/util/TipsUtil";
+import {SEARCH_ACTIONS} from "~/biz/search/SearchReducer";
 
 const PAGE_SIZE = 20
+const TAG = "SearchAction"
 
 export class SearchAction {
+    private pageNum: number;
+
     search(q) {
-        return this.loadSearchTimeline(q, {page: 1, data: []})
+        return async dispatch => {
+            this.pageNum = 1
+            dispatch(SEARCH_ACTIONS.Refreshing())
+            try {
+                let response = await FanfouFetch.get(Api.search_public_timeline, {
+                    page: this.pageNum,
+                    q: q,
+                    format: 'html'
+                })
+                if (!response) {
+                    throw "JSON数据异常"
+                } else {
+                    dispatch(SEARCH_ACTIONS.Idle(response))
+                }
+            } catch (err) {
+                dispatch(SEARCH_ACTIONS.RefreshingFailed())
+                Logger.error(TAG, "refreshTimeline error", err)
+                TipsUtil.toastFail("数据异常，请重试")
+            }
+        }
     }
 
     loadMore(q, oldPageData) {
-        let nextPageData = {page: oldPageData.page + 1, data: [...oldPageData.data]}
-        return this.loadSearchTimeline(q, nextPageData)
-    }
-
-    /**
-     * 刷新, paging 传入{page:1, data:{}}, load more传入 {page:>1, data: data进行追加}
-     * @param paging
-     * @returns {Function}
-     */
-    loadSearchTimeline(q, pageData) {
-        return dispatch => {
-            console.log("loadSearchTimeline pageData", pageData);
-            let isRefresh = pageData.page == 1
-            isRefresh ? dispatch(search_beginRefreshAction()) : dispatch(search_beginLoadMoreAction());
-            FanfouFetch.get(Api.search_public_timeline, {page: pageData.page, q: q, format: 'html'}).then((json) => {
-                console.log("loadSearchTimeline json", json);
-                //无论什么时候获取的数据不够一页就要显示没有更多数据了
-                let endStatus = json.length < PAGE_SIZE ? RefreshState.LoadingMoreEnd : RefreshState.Idle
-                let newPageData = {page: pageData.page, data: [...pageData.data, ...json]}
-                console.log("loadSearchTimeline newPageData", newPageData);
-                isRefresh ? dispatch(search_refreshSuccessAction(newPageData, endStatus)) : dispatch(search_loadMoreSuccessAction(newPageData, endStatus))
-            }).catch((e) => {
-                console.log(e);
-                let errorMsg = "加载失败";
-                dispatch(search_loadFailAction(errorMsg));
-            }).done();
+        return async dispatch => {
+            this.pageNum++
+            dispatch(SEARCH_ACTIONS.LoadingMore())
+            try {
+                let response = await FanfouFetch.get(Api.search_public_timeline, {
+                    page: this.pageNum,
+                    q: q,
+                    format: 'html'
+                })
+                if (!response) {
+                    throw "JSON数据异常"
+                } else {
+                    let newData = oldPageData.concat(response)
+                    if (response.length < PAGE_SIZE) {
+                        dispatch(SEARCH_ACTIONS.LoadingMoreEnd(newData))
+                    } else {
+                        dispatch(SEARCH_ACTIONS.Idle(newData))
+                    }
+                    Logger.log(TAG, "load more, newData = ", oldPageData)
+                }
+            } catch (err) {
+                this.pageNum-- //请求失败，需要把加的Page减回来。
+                dispatch(SEARCH_ACTIONS.LoadingMoreError())
+                Logger.error(TAG, "loadMoreTimeline error", err)
+            }
         }
     }
 
     static getSearchWordList() {
         return dispatch => {
             FanfouFetch.get(Api.saved_searches_list).then(json => {
-                console.log("saved_searches_list json", json);
-                dispatch({
-                    type: "search_searches_list_success",
-                    search_searches_list: json
-                })
+                Logger.log(TAG, "saved_searches_list json", json);
+                dispatch(SEARCH_ACTIONS.SearchesListSuccess(json))
             }).catch(e => {
-                console.error("saved_searches_list error:", e)
-                dispatch({
-                    type: "search_searches_list_fail",
-                    errorMessage: e.toString(),
-                })
+                Logger.error(TAG, "saved_searches_list error:", e)
+                dispatch(SEARCH_ACTIONS.SearchListFail(e.toString()))
             })
         }
     }
@@ -69,13 +80,5 @@ export class SearchAction {
 
     static destroySearchWord(queryId) {
         return FanfouFetch.post(Api.saved_searches_destroy, {id: queryId})
-    }
-
-    static search_cancel() {
-        return {
-            type: "search_cancel",
-            pageData: null,
-            ptrState: RefreshState.Idle,
-        }
     }
 }

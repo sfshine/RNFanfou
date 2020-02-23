@@ -1,15 +1,14 @@
 import React, {PureComponent} from 'react';
-import {Image} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-import MePage from '../../biz/test/main/me/MePage';
 import HomeFragment from '../../biz/main/home/HomeFragment';
 import BaseProps from "~/global/base/BaseProps";
 import DiscoveryFragment from "~/biz/discovery/DiscoveryFragment";
+import MePage from "~/biz/user/MePage";
 
 const TABS = {
     HomeFragment: {

@@ -1,46 +1,44 @@
-import React, {PureComponent} from 'react'
-import {DeviceInfo, Platform, StatusBar, StyleSheet, Text, View, ViewPropTypes} from 'react-native'
-import {PropTypes} from 'prop-types';
-import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
-import connect from "react-redux/es/connect/connect";
-import {goBackN} from "./NavigationManager";
-import Row from "../components/element/Row";
+import React, {PureComponent} from 'react';
+import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
+import NavigationBarViewFactory from '~/global/navigator/NavigationBarViewFactory';
+import connect from 'react-redux/es/connect/connect';
+import {goBackN} from './NavigationManager';
+import Row from '../components/element/Row';
+import BaseProps from "~/global/base/BaseProps";
 
 const NAV_BAR_HEIGHT_IOS = 44;//导航栏在iOS中的高度
 export const NAV_BAR_HEIGHT_ANDROID = 44;//导航栏在Android中的高度
-const STATUS_BAR_HEIGHT = DeviceInfo.isIPhoneX_deprecated ? 0 : 20;//状态栏的高度
+// const STATUS_BAR_HEIGHT = DeviceInfo.isIPhoneX_deprecated ? 0 : 20;//状态栏的高度
+const STATUS_BAR_HEIGHT = 20;//状态栏的高度
 
-class NavigationBar extends PureComponent {
-    //提供属性的类型检查
-    static propTypes = {
-        title: PropTypes.string,
-        titleView: PropTypes.element,
-        rightButton: PropTypes.element,
-        leftButton: PropTypes.element,
-        backNav: PropTypes.object,
-        statusBarHide: PropTypes.bool,
-    };
-    //设置默认属性
-    static defaultProps = {};
+interface Props extends BaseProps {
+    titleView: any,
+    title: any,
+    leftButton: any,
+    rightButton: any,
+    backNav: any,
+    statusBarHide: boolean,
+}
 
+class NavigationBar extends PureComponent<Props> {
     render() {
         let theme = this.props.theme;
         let styleWithTheme = {
             backgroundColor: theme.brand_primary,
-            textColor: theme.color_text_base
-        }
+            textColor: theme.color_text_base,
+        };
         return (
             this.createNavigationBarWithTheme(styleWithTheme)
-        )
+        );
     }
 
     createNavigationBarWithTheme = (styleWithTheme) => {
-        console.log("styleWithTheme", styleWithTheme)
+        console.log('styleWithTheme', styleWithTheme);
         return <View style={styles.navBarWithStatusBarShape}>
             {this.initStatusBar(styleWithTheme)}
             {this.initNav(styleWithTheme)}
-        </View>
-    }
+        </View>;
+    };
 
     initNav = (styleWithTheme) => {
         let titleView = this.props.titleView ? this.props.titleView :
@@ -56,13 +54,13 @@ class NavigationBar extends PureComponent {
             {this.props.rightButton ? this.props.rightButton : <View style={{width: 40}}/>}
         </View>;
         return content;
-    }
+    };
 
     getDefaultLeftButton(backNav) {
         return backNav ? NavigationBarViewFactory.createButton({
-            icon: 'md-arrow-back',
-            callback: () => goBackN(backNav)
-        }) : <View style={{width: 10}}/>
+            icon: 'arrowleft',
+            callback: () => goBackN(backNav),
+        }) : <View style={{width: 10}}/>;
     }
 
     initStatusBar = (styleWithTheme) => {
@@ -71,10 +69,11 @@ class NavigationBar extends PureComponent {
             backgroundColor: styleWithTheme.backgroundColor,
             barStyle: 'light-content',
             animated: true,
-        }
-        let statusBar = this.props.statusBarHide ? null : <StatusBar {...statusBarCfg} />
+        };
+        // @ts-ignore
+        let statusBar = this.props.statusBarHide ? null : <StatusBar {...statusBarCfg} />;
         return statusBar;
-    }
+    };
 
 
 }
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: 'white',
     },
 });

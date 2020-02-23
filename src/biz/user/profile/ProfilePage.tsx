@@ -8,11 +8,11 @@ import PageCmpt from "~/global/components/PageCmpt";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {Api} from "~/biz/common/api/Api";
 import Logger from "~/global/util/Logger";
-import {navigate} from "~/global/navigator/NavigationManager";
 import {FanfouUtil} from '~/biz/common/util/FanfouUtil';
 import BaseProps from "~/global/base/BaseProps";
 import ProfileAction from "~/biz/user/profile/ProfileAction";
-import {USER_PROFILE_ACTIONS} from "~/biz/user/profile/ProfileReducer";
+import {navigate} from "~/global/navigator/NavigationManager";
+import TipsUtil from "~/global/util/TipsUtil";
 
 interface State {
     user: any,
@@ -31,8 +31,8 @@ const TAG = "ProfilePage"
  * 2.点击url,此时this.props.navigation.state.params.url非空,此时需要调用Api.users_show接口获取user信息
  * 3.从主页的我的TAB进入
  */
-export default class ProfilePage extends React.Component<Props, State> {
-    private readonly url
+export default class ProfilePage extends React.PureComponent<Props, State> {
+    private readonly userId
     private mProfileAction = new ProfileAction()
 
     constructor(props) {
@@ -41,8 +41,15 @@ export default class ProfilePage extends React.Component<Props, State> {
         let user = this.props.userFromMePage
         if (!user) {
             user = this.props.navigation.state.params.user
-            if (!user) {
-                this.url = this.props.navigation.state.params.url
+        }
+        if (user) {
+            this.userId = user.id
+        } else {
+            let url = this.props.navigation.state.params.url
+            if (FanfouUtil.isProfileUrl(url)) {
+                this.userId = url.substr(url.indexOf('com/') + 4, url.length)
+            } else {
+                TipsUtil.toastFail("获取不到用户信息,请重试.")
             }
         }
         this.state = {
@@ -52,31 +59,28 @@ export default class ProfilePage extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
-        let url = this.url
+    componentDidMount() {
         if (this.state.user) {
             this.onRefreshTimeline();
             Logger.log(TAG, "refreshUserTimeline now!!!")//测试发现setState以后这里不会重复执行也就是state [props变化后render会触发执行.
-        } else if (url) {
-            Logger.log(TAG, 'componentWillMount:', url);
-            /*<a href="http://fanfou.com/dailu321" className="former">*/
-            if (FanfouUtil.isProfileUrl(url)) {
-                let userId = url.substr(url.indexOf('com/') + 4, url.length)
-                FanfouFetch.get(Api.users_show, {id: userId}).then(user => {
-                    this.setState({
-                        user: user,
-                    })
-                    this.onRefreshTimeline();
-                }).catch(e => {
-                    Logger.log(TAG, "获取用户信息失败")
+        } else if (this.userId) {
+            FanfouFetch.get(Api.users_show, {id: this.userId}).then(user => {
+                this.setState({
+                    user: user,
                 })
-            }
+                this.onRefreshTimeline();
+            }).catch(e => {
+                Logger.log(TAG, "获取用户信息失败")
+            })
         }
     }
 
     render() {
         let user = this.state.user
-        return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation}>
+        return <PageCmpt title={user ? user.name : "加载中..."} backNav={this.props.navigation} rightNavButtonConfig={{
+            icon: user && user.following ? "deleteuser" : "adduser",
+            callback: this.operateFriendShip
+        }}>
             {user ? <RefreshListViewFlickr
                 ListHeaderComponent={this._renderHeader()}
                 data={this.state.pageData}
@@ -102,24 +106,28 @@ export default class ProfilePage extends React.Component<Props, State> {
             {user.url ? <Text style={styles.profile_description}> {user.url}</Text> : null}
             <Text style={styles.profile_description}>{user.description}</Text>
             <View style={styles.profile_numbers}>
-                <View style={styles.profile_number_cell}>
+                <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
+                    TipsUtil.toast("现在就在状态页")
+                }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.statuses_count}
                     </Text>
                     <Text style={styles.profile_number_cell_name}>
-                        消息
+                        状态
                     </Text>
-                </View>
-                <View style={styles.profile_number_cell}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
+                    navigate(this.props, "GalleryPage", {user: this.state.user})
+                }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.photo_count}
                     </Text>
                     <Text style={styles.profile_number_cell_name}>
                         照片
                     </Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FavouriteScreen", {user: this.state.user})
+                    navigate(this.props, "FavouritePage", {user: this.state.user})
                 }
                 }>
                     <Text style={styles.profile_number_cell_num}>
@@ -130,7 +138,7 @@ export default class ProfilePage extends React.Component<Props, State> {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FriendsScreen", {user: this.state.user, isFollowers: false})
+                    navigate(this.props, "FriendsPage", {user: this.state.user, isFollowers: false})
                 }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.friends_count}
@@ -140,7 +148,7 @@ export default class ProfilePage extends React.Component<Props, State> {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profile_number_cell} onPress={() => {
-                    navigate(this.props, "FriendsScreen", {user: this.state.user, isFollowers: true})
+                    navigate(this.props, "FriendsPage", {user: this.state.user, isFollowers: true})
                 }}>
                     <Text style={styles.profile_number_cell_num}>
                         {user.followers_count}
@@ -209,23 +217,27 @@ export default class ProfilePage extends React.Component<Props, State> {
     //     </View>
     // }
     //
-    // operateFriendShip = () => {
-    //     let following = this.state.following
-    //     following ? Toast.show("取消关注中...", 2, false) : Toast.show("关注中...", 2, false)
-    //     let url = following ? friendships_destroy() : friendships_create()
-    //     FanfouFetch.post(url, {id: this.state.user.id}).then(user => {
-    //         Logger.log(TAG, "operateFriendShip:" + user)
-    //         following ? Toast.success("取关成功", 2, false) : Toast.success("关注成功", 2, false)
-    //         if (user) {
-    //             this.setState({
-    //                 following: !following
-    //             })
-    //         }
-    //     }).catch(e => {
-    //         Logger.log(TAG, "取关/关注操作失败:", e)
-    //         Toast.fail("操作失败", 2, false)
-    //     })
-    // }
+    operateFriendShip = () => {
+        let user = this.state.user
+        if (!user) {
+            TipsUtil.toastFail("获取用户信息错误,请重试")
+        } else {
+            let following = user.following
+            let loading = TipsUtil.toastLoading(following ? "取消关注中..." : "关注中...")
+            let url = following ? Api.friendships_destroy : Api.friendships_create
+            FanfouFetch.post(url, {id: user.id}).then(user => {
+                Logger.log(TAG, "operateFriendShip:" + user)
+                TipsUtil.toastSuccess(following ? "取关成功" : "关注成功", loading)
+                if (user) {
+                    this.setState({
+                        user: user
+                    })
+                }
+            }).catch(e => {
+                TipsUtil.toastFail("取关/关注操作失败,请重试", loading)
+            })
+        }
+    }
 }
 
 const styles = StyleSheet.create({
