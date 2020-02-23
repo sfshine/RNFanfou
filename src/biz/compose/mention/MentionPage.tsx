@@ -9,6 +9,8 @@ import Logger from "~/global/util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import ArchModal from "~/global/util/ArchModal";
 import {Keyboard} from "react-native";
+import {LayoutProvider} from "recyclerlistview";
+import {screenWidth} from "~/global/util/ScreenUtil";
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -35,6 +37,16 @@ class MentionPage extends React.PureComponent<Props, State> {
         Keyboard.dismiss()
     }
 
+    layoutProvider = new LayoutProvider(index => {
+            // console.log("RefreshListViewlayoutProvider invoke", index)
+            return 0
+        },
+        (type, dim) => {
+            dim.width = screenWidth
+            dim.height = 60;
+        }
+    );
+
     componentDidMount() {
         this.props.refreshFriends()
     }
@@ -48,6 +60,7 @@ class MentionPage extends React.PureComponent<Props, State> {
             callback: this.sure
         }}>
             <RefreshListView
+                customLayoutProvider={this.layoutProvider}
                 data={pageData}
                 ptrState={ptrState}
                 renderItem={this._renderItem}
