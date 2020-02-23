@@ -8,7 +8,7 @@ import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
 import QuickComposeAction from "~/biz/compose/QuickComposeAction";
 import TipsUtil from "~/global/util/TipsUtil";
-import {goBack, navigate} from "~/global/navigator/NavigationManager";
+import {goBack} from "~/global/navigator/NavigationManager";
 import PageCmpt from "~/global/components/PageCmpt";
 import ArchModal from "~/global/util/ArchModal";
 import MentionPage from "~/biz/compose/mention/MentionPage";
@@ -39,6 +39,7 @@ class ComposePage extends React.PureComponent<Props, State> {
     render() {
         const {photos} = this.state;
         let textInput = <TextInput
+            ref="textInput"
             onSelectionChange={(event) => this.selection = event.nativeEvent.selection}
             autoFocus={true}
             multiline={true}
@@ -99,6 +100,9 @@ class ComposePage extends React.PureComponent<Props, State> {
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.onHashButtonClick}>
+                <Feather name={'hash'} size={25} style={{color: 'white'}}/>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.onSendButtonClick}>
                 <Icon name={'send'} size={25} style={{color: 'white', marginRight: 10}}/>
             </TouchableOpacity>
@@ -118,7 +122,18 @@ class ComposePage extends React.PureComponent<Props, State> {
             inputString: curInputStr + names
         })
     }
-
+    onHashButtonClick = () => {
+        let curInputStr = this.state.inputString + "##"
+        this.setState({
+            inputString: curInputStr
+        })
+        setTimeout(() => {
+            // @ts-ignore
+            this.refs["textInput"].setNativeProps({
+                selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
+            })
+        }, 10)
+    }
     onSendButtonClick = () => {
         const {photos, inputString} = this.state
         if (inputString.length == 0 && photos.length == 0) {

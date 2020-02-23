@@ -95,6 +95,9 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.onHashButtonClick}>
+                <Feather name={'hash'} size={25} style={{color: 'white'}}/>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                 this.onSendButtonClick(data)
             }}>
@@ -127,7 +130,18 @@ class QuickComposeComponent extends PureComponent<Props, State> {
                 onPress: () => this.setState({photos: []})
             }])
     }
-
+    onHashButtonClick = () => {
+        let curInputStr = this.state.inputString + "##"
+        this.setState({
+            inputString: curInputStr
+        })
+        setTimeout(() => {
+            // @ts-ignore
+            this.refs["textInput"].setNativeProps({
+                selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
+            })
+        }, 10)
+    }
     onSendButtonClick = (data) => {
         const photos = this.state.photos
         let item = data.status
