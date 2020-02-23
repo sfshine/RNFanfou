@@ -7,7 +7,7 @@ const cpuArch = ['armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'];
 const cmdRN = [
     "pwd",
     "git checkout develop",
-    // "git pull",
+    "git pull",
     "git status",
     "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "yarn",
