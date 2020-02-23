@@ -71,7 +71,9 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
     _renderHeader = (headerStatus) => {
         Logger.log(TAG, "_renderHeader", headerStatus)
         return headerStatus ? <View style={{backgroundColor: '#FFFFFF', paddingBottom: 5, marginBottom: 2}}>
-            <StatusComponent item={headerStatus} callback={() => this._onStatusClick(headerStatus)}/>
+            <StatusComponent item={headerStatus} callback={() => {
+                //no-op
+            }}/>
         </View> : null;
     };
 
