@@ -158,7 +158,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             inputString: '',
             photos: []
         })
-        this.props.modal.hide()
+        this.props.modal.remove()
         return true
     }
 

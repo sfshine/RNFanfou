@@ -5,11 +5,11 @@ export default class ArchModal {
     private key
 
     show(reactNode: React.ReactNode) {
-        this.hide()
+        this.remove()
         this.key = Portal.add(reactNode)
     }
 
-    hide() {
+    remove() {
         if (this.key) {
             Portal.remove(this.key)
             this.key = undefined
