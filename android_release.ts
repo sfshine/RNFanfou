@@ -5,10 +5,10 @@ const apkPath = './android/app/build/outputs/apk/release/';
 const cpuArch = ['armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'];
 
 const cmdRN = [
-    "pwd",
-    "git checkout develop",
-    "git pull",
-    "git status",
+    // "pwd",
+    // "git checkout develop",
+    // "git pull",
+    // "git status",
     "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "yarn",
     "react-native link",
