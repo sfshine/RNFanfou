@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 4,
         marginRight: 4,
+        marginBottom: 5,
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
-        paddingBottom: 5,
         flex: 1,
     },
     toolsContainer: {
