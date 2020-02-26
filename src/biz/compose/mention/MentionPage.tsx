@@ -11,6 +11,7 @@ import ArchModal from "~/global/util/ArchModal";
 import {Keyboard} from "react-native";
 import {LayoutProvider} from "recyclerlistview";
 import {screenWidth} from "~/global/util/ScreenUtil";
+import BackPressComponent from "~/global/components/BackPressComponent";
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -59,6 +60,7 @@ class MentionPage extends React.PureComponent<Props, State> {
             icon: Object.keys(this.state.checkedMap).length > 0 ? "check" : "close",
             callback: this.sure
         }}>
+            <BackPressComponent backPress={this.dismiss}/>
             <RefreshListView
                 customLayoutProvider={this.layoutProvider}
                 data={pageData}
@@ -78,11 +80,15 @@ class MentionPage extends React.PureComponent<Props, State> {
         </PageCmpt>
     }
 
+    dismiss = () => {
+        this.props.callback(null)
+        this.props.modal.remove()
+        return true
+    }
     sure = () => {
         this.props.callback(this.state.checkedMap)
         this.props.modal.remove()
-    };
-
+    }
     _renderItem = (data) => {
         Logger.log(TAG, "_renderItem ", this.state.checkedMap)
         let user = data.item;
