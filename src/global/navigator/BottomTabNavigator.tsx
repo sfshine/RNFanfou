@@ -5,10 +5,11 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-import HomeFragment from '../../biz/main/home/HomeFragment';
+import HomeFragment from '../../biz/home/HomeFragment';
 import BaseProps from "~/global/base/BaseProps";
 import DiscoveryFragment from "~/biz/discovery/DiscoveryFragment";
-import MePage from "~/biz/user/MePage";
+import MeFragment from "~/biz/user/MeFragment";
+import MessageFragment from "~/biz/message/MessageFragment";
 
 const TABS = {
     HomeFragment: {
@@ -29,8 +30,18 @@ const TABS = {
             ),
         },
     },
-    MePage: {
-        screen: MePage,
+    MessageFragment: {
+        screen: MessageFragment,
+        navigationOptions: {
+            tabBarLabel: '消息',
+            tabBarIcon: ({tintColor, focused}) => (
+                <Icon name={'message-text-outline'} size={24} c style={{color: tintColor}}/>
+
+            ),
+        },
+    },
+    MeFragment: {
+        screen: MeFragment,
         navigationOptions: {
             tabBarLabel: '我的',
             tabBarIcon: ({tintColor, focused}) => (

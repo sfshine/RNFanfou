@@ -1,12 +1,10 @@
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import * as React from "react";
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import TimelineCmpt from "~/biz/timeline/TimelineCmpt";
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import {screenWidth} from "~/global/util/ScreenUtil";
 import ComposeButton from "~/biz/main/cmpt/ComposeButton";
 
 /**

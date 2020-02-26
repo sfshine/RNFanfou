@@ -21,7 +21,7 @@ interface State {
 }
 
 interface Props extends BaseProps {
-    userFromMePage: any
+    userFromMeFragment: any
 }
 
 const TAG = "ProfilePage"
@@ -38,7 +38,7 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props)
         Logger.log(TAG, 'constructor', this.props);
-        let user = this.props.userFromMePage
+        let user = this.props.userFromMeFragment
         if (!user) {
             user = this.props.navigation.state.params.user
         }

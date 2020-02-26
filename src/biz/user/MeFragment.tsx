@@ -2,6 +2,7 @@ import {connect} from "react-redux";
 import * as React from "react";
 import ProfilePage from "~/biz/user/profile/ProfilePage";
 import {GlobalCache} from "~/global/AppGlobal";
+import NavigationManager from "~/global/navigator/NavigationManager";
 
 interface Props {
     actionData: object;
@@ -10,9 +11,9 @@ interface Props {
 interface State {
 }
 
-export default class MePage extends React.PureComponent<Props, State> {
+export default class MeFragment extends React.PureComponent<Props, State> {
 
     render() {
-        return <ProfilePage userFromMePage={GlobalCache.user}/>
+        return <ProfilePage navigation={NavigationManager.mainNavigation} userFromMeFragment={GlobalCache.user}/>
     }
 }
