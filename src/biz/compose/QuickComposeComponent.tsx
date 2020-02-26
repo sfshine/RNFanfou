@@ -179,7 +179,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
     onChooseMentions = (checkedMap) => {
         // @ts-ignore
         if (this.refs["textInput"]) this.refs["textInput"].focus()
-        if (!checkedMap && Object.keys(checkedMap).length < 1) return
+        if (!checkedMap || Object.keys(checkedMap).length < 1) return
         let names = ''
         Object.keys(checkedMap).forEach(function (name) {
             if (checkedMap[name]) {

@@ -12,6 +12,7 @@ import FriendsReducer from "~/biz/user/friends/FriendsReducer";
 import FavouriteReducer from "~/biz/user/favourite/FavouriteReducer";
 import GalleryReducer from "~/biz/user/gallery/GalleryReducer";
 import MentionReducer from "~/biz/compose/mention/MentionReducer";
+import MessageReducer from "~/biz/message/MessageReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -25,6 +26,7 @@ export const rootReducer = combineReducers({
     FavouriteReducer: FavouriteReducer,
     GalleryReducer: GalleryReducer,
     MentionReducer: MentionReducer,
+    MessageReducer: MessageReducer,
 });
 
 export function defaultReduce(tag, action, state, defaultState = {},) {

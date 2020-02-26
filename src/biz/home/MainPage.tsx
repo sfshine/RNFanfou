@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     },
 });
 export default connect(
-    (state) => ({
-    }),
+    (state) => ({}),
     (dispatch) => ({})
 )(MainPage)

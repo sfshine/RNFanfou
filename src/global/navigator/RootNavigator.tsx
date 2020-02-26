@@ -4,7 +4,7 @@ import WelcomePage from "~/biz/welcome/WelcomePage";
 import WebPage from "~/global/components/page/WebPage";
 import PictureViewPage from '~/global/components/page/PictureViewPage';
 import LoginPage from "~/biz/user/login/LoginPage";
-import MainPage from "~/biz/main/MainPage";
+import MainPage from "~/biz/home/MainPage";
 import React from "react";
 import ComposePage from "~/biz/compose/ComposePage";
 import ProfilePage from "~/biz/user/profile/ProfilePage";
