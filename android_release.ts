@@ -5,10 +5,8 @@ const apkPath = './android/app/build/outputs/apk/release/';
 const cpuArch = ['armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'];
 
 const cmdRN = [
-    // "pwd",
-    // "git checkout develop",
-    // "git pull",
-    // "git status",
+    "yarn",
+    "./node_modules/.bin/tsc",
     "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "yarn",
     "react-native link",
@@ -38,4 +36,3 @@ for (let arch of cpuArch) {
             console.log(err);
         })
 }
-
