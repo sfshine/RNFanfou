@@ -1,10 +1,11 @@
 import Logger from "~/global/util/Logger"
-import {GlobalCache} from "~/global/AppGlobal";
+import {emptyUser, GlobalCache} from "~/global/AppGlobal";
 import {ConfigUtil} from "~/global/util/ConfigUtil";
 import TipsUtil from "~/global/util/TipsUtil";
 import {Api, FanfouModule} from "~/biz/common/api/Api";
 import {navigateResetN} from "~/global/navigator/NavigationManager";
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
+import {reduxReset} from "~/global/redux/ResetAction";
 
 
 /**
@@ -52,6 +53,16 @@ export default class LoginAction {
                 Logger.error(TAG, "登录失败：", e)
                 TipsUtil.toastSuccess("登录失败", loading)
             })
+        }
+    }
+
+    static logout(navigation) {
+        return dispatch => {
+            GlobalCache.user = emptyUser;
+            ConfigUtil.set(KEY, GlobalCache.user).then()
+            Logger.log(TAG, "logout", GlobalCache.user)
+            dispatch(reduxReset());
+            navigateResetN(navigation, "LoginPage")
         }
     }
 }

@@ -3,13 +3,14 @@ import * as React from "react";
 import {GlobalCache} from "~/global/AppGlobal";
 import PageCmpt from "~/global/components/PageCmpt";
 import {Image, ImageBackground, ScrollView, StyleSheet, Text} from "react-native";
-import {List} from "@ant-design/react-native";
+import {List, Modal} from "@ant-design/react-native";
 import Item from "@ant-design/react-native/es/list/ListItem";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import BaseProps from "~/global/base/BaseProps";
+import LoginAction from "~/biz/user/login/LoginAction";
 
 interface Props extends BaseProps {
+    logout: Function,
 }
 
 interface State {
@@ -18,14 +19,29 @@ interface State {
 class MeFragment extends React.PureComponent<Props, State> {
 
     render() {
-        return <PageCmpt title={" "}>
+        return <PageCmpt title={" "} rightNavButtonConfig={
+            {
+                text: "退出",
+                callback: this.confirmLogout
+            }
+        }>
             {this.renderContent()}
         </PageCmpt>
     }
 
+    private confirmLogout = () => {
+        Modal.alert('确认', '退出当前账号?', [
+            {
+                text: '取消',
+                onPress: () => console.log('cancel'),
+                style: 'cancel',
+            },
+            {text: '确定', onPress: () => this.props.logout(NavigationManager.mainNavigation)},
+        ]);
+    }
+
     private renderContent() {
         let user = GlobalCache.user
-        let theme = this.props.theme
         return <ScrollView
             style={{flex: 1, backgroundColor: '#f5f5f9'}}
             automaticallyAdjustContentInsets={false}
@@ -85,5 +101,9 @@ export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
     }),
-    (dispatch) => ({})
-)(MeFragment)
+    (dispatch) => ({
+        logout: (navigation) => dispatch(LoginAction.logout(navigation))
+
+    })
+)
+(MeFragment)
