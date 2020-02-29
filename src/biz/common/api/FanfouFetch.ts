@@ -24,7 +24,7 @@ export default class FanfouFetch {
             }).then(response => {
                 let json = JSON.parse(response)
                 Logger.log(TAG, "FanfouFetch post response:", json)
-                return JSON.parse(json);
+                return json;
             });
     }
 }
