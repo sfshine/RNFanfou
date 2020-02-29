@@ -8,21 +8,20 @@ const PAGE_SIZE = 20
 const TAG = "SearchAction"
 
 export class SearchAction {
-    private pageNum: number;
+    private max_id: number;
 
     search(q) {
         return async dispatch => {
-            this.pageNum = 1
             dispatch(SEARCH_ACTIONS.Refreshing())
             try {
                 let response = await FanfouFetch.get(Api.search_public_timeline, {
-                    page: this.pageNum,
                     q: q,
                     format: 'html'
                 })
                 if (!response) {
                     throw "JSON数据异常"
                 } else {
+                    this.max_id = response.length > 0 ? response[response.length - 1].id : null
                     dispatch(SEARCH_ACTIONS.Idle(response))
                 }
             } catch (err) {
@@ -35,11 +34,10 @@ export class SearchAction {
 
     loadMore(q, oldPageData) {
         return async dispatch => {
-            this.pageNum++
             dispatch(SEARCH_ACTIONS.LoadingMore())
             try {
                 let response = await FanfouFetch.get(Api.search_public_timeline, {
-                    page: this.pageNum,
+                    max_id: this.max_id,
                     q: q,
                     format: 'html'
                 })
@@ -47,6 +45,7 @@ export class SearchAction {
                     throw "JSON数据异常"
                 } else {
                     let newData = oldPageData.concat(response)
+                    this.max_id = response.length > 0 ? response[response.length - 1].id : null
                     if (response.length < PAGE_SIZE) {
                         dispatch(SEARCH_ACTIONS.LoadingMoreEnd(newData))
                     } else {
@@ -55,7 +54,6 @@ export class SearchAction {
                     Logger.log(TAG, "load more, newData = ", oldPageData)
                 }
             } catch (err) {
-                this.pageNum-- //请求失败，需要把加的Page减回来。
                 dispatch(SEARCH_ACTIONS.LoadingMoreError())
                 Logger.error(TAG, "loadMoreTimeline error", err)
             }
