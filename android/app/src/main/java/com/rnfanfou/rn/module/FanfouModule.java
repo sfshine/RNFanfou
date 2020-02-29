@@ -14,6 +14,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
 import com.rnfanfou.rn.module.oauth.OAuth;
+
+import org.oauthsimple.exceptions.OAuthException;
 import org.oauthsimple.model.OAuthToken;
 
 import java.io.File;
@@ -72,6 +74,8 @@ public class FanfouModule extends ReactContextBaseJavaModule {
                 try {
                     token = mXAuth.getOAuthAccessToken(username, password);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (OAuthException e) {
                     e.printStackTrace();
                 }
                 Log.d(TAG, "xauth token=" + token);

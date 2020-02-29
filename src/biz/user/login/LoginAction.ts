@@ -33,27 +33,25 @@ export default class LoginAction {
     }
 
     static onSubmitLogin(account: string, password: string, navigation: object) {
-        return dispatch => {
-            let loading = TipsUtil.toastLoading("登录中...")
-            let accessToken = {}
-            FanfouModule.login(account, password).then(result => {
-                return result ? result : Promise.reject("获取token失败:" + result)
-            }).then(result => {
-                accessToken = {token: result.token, secret: result.secret}
-                FanfouModule.setToken(result.token, result.secret)
-                return FanfouFetch.get(Api.verify_credentials, {mode: 'lite'})
-            }).then(userJson => {
-                userJson = {...userJson, ...accessToken}
-                Logger.log(TAG, "登陆成功", userJson)
-                GlobalCache.user = userJson
-                ConfigUtil.set(KEY, GlobalCache.user).then()
-                TipsUtil.toastSuccess("登录成功", loading)
-                navigateResetN(navigation, "MainPage");
-            }).catch(e => {
-                Logger.error(TAG, "登录失败：", e)
-                TipsUtil.toastSuccess("登录失败", loading)
-            })
-        }
+        let loading = TipsUtil.toastLoading("登录中...")
+        let accessToken = {}
+        FanfouModule.login(account, password).then(result => {
+            return result ? result : Promise.reject("获取token失败:" + result)
+        }).then(result => {
+            accessToken = {token: result.token, secret: result.secret}
+            FanfouModule.setToken(result.token, result.secret)
+            return FanfouFetch.get(Api.verify_credentials, {mode: 'lite'})
+        }).then(userJson => {
+            userJson = {...userJson, ...accessToken}
+            Logger.log(TAG, "登陆成功", userJson)
+            GlobalCache.user = userJson
+            ConfigUtil.set(KEY, GlobalCache.user).then()
+            TipsUtil.toastSuccess("登录成功", loading)
+            navigateResetN(navigation, "MainPage");
+        }).catch(e => {
+            Logger.error(TAG, "登录失败：", e)
+            TipsUtil.toastFail("登录失败,请检查用户名和密码", loading)
+        })
     }
 
     static logout(navigation) {
