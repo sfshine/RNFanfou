@@ -2,12 +2,13 @@ import {connect} from "react-redux";
 import * as React from "react";
 import {GlobalCache} from "~/global/AppGlobal";
 import PageCmpt from "~/global/components/PageCmpt";
-import {Image, ImageBackground, ScrollView, StyleSheet, Text} from "react-native";
+import {Image, ImageBackground, Linking, ScrollView, StyleSheet, Text} from "react-native";
 import {List, Modal} from "@ant-design/react-native";
 import Item from "@ant-design/react-native/es/list/ListItem";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import BaseProps from "~/global/base/BaseProps";
 import LoginAction from "~/biz/user/login/LoginAction";
+import Logger from "~/global/util/Logger";
 
 interface Props extends BaseProps {
     logout: Function,
@@ -15,6 +16,11 @@ interface Props extends BaseProps {
 
 interface State {
 }
+
+const aboutMessage = "\n这是一个简洁易用、基于ReactNative的开源饭否客户端,有任何问题和建议欢迎@Alexander.G；另外,热烈欢迎PR!\n\n感谢: @小喊，@shenlong5418"
+const appVersion = "RN饭否 0.1"
+const github = "https://github.com/sfshine/RNFanfou"
+const TAG = "MeFragment"
 
 class MeFragment extends React.PureComponent<Props, State> {
 
@@ -74,6 +80,24 @@ class MeFragment extends React.PureComponent<Props, State> {
                 <Item extra={user.followers_count} arrow="horizontal" onPress={() => {
                     navigateN(NavigationManager.mainNavigation, "FriendsPage", {user: user, isFollowers: true})
                 }}>粉丝
+                </Item>
+                <Item arrow="horizontal" onPress={() => {
+                    Modal.alert(appVersion, aboutMessage, [
+                        {
+                            text: '确认',
+                            onPress: () => console.log('cancel'),
+                        },
+                        {
+                            text: "Github",
+                            onPress: () => {
+                                Linking.openURL(github)
+                                    .catch((err) => {
+                                        Logger.log(TAG, 'openURL error', err);
+                                    });
+                            }
+                        }
+                    ]);
+                }}>关于
                 </Item>
             </List>
         </ScrollView>
