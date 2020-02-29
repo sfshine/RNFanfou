@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {connect} from "react-redux";
-import * as action from "./PublicAction";
+import {PublicAction} from "./PublicAction";
 
 import TimelineCell from "../../timeline/TimelineCell";
 import RefreshListView from "../../../global/components/refresh/RefreshListView";
@@ -14,16 +14,18 @@ import {SearchAction} from "~/biz/search/SearchAction";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
+    loadMore: Function,
     getSearchWordList: Function,
     ptrState: string,
-    pageList: Array<any>,
+    pageData: Array<any>,
     search_searches_list: Array<any>,
 }
 
+const action = new PublicAction()
 const TAG = "PublicCmpt"
 
 class PublicCmpt extends React.PureComponent<Props> {
-    private scrollview: any;
+    private scrollView: any;
 
     constructor(props) {
         super(props);
@@ -31,19 +33,12 @@ class PublicCmpt extends React.PureComponent<Props> {
 
     componentWillMount() {
         Logger.log(TAG, 'PublicCmpt componentWillMount', this.props);
-        this.props.refreshTimeline([])
+        this.props.refreshTimeline()
         this.props.getSearchWordList()
     }
 
     componentDidMount() {
         Logger.log(TAG, 'PublicCmpt componentDidMount', this.props);
-        // EventBus.getInstance().addListener(EventType.refreshKeywords, this.listener = data => {
-        //     this.onSearchCallback(data)
-        // })
-    }
-
-    componentWillUnmount() {
-        // EventBus.getInstance().removeListener(this.listener);
     }
 
     render() {
@@ -51,14 +46,17 @@ class PublicCmpt extends React.PureComponent<Props> {
         return <RefreshListView
             ListHeaderComponent={this._renderHeader}
             ptrState={this.props.ptrState}
-            data={this.props.pageList ? this.props.pageList : []}
+            data={this.props.pageData ? this.props.pageData : []}
             renderItem={this._renderItem}
             keyExtractor={(item) => item.id}
-            ListFooterComponent={this._renderFooter(this.props.pageList)}
             onHeaderRefresh={() => {
                 Logger.log(TAG, "onHeaderRefresh");
-                this.props.refreshTimeline(this.props.pageList)
+                this.props.refreshTimeline()
                 this.props.getSearchWordList()
+            }}
+            onFooterRefresh={() => {
+                console.log("onFooterRefresh");
+                this.props.loadMore(this.props.pageData)
             }}
         />
     }
@@ -88,7 +86,7 @@ class PublicCmpt extends React.PureComponent<Props> {
                 </TouchableOpacity>
             );
         }
-        return <ScrollView ref={(r) => this.scrollview = r}
+        return <ScrollView ref={(r) => this.scrollView = r}
             // maxWidth={'180%'}
             // maxHeight={85}
                            style={styles.keywordContainer} horizontal={true}
@@ -102,14 +100,6 @@ class PublicCmpt extends React.PureComponent<Props> {
         return (
             <TimelineCell item={item}/>
         )
-    };
-    onSearchCallback = (data) => {
-        this.props.getSearchWordList()
-        if (data.isCreate) {
-            //TODO do nothing
-        } else {
-            this.scrollview.scrollTo({x: 0, y: 0, animated: false});
-        }
     };
 }
 
@@ -139,12 +129,13 @@ const styles = StyleSheet.create({
 export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
-        pageList: state.PublicReducer.pageList,
+        pageData: state.PublicReducer.pageData,
         ptrState: state.PublicReducer.ptrState,
         search_searches_list: state.SearchReducer.search_searches_list,
     }),
     (dispatch) => ({
-        refreshTimeline: (pageList) => dispatch(action.refreshTimeline(pageList)),
+        refreshTimeline: () => dispatch(action.loadPublicTimeline()),
+        loadMore: (oldData) => dispatch(action.loadMore(oldData)),
         getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),
     })
 )(PublicCmpt)

@@ -45,7 +45,7 @@ export class SearchAction {
                     throw "JSON数据异常"
                 } else {
                     let newData = oldPageData.concat(response)
-                    this.max_id = response.length > 0 ? response[response.length - 1].id : null
+                    this.max_id = newData.length > 0 ? newData[response.length - 1].id : null
                     if (response.length < PAGE_SIZE) {
                         dispatch(SEARCH_ACTIONS.LoadingMoreEnd(newData))
                     } else {
