@@ -17,6 +17,7 @@ export const FRIENDS_ACTIONS = {
         return {
             type: `${TAG}#Refreshing`,
             ptrState: RefreshState.Refreshing,
+            actionData: [],
         }
     },
     Idle: (actionData) => {

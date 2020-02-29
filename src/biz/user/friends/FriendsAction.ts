@@ -9,13 +9,18 @@ const PAGE_SIZE = 8
 
 export default class FriendsAction {
     private pageNum: number;
+    private url: string
+
+    setMode(isFollowers: boolean) {
+        this.url = isFollowers ? Api.statuses_followers : Api.statuses_friends
+    }
 
     refreshFriends(id) {
         return async dispatch => {
             this.pageNum = 1
             dispatch(FRIENDS_ACTIONS.Refreshing())
             try {
-                let response = await FanfouFetch.get(Api.statuses_followers, {
+                let response = await FanfouFetch.get(this.url, {
                     id: id,
                     page: this.pageNum,
                     format: 'html'
@@ -38,7 +43,7 @@ export default class FriendsAction {
             this.pageNum++
             dispatch(FRIENDS_ACTIONS.LoadingMore())
             try {
-                let response = await FanfouFetch.get(Api.statuses_followers, {
+                let response = await FanfouFetch.get(this.url, {
                     id: id,
                     page: this.pageNum,
                     format: 'html'
