@@ -1,5 +1,4 @@
 import {defaultReduce} from "../../common/redux/Reducers";
-import RefreshState from "~/global/components/refresh/RefreshState";
 
 const initialState = {
     loading: false,

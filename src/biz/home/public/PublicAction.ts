@@ -62,7 +62,8 @@ function mergeData(oldPageList, json) {
 function public_beginRefreshAction() {
     return {
         type: "public_beginRefreshAction",
-        ptrState: RefreshState.Refreshing
+        ptrState: RefreshState.Refreshing,
+        pageList: [],
     }
 }
 
