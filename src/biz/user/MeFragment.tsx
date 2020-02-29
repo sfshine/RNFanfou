@@ -18,7 +18,7 @@ interface State {
 }
 
 const aboutMessage = "\n这是一个简洁易用、基于ReactNative的开源饭否客户端,有任何问题和建议欢迎@Alexander.G；另外,热烈欢迎PR!\n\n感谢: @小喊，@shenlong5418"
-const appVersion = "RN饭否 0.1"
+const appVersion = "RN饭否 0.0.2"
 const github = "https://github.com/sfshine/RNFanfou"
 const TAG = "MeFragment"
 
