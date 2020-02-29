@@ -29,5 +29,3 @@ cd android
 2.  新建 Feat_xxx 分支
 3.  提交代码到*develop*分支
 4.  新建 Pull Request
-
->>>>>>> origin/master
