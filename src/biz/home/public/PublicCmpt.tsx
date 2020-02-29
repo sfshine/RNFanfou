@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {PublicAction} from "./PublicAction";
 
 import TimelineCell from "../../timeline/TimelineCell";
-import RefreshListView from "../../../global/components/refresh/RefreshListView";
+import RefreshListView from "../../../global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import RefreshFooter from "~/global/components/refresh/RefreshFooter";
@@ -44,7 +44,7 @@ class PublicCmpt extends React.PureComponent<Props> {
     render() {
         Logger.log(TAG, "PublicCmpt render", this.props);
         return <RefreshListView
-            ListHeaderComponent={this._renderHeader}
+            ListHeaderComponent={this._renderHeader()}
             ptrState={this.props.ptrState}
             data={this.props.pageData ? this.props.pageData : []}
             renderItem={this._renderItem}
