@@ -11,7 +11,7 @@ import TipsUtil from "~/global/util/TipsUtil";
 import {goBack} from "~/global/navigator/NavigationManager";
 import PageCmpt from "~/global/components/PageCmpt";
 import ArchModal from "~/global/util/ArchModal";
-import MentionPage from "~/biz/compose/mention/MentionPage1";
+import MentionPage from "~/biz/compose/mention/MentionPage";
 
 interface Props extends BaseProps {
     data: any,
