@@ -12,10 +12,7 @@
 4.  release打包方式： 
 
 ```
-react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-npx jetify
-cd android
-./gradlew assembleRelease -x bundleReleaseJsAndAssets -x verifyReleaseResources
+node android_release.ts
 ```
 
 
