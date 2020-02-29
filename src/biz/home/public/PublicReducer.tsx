@@ -6,7 +6,7 @@ const initialState = {
     isSuccess: false,
     hasLogin: false,
 };
-const PREFIX = "public_"
+const TAG = "public_"
 export default function PublicReducer(state, action) {
-    return defaultReduce(PREFIX, action, state, initialState)
+    return defaultReduce(TAG, action, state, initialState)
 }

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, Image, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import * as React from "react";
@@ -6,6 +6,7 @@ import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import LoginAction from "~/biz/user/login/LoginAction";
 import BaseProps from "~/global/base/BaseProps";
+import ConfirmExitHelper from "~/global/components/ConfirmExitHelper";
 
 /**
  * @author Alex
@@ -21,6 +22,7 @@ interface State {
 }
 
 const TAG = "LoginPage"
+const confirmExitHelper = new ConfirmExitHelper()
 
 class LoginPage extends React.PureComponent<Props, {}> {
     static defaultProps = {
@@ -36,14 +38,17 @@ class LoginPage extends React.PureComponent<Props, {}> {
     }
 
     render() {
-        return <PageCmpt title="Login页" backNav={this.props.navigation}>
+        return <PageCmpt backNav={this.props.navigation} overrideBackPress={confirmExitHelper.overrideBackPress}>
             {this.renderContent()}
         </PageCmpt>
     }
 
     renderContent = () => {
+        let theme = this.props.theme
         Logger.log(TAG, "this.state：", this.state)
         return <View style={styles.container}>
+            <Image style={{height: 100, width: 100, marginBottom: 50, marginTop: 100, alignSelf: "center"}}
+                   source={require("#/ic_launcher.png")}/>
             <TextInput
                 style={styles.textField}
                 placeholder={'请输入账号'}
@@ -70,7 +75,8 @@ class LoginPage extends React.PureComponent<Props, {}> {
                 onChangeText={(text) => this.setState({password: text})}
                 value={this.state.password}
             />
-            <TouchableOpacity style={styles.loginButton} activeOpacity={0.7} onPress={() => this.checkAndLogin()}>
+            <TouchableOpacity style={[styles.loginButton, {backgroundColor: theme.brand_primary}]} activeOpacity={0.7}
+                              onPress={() => this.checkAndLogin()}>
                 <Text style={styles.buttonText}>登录</Text>
             </TouchableOpacity>
         </View>
@@ -102,15 +108,16 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        alignSelf: "center",
     },
     loginButton: {
         marginTop: 10,
-        width: 150,
+        width: "80%",
         height: 40,
         borderRadius: 4,
-        backgroundColor: '#4ca5ff',
         alignItems: 'center',
+        alignSelf: "center",
         justifyContent: 'center'
     },
     buttonText: {

@@ -5,12 +5,9 @@ const apkPath = './android/app/build/outputs/apk/release/';
 const cpuArch = ['armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'];
 
 const cmdRN = [
-    // "pwd",
-    // "git checkout develop",
-    // "git pull",
-    // "git status",
-    "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "yarn",
+    "./node_modules/.bin/tsc",
+    "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "react-native link",
     "rm -rf android/app/src/main/assets/index.android.bundle",
     "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
@@ -38,4 +35,3 @@ for (let arch of cpuArch) {
             console.log(err);
         })
 }
-

@@ -28,6 +28,7 @@ class FriendsPage extends PureComponent<Props> {
         console.log('FriendsPage constructor', this.props);
         this.user = this.props.navigation.state.params.user
         this.isFollowers = this.props.navigation.state.params.isFollowers
+        action.setMode(this.isFollowers)
     }
 
     layoutProvider = new LayoutProvider(index => {

@@ -117,6 +117,8 @@ class SearchPage extends React.PureComponent<Props, State> {
         let inputView =
             <View style={styles.textInputWrapper}>
                 <TextInput
+                    onSubmitEditing={() => this.props.search(this.state.inputKey)}
+                    returnKeyType={"search"}
                     numberOfLines={1}
                     selectionColor={'#FFFFFF'}
                     ref={el => (this.input = el)}
@@ -133,16 +135,18 @@ class SearchPage extends React.PureComponent<Props, State> {
         let rightButton =
             <TouchableOpacity
                 onPress={() => {
-                    this.input.blur();//收起键盘
                     if (this.state.inputKey.length > 0) {
-                        this.props.search(this.state.inputKey)
+                        // this.props.search(this.state.inputKey)
+                        this.setState({
+                            inputKey: "",
+                        })
                     } else {
                         this.goBack()
                     }
                 }}
             >
                 <View style={{marginRight: 10}}>
-                    <Text style={styles.buttonText}> {this.state.inputKey.length > 0 ? '搜索' : "取消"}</Text>
+                    <Text style={styles.buttonText}> {this.state.inputKey.length > 0 ? '清空' : "取消"}</Text>
                 </View>
             </TouchableOpacity>;
         return <View style={{

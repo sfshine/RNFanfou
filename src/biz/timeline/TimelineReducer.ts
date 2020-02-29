@@ -2,8 +2,7 @@ import {defaultReduce} from "~/biz/common/redux/Reducers";
 import RefreshState from "~/global/components/refresh/RefreshState";
 
 const TAG = "TimelineReducer"
-const initialState = {
-};
+const initialState = {};
 export default function TimelineReducer(state, action) {
     return defaultReduce(TAG, action, state, initialState)
 }
@@ -12,6 +11,7 @@ export const TIMELINE_ACTIONS = {
         return {
             type: `${TAG}#Refreshing`,
             ptrState: RefreshState.Refreshing,
+            actionData: [],
         }
     },
     Idle: (actionData) => {

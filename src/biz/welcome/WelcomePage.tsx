@@ -7,12 +7,6 @@ import SplashScreen from "react-native-splash-screen";
 import Logger from "~/global/util/Logger"
 import LoginAction from "~/biz/user/login/LoginAction";
 
-const image = [
-    require("#1.png"),
-    require("#2.png"),
-    require("#3.png"),
-]
-
 interface Props {
     navigation: object;
     onThemeInit: Function;

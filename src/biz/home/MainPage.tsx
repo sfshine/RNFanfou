@@ -5,13 +5,15 @@ import PageCmpt from "../../global/components/PageCmpt";
 import TipsUtil from "~/global/util/TipsUtil";
 import BottomTabNavigator from "~/global/navigator/BottomTabNavigator";
 import NavigationManager from "~/global/navigator/NavigationManager";
+import ConfirmExitHelper from "~/global/components/ConfirmExitHelper";
 
 interface Props {
     navigation: object;
 }
 
+const confirmExitHelper = new ConfirmExitHelper()
+
 class MainPage extends React.PureComponent<Props, {}> {
-    private canBack: boolean;
 
     constructor(props) {
         super(props);
@@ -22,28 +24,13 @@ class MainPage extends React.PureComponent<Props, {}> {
     }
 
     render() {
-        return <PageCmpt style={styles.container} overrideBackPress={this.overrideBackPress}>
+        return <PageCmpt overrideBackPress={confirmExitHelper.overrideBackPress}>
             <BottomTabNavigator/>
         </PageCmpt>
     }
 
-    overrideBackPress = () => {
-        if (this.canBack) {
-            BackHandler.exitApp();
-        } else {
-            TipsUtil.toast("再按一次退出")
-            this.canBack = true
-            setTimeout(() => this.canBack = false, 3000)
-        }
-        return true
-    }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
 export default connect(
     (state) => ({}),
     (dispatch) => ({})
