@@ -58,7 +58,10 @@ export default class QuickComposeAction {
                 TipsUtil.toastSuccess("发送成功", loading)
                 onSuccess()
             })
-            .catch(error => TipsUtil.toastFail("发送失败：" + error, loading))
+            .catch(error => {
+                Logger.error(TAG, "发送失败", error)
+                TipsUtil.toastFail("发送失败：" + error, loading)
+            })
     }
 
     static uploadImage(input, photos, onSuccess) {
