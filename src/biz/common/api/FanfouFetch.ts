@@ -11,8 +11,9 @@ export default class FanfouFetch {
             .then(response => {
                 return response ? response : Promise.reject('获取数据失败: ' + response);
             }).then(response => {
-                Logger.log(TAG, "FanfouFetch get response:", response)
-                return JSON.parse(response);
+                let json = JSON.parse(response)
+                Logger.log(TAG, "FanfouFetch get response:", json)
+                return json;
             });
     }
 
@@ -21,8 +22,9 @@ export default class FanfouFetch {
             .then(response => {
                 return response ? response : Promise.reject('操作失败: ' + response);
             }).then(response => {
-                Logger.log(TAG, "FanfouFetch post response:", response)
-                return JSON.parse(response);
+                let json = JSON.parse(response)
+                Logger.log(TAG, "FanfouFetch post response:", json)
+                return JSON.parse(json);
             });
     }
 }

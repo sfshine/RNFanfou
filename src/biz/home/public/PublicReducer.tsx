@@ -16,6 +16,7 @@ export const PUBLIC_ACTIONS = {
         return {
             type: `${TAG}#Refreshing`,
             ptrState: RefreshState.Refreshing,
+            actionData: [],
         }
     },
     Idle: (pageData) => {
