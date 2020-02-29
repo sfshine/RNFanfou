@@ -13,7 +13,6 @@ import ConfirmExitHelper from "~/global/components/ConfirmExitHelper";
  * @date 2020/02/01
  */
 interface Props extends BaseProps {
-    onSubmitLogin: Function;
 }
 
 interface State {
@@ -30,8 +29,8 @@ class LoginPage extends React.PureComponent<Props, {}> {
     }
 
     public state = {
-        account: "sfshine@qq.com",
-        password: "11yue102030",
+        account: Logger.dev ? "sfshine@qq.com" : "",
+        password: "",
     }
 
     componentDidMount(): void {
@@ -88,7 +87,7 @@ class LoginPage extends React.PureComponent<Props, {}> {
         if (!account || !password) {
             TipsUtil.toast("请检查输入的用户名和密码是否正确")
         } else {
-            this.props.onSubmitLogin(account, password, this.props.navigation)
+            LoginAction.onSubmitLogin(account, password, this.props.navigation)
         }
     }
 }
@@ -131,7 +130,5 @@ export default connect(
         theme: state.themeReducer.theme,
         actionData: state.LoginReducer.actionData,
     }),
-    (dispatch) => ({
-        onSubmitLogin: (account, password, navigation) => dispatch(LoginAction.onSubmitLogin(account, password, navigation))
-    })
+    (dispatch) => ({})
 )(LoginPage)

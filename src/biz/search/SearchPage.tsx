@@ -117,6 +117,7 @@ class SearchPage extends React.PureComponent<Props, State> {
         let inputView =
             <View style={styles.textInputWrapper}>
                 <TextInput
+                    autoFocus={!this.state.queryId}
                     onSubmitEditing={() => this.props.search(this.state.inputKey)}
                     returnKeyType={"search"}
                     numberOfLines={1}
