@@ -6,7 +6,7 @@
 #### 安装教程
 
 0.  搭建react-native编译环境（不会配置点[这里](https://www.google.com/search?newwindow=1&safe=strict&rlz=1C5CHFA_enCN868CN868&sxsrf=ALeKk00rGfm7MYsWq4JOVKUxsON0tzMo_Q%3A1582975021234&ei=LUhaXpXWDc-Gr7wPnpSjwA4&q=reactnative%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA&oq=reactnative%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA)）
-1.  git clone git@gitee.com:sfshine/RNFanfou.git
+1.  git clone git@github.com:sfshine/RNFanfou.git
 2.  yarn
 3.  react-native run-android
 4.  release打包方式： 
