@@ -1,10 +1,8 @@
 import RefreshState from "~/global/components/refresh/RefreshState";
+import {createResetActionWithTag} from "~/global/redux/ResetAction";
 
 const initialState = {
-    loading: false,
-    errorMessage: '',
-    isSuccess: false,
-    hasLogin: false,
+    actionData: []
 };
 const TAG = "FavouriteReducer"
 export default function FavouriteReducer(state = initialState, action) {
@@ -59,3 +57,4 @@ export const FAV_ACTIONS = {
         }
     },
 }
+export const ResetRedux = createResetActionWithTag(TAG, initialState)

@@ -7,12 +7,14 @@ import RefreshListViewFlickr from "../../../global/components/refresh/RefreshLis
 import PageCmpt from "~/global/components/PageCmpt";
 import BaseProps from "~/global/base/BaseProps";
 import Logger from "~/global/util/Logger";
+import {ResetRedux} from "~/biz/user/favourite/FavouriteReducer";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
     loadMoreTimeline: Function,
     pageData: [],
     ptrState: string,
+    clearRedux: Function,
 }
 
 const TAG = "FavouritePage"
@@ -25,6 +27,10 @@ class FavouritePage extends PureComponent<Props> {
         Logger.log(TAG, 'FavouritePage componentWillMount', this.props);
         this.user = this.props.navigation.state.params.user;
         this.props.refreshTimeline(this.user.id)
+    }
+
+    componentWillUnmount(): void {
+        this.props.clearRedux()
     }
 
     render() {
@@ -68,7 +74,7 @@ export default connect(
     }),
     (dispatch) => ({
         loadMoreTimeline: (id, oldPageData) => dispatch(action.loadMoreTimeline(id, oldPageData)),
-        refreshTimeline: (id) => dispatch(action.refreshTimeline(id))
-
+        refreshTimeline: (id) => dispatch(action.refreshTimeline(id)),
+        clearRedux: () => dispatch(ResetRedux)
     })
 )(FavouritePage)
