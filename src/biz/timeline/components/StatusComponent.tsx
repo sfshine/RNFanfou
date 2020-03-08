@@ -77,20 +77,7 @@ class StatusComponent extends PureComponent<Props> {
                         a: [styles.text, {color: this.props.theme.brand_primary}],
                         b: [styles.text, {color: "#FF0000"}],
                     }}/> : null}
-                {item.photo &&
-                <TouchableOpacity activeOpacity={0.7}
-                                  style={{
-                                      width: screenWidth * 0.7,
-                                      marginTop: 5,
-                                  }}
-                                  onPress={() => {
-                                      navigateN(NavigationManager.mainNavigation, "PictureViewPage", {images: [{url: item.photo.largeurl}]})
-                                  }}>
-                    <AutoHeightImage width={screenWidth * 0.8}
-                                     height={screenWidth * 0.8 * 0.618}
-                                     source={{uri: item.photo.largeurl}}
-                                     style={styles.msgImage}/>
-                </TouchableOpacity>}
+                {this.renderImage(item)}
             </TouchableOpacity>
         return <View style={styles.container}>
             {userView}
@@ -98,6 +85,34 @@ class StatusComponent extends PureComponent<Props> {
         </View>
     }
 
+    renderImage = (item) => {
+        if (item.photo) {
+            if (!item.photo.imageurl && !item.photo.largeurl) {
+                return null
+            }
+            let imageUrl = item.photo.largeurl
+            if (imageUrl.endsWith(".gif")) {
+                //I am gif, will use largeurl
+            } else {
+                imageUrl = item.photo.imageurl
+            }
+            return <TouchableOpacity activeOpacity={0.7}
+                                     style={{
+                                         width: screenWidth * 0.7,
+                                         marginTop: 5,
+                                     }}
+                                     onPress={() => {
+                                         navigateN(NavigationManager.mainNavigation, "PictureViewPage", {images: [{url: item.photo.largeurl}]})
+                                     }}>
+                <AutoHeightImage width={screenWidth * 0.8}
+                                 height={screenWidth * 0.8 * 0.618}
+                                 source={{uri: imageUrl}}
+                                 style={styles.msgImage}/>
+            </TouchableOpacity>
+        } else {
+            return null
+        }
+    }
     hrefDispatcher = (url) => {
         Logger.log(TAG, "hrefDispatcher: " + url)
         // <a href="http://fanfou.com/dailu321" className="former">*/
