@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import StatusComponent from '../timeline/components/StatusComponent';
 import TimelineCell from '../timeline/TimelineCell';
-import RefreshListView from '../../global/components/refresh/RefreshListView';
+import RefreshListView from '../../global/components/refresh/RefreshListViewFlickr';
 import StatusDetailAction from './StatusDetailAction';
 import {removeHtmlTag} from '../../global/util/StringUtil';
 import BaseProps from "~/global/base/BaseProps";
@@ -53,7 +53,7 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
 
         return <PageCmpt title="状态详情" backNav={this.props.navigation}>
             <RefreshListView
-                ListHeaderComponent={() => this._renderHeader(headerStatus)}
+                ListHeaderComponent={this._renderHeader(headerStatus)}
                 ListEmptyComponent={<View/>}
                 data={pageData}
                 ptrState={ptrState}
