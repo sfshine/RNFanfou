@@ -4,7 +4,11 @@ import TimelineAction from "./TimelineAction";
 import TimelineCell from "./TimelineCell";
 import RefreshListView from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
-import {ResetRedux, TIMELINE_ACTIONS} from "~/biz/timeline/TimelineReducer";
+import {ResetRedux} from "~/biz/timeline/TimelineReducer";
+import {useScrollToTop} from '@react-navigation/native';
+import EventBus from 'react-native-event-bus'
+import {BusEvents} from "~/biz/common/event/BusEvents";
+import DoubleClick from "~/global/util/DoubleClick";
 
 interface Props extends BaseProps {
     actionData: Array<any>,
@@ -14,18 +18,30 @@ interface Props extends BaseProps {
     clearRedux: Function,
 }
 
-class TimelineCmpt extends React.PureComponent<Props> {
+const TAG = "TimelineCmpt"
 
-    componentWillMount() {
+const doubleClick = new DoubleClick()
+
+class TimelineCmpt extends React.PureComponent<Props> {
+    private refreshListView: any
+    private refreshListener: any
+
+    componentDidMount(): void {
         this.props.refreshTimeline()
+        EventBus.getInstance().addListener(BusEvents.refreshTimeline,
+            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
     }
 
-    componentWillUnmount(): void {
+    componentWillUnmount()
+        :
+        void {
         this.props.clearRedux()
+        EventBus.getInstance().removeListener(this.refreshListener);
     }
 
     render() {
         return <RefreshListView
+            ref={(view) => this.refreshListView = view}
             data={this.props.actionData ? this.props.actionData : []}
             ptrState={this.props.ptrState}
             renderItem={this._renderItem}

@@ -12,6 +12,9 @@ import RefreshState from "~/global/components/refresh/RefreshState";
 import Logger from "~/global/util/Logger";
 import {SearchAction} from "~/biz/search/SearchAction";
 import {ResetRedux} from "~/biz/discovery/public/PublicReducer";
+import DoubleClick from "~/global/util/DoubleClick";
+import EventBus from 'react-native-event-bus'
+import {BusEvents} from "~/biz/common/event/BusEvents";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -23,9 +26,12 @@ interface Props extends BaseProps {
 }
 
 const TAG = "PublicCmpt"
+const doubleClick = new DoubleClick()
 
 class PublicCmpt extends React.PureComponent<Props> {
-    private scrollview: any;
+    private scrollView: any
+    private refreshListView: any
+    private refreshListener: any
 
     constructor(props) {
         super(props);
@@ -37,17 +43,20 @@ class PublicCmpt extends React.PureComponent<Props> {
         this.props.getSearchWordList()
     }
 
-    componentDidMount() {
-        Logger.log(TAG, 'PublicCmpt componentDidMount', this.props);
+    componentDidMount(): void {
+        EventBus.getInstance().addListener(BusEvents.refreshPublicTimeline,
+            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
     }
 
     componentWillUnmount(): void {
         this.props.clearRedux()
+        EventBus.getInstance().removeListener(this.refreshListener);
     }
 
     render() {
         Logger.log(TAG, "PublicCmpt render", this.props);
         return <RefreshListView
+            ref={(view) => this.refreshListView = view}
             ListHeaderComponent={this._renderHeader()}
             ptrState={this.props.ptrState}
             data={this.props.pageList ? this.props.pageList : []}
@@ -87,7 +96,7 @@ class PublicCmpt extends React.PureComponent<Props> {
                 </TouchableOpacity>
             );
         }
-        return <ScrollView ref={(r) => this.scrollview = r}
+        return <ScrollView ref={(r) => this.scrollView = r}
             // maxWidth={'180%'}
             // maxHeight={85}
                            style={styles.keywordContainer} horizontal={true}
@@ -105,9 +114,9 @@ class PublicCmpt extends React.PureComponent<Props> {
     onSearchCallback = (data) => {
         this.props.getSearchWordList()
         if (data.isCreate) {
-            //TODO do nothing
+            // do nothing
         } else {
-            this.scrollview.scrollTo({x: 0, y: 0, animated: false});
+            this.scrollView.scrollTo({x: 0, y: 0, animated: false});
         }
     };
 }

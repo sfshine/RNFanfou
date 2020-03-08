@@ -5,6 +5,8 @@ import RefreshState from "~/global/components/refresh/RefreshState"
 import {DataProvider, LayoutProvider, RecyclerListView} from "recyclerlistview";
 import RefreshListBase from "~/global/components/refresh/RefreshListBase";
 import RefreshProps from "~/global/components/refresh/RefreshProps";
+import {RecyclerListViewState} from "recyclerlistview/dist/web/core/RecyclerListView";
+import {RecyclerListViewProps} from "recyclerlistview/dist/reactnative/core/RecyclerListView";
 
 const TAG = "RefreshListViewFlickr"
 
@@ -17,6 +19,9 @@ interface FRefreshProps extends RefreshProps {
 }
 
 export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps> {
+    private refreshListViewInner: any
+    private mCustomScrollView: any
+
     static defaultProps = {
         ptrState: RefreshState.Refreshing,
     }
@@ -38,6 +43,7 @@ export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps
     ScrollViewWithHeader = React.forwardRef(({children, ...props}) => {
         return <ScrollView
             {...props}
+            ref={(view) => this.mCustomScrollView = view}
         >
             {this.props.ListHeaderComponent}
             {children}
@@ -73,11 +79,12 @@ export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps
             onEndReached={() => {
                 Logger.log(TAG, "onEndReached");
                 this.beginFooterRefresh()
-            }
-            }
+            }}
             extendedState={this.props.extendedState}
             onEndReachedThreshold={0.3}  // 这里取值0.1，可以根据实际情况调整，取值尽量小
             {...exProps}
+            // @ts-ignore
+            ref={(view) => this.refreshListViewInner = view}
         />
     }
 
@@ -85,4 +92,10 @@ export default class RefreshListViewFlickr extends RefreshListBase<FRefreshProps
     _rowRenderer = (type, data, index) => {
         return this.props.renderItem({item: data, index: index, separators: null})
     }
+
+    scrollToTop(animate?: boolean) {
+        Logger.log(TAG, "scrollToTop");
+        this.refreshListViewInner && this.refreshListViewInner.scrollToTop(animate)
+        this.mCustomScrollView && this.mCustomScrollView.scrollTo(0, 0)
+    };
 }

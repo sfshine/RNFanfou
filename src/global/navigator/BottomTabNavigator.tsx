@@ -10,6 +10,8 @@ import BaseProps from "~/global/base/BaseProps";
 import DiscoveryFragment from "~/biz/discovery/DiscoveryFragment";
 import MeFragment from "~/biz/user/MeFragment";
 import MessageFragment from "~/biz/message/MessageFragment";
+import EventBus from 'react-native-event-bus'
+import {BusEvents} from "~/biz/common/event/BusEvents";
 
 const TABS = {
     HomeFragment: {
@@ -19,6 +21,10 @@ const TABS = {
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'alpha-f-box'} size={24} c style={{color: tintColor}}/>
             ),
+            tabBarOnPress: ({defaultHandler}) => {
+                defaultHandler()
+                EventBus.getInstance().fireEvent(BusEvents.refreshTimeline)
+            },
         },
     },
     DiscoveryFragment: {
@@ -28,6 +34,10 @@ const TABS = {
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'earth'} size={24} c style={{color: tintColor}}/>
             ),
+            tabBarOnPress: ({defaultHandler}) => {
+                defaultHandler()
+                EventBus.getInstance().fireEvent(BusEvents.refreshPublicTimeline)
+            },
         },
     },
     MessageFragment: {
