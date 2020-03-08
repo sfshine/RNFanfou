@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import StatusComponent from '../timeline/components/StatusComponent';
 import TimelineCell from '../timeline/TimelineCell';
-import RefreshListView from '../../global/components/refresh/RefreshListView';
+import RefreshListView from '../../global/components/refresh/RefreshListViewFlickr';
 import StatusDetailAction from './StatusDetailAction';
 import {removeHtmlTag} from '../../global/util/StringUtil';
 import BaseProps from "~/global/base/BaseProps";
@@ -53,7 +53,7 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
 
         return <PageCmpt title="状态详情" backNav={this.props.navigation}>
             <RefreshListView
-                ListHeaderComponent={() => this._renderHeader(headerStatus)}
+                ListHeaderComponent={this._renderHeader(headerStatus)}
                 ListEmptyComponent={<View/>}
                 data={pageData}
                 ptrState={ptrState}
@@ -93,19 +93,18 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
     renderToolbar(status) {
         const {theme} = this.props;
         return <View style={[styles.toolsContainer, {backgroundColor: theme.brand_primary}]}>
-            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
-            }
-            }>
-                <AntDesign name={'message1'} size={25} style={{color: 'white'}}/>
-            </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                 this.onShowQuickCompose(status, COMPOSE_MODE.Forward);
             }}>
                 <AntDesign name={'retweet'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
-
+            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
+                this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
+            }
+            }>
+                <AntDesign name={'message1'} size={25} style={{color: 'white'}}/>
+            </TouchableOpacity>
             {status.user && status.user.id === GlobalCache.user.id ?
                 <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                     Alert.alert('提示', `确定删除:${removeHtmlTag(status.text)}?`,

@@ -1,5 +1,5 @@
 import React, {ComponentType, PureComponent} from 'react';
-import {FlatList, ListRenderItem} from 'react-native';
+import {FlatList, ListRenderItem, View} from 'react-native';
 import RefreshFooter from './RefreshFooter';
 import RefreshEmptyView from "./RefreshEmptyView";
 import Logger from "../../util/Logger";
@@ -40,7 +40,7 @@ export default class RefreshListBase<P extends RefreshProps> extends PureCompone
                                }}/>
             )
         } else {
-            return null
+            return <View/>
         }
     };
 

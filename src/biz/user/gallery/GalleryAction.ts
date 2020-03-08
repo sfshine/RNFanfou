@@ -28,6 +28,7 @@ export default class GalleryAction {
                 if (!response) {
                     throw "JSON数据异常"
                 } else {
+                    response = response.filter(it => it.photo && it.photo.imageurl)
                     dispatch(GALLERY_ACTIONS.Idle(response))
                 }
             } catch (err) {
@@ -52,6 +53,7 @@ export default class GalleryAction {
                 if (!response) {
                     throw "JSON数据异常"
                 } else {
+                    response = response.filter(it => it.photo && it.photo.imageurl)
                     let newData = oldPageData.concat(response)
                     if (response.length < PAGE_SIZE) {
                         dispatch(GALLERY_ACTIONS.LoadingMoreEnd(newData))

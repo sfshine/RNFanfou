@@ -64,6 +64,7 @@ class GalleryPage extends React.PureComponent<Props, State> {
 
     renderItem = (data) => {
         Logger.log(TAG, "data", data)
+        let url = data.item.photo.imageurl
         return <TouchableOpacity style={{alignItems: "center", margin: picPadding}} onPress={
             () => {
                 // images
@@ -75,7 +76,7 @@ class GalleryPage extends React.PureComponent<Props, State> {
                     width: picWidth,
                     height: picWidth,
                 }}
-                source={{uri: data.item.photo.largeurl}}/>
+                source={{uri: url}}/>
         </TouchableOpacity>
     }
 }

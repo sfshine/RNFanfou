@@ -13,7 +13,7 @@ interface Props extends BaseProps {
     loadMoreTimeline: Function,
 }
 
-class TimelineCmpt extends React.PureComponent<Props> {
+class MessageFragment extends React.PureComponent<Props> {
 
     componentWillMount() {
         this.props.refreshTimeline()
@@ -52,4 +52,4 @@ export default connect(
         loadMoreTimeline: (oldActionData) => dispatch(action.loadMoreTimeline(oldActionData)),
         refreshTimeline: () => dispatch(action.refreshTimeline())
     })
-)(TimelineCmpt)
+)(MessageFragment)

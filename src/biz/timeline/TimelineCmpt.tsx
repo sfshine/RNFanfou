@@ -4,22 +4,44 @@ import TimelineAction from "./TimelineAction";
 import TimelineCell from "./TimelineCell";
 import RefreshListView from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
+import {ResetRedux} from "~/biz/timeline/TimelineReducer";
+import {useScrollToTop} from '@react-navigation/native';
+import EventBus from 'react-native-event-bus'
+import {BusEvents} from "~/biz/common/event/BusEvents";
+import DoubleClick from "~/global/util/DoubleClick";
 
 interface Props extends BaseProps {
     actionData: Array<any>,
     ptrState: string,
     refreshTimeline: Function,
     loadMoreTimeline: Function,
+    clearRedux: Function,
 }
 
-class TimelineCmpt extends React.PureComponent<Props> {
+const TAG = "TimelineCmpt"
 
-    componentWillMount() {
+const doubleClick = new DoubleClick()
+
+class TimelineCmpt extends React.PureComponent<Props> {
+    private refreshListView: any
+    private refreshListener: any
+
+    componentDidMount(): void {
         this.props.refreshTimeline()
+        EventBus.getInstance().addListener(BusEvents.refreshTimeline,
+            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
+    }
+
+    componentWillUnmount()
+        :
+        void {
+        this.props.clearRedux()
+        EventBus.getInstance().removeListener(this.refreshListener);
     }
 
     render() {
         return <RefreshListView
+            ref={(view) => this.refreshListView = view}
             data={this.props.actionData ? this.props.actionData : []}
             ptrState={this.props.ptrState}
             renderItem={this._renderItem}
@@ -49,6 +71,7 @@ export default connect(
     }),
     (dispatch) => ({
         loadMoreTimeline: (oldActionData) => dispatch(mTimelineAction.loadMoreTimeline(oldActionData)),
-        refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline())
+        refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline()),
+        clearRedux: () => dispatch(ResetRedux)
     })
 )(TimelineCmpt)

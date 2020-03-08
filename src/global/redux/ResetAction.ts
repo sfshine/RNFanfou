@@ -5,3 +5,10 @@ export function reduxReset() {
         type: RESET
     }
 }
+
+export function createResetActionWithTag(tag, resetAction) {
+    return {
+        type: `${tag}#${RESET}`,
+        ...resetAction,
+    }
+}
