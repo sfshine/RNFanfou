@@ -44,7 +44,7 @@ class NavigationBar extends PureComponent<Props> {
         let titleView = this.props.titleView ? this.props.titleView :
             <Text ellipsizeMode="tail" numberOfLines={1}
                   style={[styles.title, {
-                      color: styleWithTheme.textColor,
+                      color: styleWithTheme.textColor
                   }]}>{this.props.title}</Text>;
         let content = <View style={[styles.navBarShape, {backgroundColor: styleWithTheme.backgroundColor}]}>
             <Row>
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: 'white',
+        width: "80%",
     },
 });
 const mapStateToProps = state => ({

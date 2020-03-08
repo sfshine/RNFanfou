@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Share, StyleSheet, View} from 'react-native';
 import NavigationBar from "~/global/navigator/NavigationBar";
 import SafeAreaViewPlus from "~/global/components/SafeAreaViewPlus";
 import WebViewEx from "~/global/components/WebViewEx";
 import Logger from "~/global/util/Logger";
 import {goBack} from "~/global/navigator/NavigationManager";
+import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
 
 const TAG = "WebPage"
 
@@ -38,7 +39,17 @@ export default class WebPage extends PureComponent<Props, State> {
     }
 
     render() {
-        let navigationBar = <NavigationBar title={this.state.title} backNav={this.props.navigation}/>;
+        let navigationBar = <NavigationBar title={this.state.title} backNav={this.props.navigation} rightButton={
+            NavigationBarViewFactory.createButton({
+                icon: "sharealt",
+                callback: () => {
+                    Share.share({
+                        message: this.state.title + ":" + this.state.url,
+                        title: '分享'
+                    }).then()
+                }
+            })
+        }/>;
         return (
             <SafeAreaViewPlus backPress={this.overrideBackPress}>
                 {navigationBar}
