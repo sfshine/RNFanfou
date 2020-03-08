@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 import Logger from "../../../global/util/Logger";
 import {RESET} from "../../../global/redux/ResetAction";
 import themeReducer from '../../../global/theme/ThemeReducer';
-import LoginReducer from "~/biz/user/login/LoginReducer";
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
 import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
 import PublicReducer from "~/biz/discovery/public/PublicReducer";
@@ -16,7 +15,6 @@ import MessageReducer from "~/biz/message/MessageReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
-    LoginReducer: LoginReducer,
     TimelineReducer: TimelineReducer,
     QuickComposeReducer: QuickComposeReducer,
     PublicReducer: PublicReducer,

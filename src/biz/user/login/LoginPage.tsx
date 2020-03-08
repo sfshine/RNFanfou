@@ -24,10 +24,6 @@ const TAG = "LoginPage"
 const confirmExitHelper = new ConfirmExitHelper()
 
 class LoginPage extends React.PureComponent<Props, {}> {
-    static defaultProps = {
-        actionData: []
-    }
-
     public state = {
         account: Logger.dev ? "sfshine@qq.com" : "",
         password: "",
@@ -128,7 +124,6 @@ const styles = StyleSheet.create({
 export default connect(
     (state) => ({
         theme: state.themeReducer.theme,
-        actionData: state.LoginReducer.actionData,
     }),
     (dispatch) => ({})
 )(LoginPage)
