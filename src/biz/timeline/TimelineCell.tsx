@@ -12,6 +12,7 @@ import ArchModal from "~/global/util/ArchModal";
 import {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 import {Modal} from "@ant-design/react-native";
 import {removeHtmlTag} from "~/global/util/StringUtil";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const favoriteMap = {}
 
@@ -41,7 +42,7 @@ export default class TimelineCell extends PureComponent<Props> {
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                         this.quickSend(item, COMPOSE_MODE.Forward)
                     }}>
-                        <Icon name={'at'} size={23} style={{color: styles.tools_text.color}}/>
+                        <AntDesign name={'retweet'} size={23} style={{color: styles.tools_text.color}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                         this.quickSend(item, COMPOSE_MODE.Comment)

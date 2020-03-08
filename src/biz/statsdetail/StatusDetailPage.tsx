@@ -93,19 +93,18 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
     renderToolbar(status) {
         const {theme} = this.props;
         return <View style={[styles.toolsContainer, {backgroundColor: theme.brand_primary}]}>
-            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
-            }
-            }>
-                <AntDesign name={'message1'} size={25} style={{color: 'white'}}/>
-            </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                 this.onShowQuickCompose(status, COMPOSE_MODE.Forward);
             }}>
                 <AntDesign name={'retweet'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
-
+            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
+                this.onShowQuickCompose(status, COMPOSE_MODE.Comment);
+            }
+            }>
+                <AntDesign name={'message1'} size={25} style={{color: 'white'}}/>
+            </TouchableOpacity>
             {status.user && status.user.id === GlobalCache.user.id ?
                 <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
                     Alert.alert('提示', `确定删除:${removeHtmlTag(status.text)}?`,
