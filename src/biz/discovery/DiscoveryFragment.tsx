@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {connect} from "react-redux";
-import PublicPage from "../home/public/PublicCmpt";
+import PublicPage from "./public/PublicCmpt";
 import PageCmpt from "~/global/components/PageCmpt";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import BaseProps from "~/global/base/BaseProps";

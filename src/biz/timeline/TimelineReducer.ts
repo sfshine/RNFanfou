@@ -11,7 +11,7 @@ export const TIMELINE_ACTIONS = {
         return {
             type: `${TAG}#Refreshing`,
             ptrState: RefreshState.Refreshing,
-            actionData: [],
+            // actionData: [],
         }
     },
     Idle: (actionData) => {

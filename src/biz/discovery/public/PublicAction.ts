@@ -63,7 +63,6 @@ function public_beginRefreshAction() {
     return {
         type: "public_beginRefreshAction",
         ptrState: RefreshState.Refreshing,
-        pageList: [],
     }
 }
 

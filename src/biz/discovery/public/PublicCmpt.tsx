@@ -3,8 +3,8 @@ import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./PublicAction";
 
-import TimelineCell from "../../timeline/TimelineCell";
-import RefreshListView from "../../../global/components/refresh/RefreshListViewFlickr";
+import TimelineCell from "~/biz/timeline/TimelineCell";
+import RefreshListView from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
 import RefreshFooter from "~/global/components/refresh/RefreshFooter";

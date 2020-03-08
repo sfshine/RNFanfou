@@ -5,7 +5,7 @@ import themeReducer from '../../../global/theme/ThemeReducer';
 import LoginReducer from "~/biz/user/login/LoginReducer";
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
 import QuickComposeReducer from "~/biz/compose/QuickComposeReducer";
-import PublicReducer from "~/biz/home/public/PublicReducer";
+import PublicReducer from "~/biz/discovery/public/PublicReducer";
 import StatusDetailReducer from "~/biz/statsdetail/StatusDetailReducer";
 import SearchReducer from "~/biz/search/SearchReducer";
 import FriendsReducer from "~/biz/user/friends/FriendsReducer";
