@@ -27,17 +27,24 @@ export const rootReducer = combineReducers({
     MessageReducer: MessageReducer,
 });
 
-export function defaultReduce(tag, action, state, defaultState = {},) {
-    Logger.log(tag, "defaultReduce action = ", action)
-    Logger.log(tag, "defaultReduce state = ", state)
+/**
+ * newState + oldState = resultState
+ * @param tag
+ * @param newState
+ * @param oldState
+ * @param defaultState
+ */
+export function defaultReduce(tag, newState, oldState, defaultState = {},) {
+    // Logger.log(tag, "defaultReduce newState = ", newState)
+    // Logger.log(tag, "defaultReduce oldState = ", oldState)
     let resultState = {}
-    if (action.type.startsWith(tag)) {
-        resultState = {...state, ...action};
-    } else if (action.type == RESET) {
+    if (newState.type.startsWith(tag)) {
+        resultState = {...oldState, ...newState};
+    } else if (newState.type == RESET) {
         resultState = defaultState
     } else {
-        resultState = state ? state : defaultState
+        resultState = oldState ? oldState : defaultState
     }
-    Logger.log(tag, "defaultReduce resultState = ", resultState)
+    // Logger.log(tag, "defaultReduce resultState = ", resultState)
     return resultState
 }

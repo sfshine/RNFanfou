@@ -11,6 +11,7 @@ import RefreshFooter from "~/global/components/refresh/RefreshFooter";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import Logger from "~/global/util/Logger";
 import {SearchAction} from "~/biz/search/SearchAction";
+import {ResetRedux} from "~/biz/discovery/public/PublicReducer";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -18,6 +19,7 @@ interface Props extends BaseProps {
     ptrState: string,
     pageList: Array<any>,
     search_searches_list: Array<any>,
+    clearRedux: Function,
 }
 
 const TAG = "PublicCmpt"
@@ -37,6 +39,10 @@ class PublicCmpt extends React.PureComponent<Props> {
 
     componentDidMount() {
         Logger.log(TAG, 'PublicCmpt componentDidMount', this.props);
+    }
+
+    componentWillUnmount(): void {
+        this.props.clearRedux()
     }
 
     render() {
@@ -139,5 +145,6 @@ export default connect(
     (dispatch) => ({
         refreshTimeline: (pageList) => dispatch(action.refreshTimeline(pageList)),
         getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),
+        clearRedux: () => dispatch(ResetRedux)
     })
 )(PublicCmpt)

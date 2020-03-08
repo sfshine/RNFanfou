@@ -4,18 +4,24 @@ import TimelineAction from "./TimelineAction";
 import TimelineCell from "./TimelineCell";
 import RefreshListView from "~/global/components/refresh/RefreshListViewFlickr";
 import BaseProps from "~/global/base/BaseProps";
+import {ResetRedux, TIMELINE_ACTIONS} from "~/biz/timeline/TimelineReducer";
 
 interface Props extends BaseProps {
     actionData: Array<any>,
     ptrState: string,
     refreshTimeline: Function,
     loadMoreTimeline: Function,
+    clearRedux: Function,
 }
 
 class TimelineCmpt extends React.PureComponent<Props> {
 
     componentWillMount() {
         this.props.refreshTimeline()
+    }
+
+    componentWillUnmount(): void {
+        this.props.clearRedux()
     }
 
     render() {
@@ -49,6 +55,7 @@ export default connect(
     }),
     (dispatch) => ({
         loadMoreTimeline: (oldActionData) => dispatch(mTimelineAction.loadMoreTimeline(oldActionData)),
-        refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline())
+        refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline()),
+        clearRedux: () => dispatch(ResetRedux)
     })
 )(TimelineCmpt)
