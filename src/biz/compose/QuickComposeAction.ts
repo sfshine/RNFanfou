@@ -16,6 +16,7 @@ export default class QuickComposeAction {
             imageCount: 1,
             isCrop: false,
             compress: false,
+            isGif: true,
         }).then(photos => {
             if (!photos || photos.length == 0) {
                 Logger.log(TAG, "没有选择照片！")
