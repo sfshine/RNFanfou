@@ -12,13 +12,14 @@ import {Modal} from "@ant-design/react-native";
 import {Image} from "react-native";
 import {IImageInfo} from "react-native-image-zoom-viewer/built/image-viewer.type";
 
-const TAG = "PictureViewPage"
+const TAG = "MultiplePictureViewPage"
 
 export default class MultiplePictureViewPage extends PureComponent<BaseProps> {
     currentIndex = 0
 
-    componentDidMount(): void {
-        Logger.log(TAG, "componentDidMount", this.props)
+    constructor(props) {
+        super(props)
+        Logger.log(TAG, "constructor", this.props)
     }
 
     private generateImageInfos(pageData) {
