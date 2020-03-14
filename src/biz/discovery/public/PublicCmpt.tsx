@@ -45,7 +45,10 @@ class PublicCmpt extends React.PureComponent<Props> {
 
     componentDidMount(): void {
         EventBus.getInstance().addListener(BusEvents.refreshPublicTimeline,
-            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
+            this.refreshListener = () => doubleClick.wrap(() => {
+                this.props.refreshTimeline([])
+                this.refreshListView && this.refreshListView.scrollToTop(true)
+            }))
     }
 
     componentWillUnmount(): void {

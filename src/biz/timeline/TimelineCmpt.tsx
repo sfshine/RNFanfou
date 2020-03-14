@@ -29,12 +29,13 @@ class TimelineCmpt extends React.PureComponent<Props> {
     componentDidMount(): void {
         this.props.refreshTimeline()
         EventBus.getInstance().addListener(BusEvents.refreshTimeline,
-            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
+            this.refreshListener = () => doubleClick.wrap(() => {
+                this.props.refreshTimeline()
+                this.refreshListView && this.refreshListView.scrollToTop(true)
+            }))
     }
 
-    componentWillUnmount()
-        :
-        void {
+    componentWillUnmount(): void {
         this.props.clearRedux()
         EventBus.getInstance().removeListener(this.refreshListener);
     }
