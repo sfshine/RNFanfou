@@ -4,7 +4,7 @@ import CheckBox from 'react-native-check-box'
 import Icon from "react-native-vector-icons/Ionicons";
 import BaseProps from "~/global/base/BaseProps";
 import {connect} from 'react-redux';
-import Logger from "~/global/util/Logger";
+import {clone} from "~/global/util/ObjectUtil";
 
 interface Props extends BaseProps {
     user: any,
@@ -13,11 +13,17 @@ interface Props extends BaseProps {
     onPress?: (event: GestureResponderEvent) => void;
 }
 
+const TAG = "UserCell"
+
 class UserCell extends PureComponent<Props> {
     render() {
-        Logger.log("UserCell", this.props)
         const {user, checkMap, showCheckBox} = this.props;
-        return <TouchableOpacity activeOpacity={0.7} style={styles.userContainer} onPress={this.props.onPress}>
+        return <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.userContainer}
+            onPress={() => {
+                showCheckBox && this.onCheckBoxPressInner(checkMap, user)
+            }}>
             <View style={styles.userInfoContainer}>
                 <Image source={{uri: user.profile_image_url_large}} style={styles.thumbnail}/>
                 <View style={styles.userNameContainer}>
@@ -29,13 +35,25 @@ class UserCell extends PureComponent<Props> {
             </View>
             {
                 showCheckBox ? <CheckBox
-                    onClick={this.props.onPress}
+                    onClick={() => {
+                        this.onCheckBoxPressInner(checkMap, user)
+                    }}
                     isChecked={checkMap[user.name]}
                     checkedImage={this._checkedImage(true)}
                     unCheckedImage={this._checkedImage(false)}
                 /> : null
             }
         </TouchableOpacity>
+    }
+
+    onCheckBoxPressInner = (checkMap, user) => {
+        let tmpMap = clone(checkMap)
+        if (tmpMap[user.name]) {
+            delete tmpMap[user.name]
+        } else {
+            tmpMap[user.name] = true
+        }
+        this.props.onPress && this.props.onPress(tmpMap)
     }
 
     _checkedImage(checked) {

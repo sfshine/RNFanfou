@@ -4,7 +4,6 @@ import RefreshListView from "../../../global/components/refresh/RefreshListViewF
 import UserCell from "../UserCell";
 import BaseProps from "~/global/base/BaseProps";
 import MentionAction from "~/biz/compose/mention/MentionAction";
-import Logger from "~/global/util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import ArchModal from "~/global/util/ArchModal";
 import {Keyboard, View} from "react-native";
@@ -93,7 +92,7 @@ class MentionPage extends React.PureComponent<Props, State> {
         const placeholder = "请输入";
         let {showSearchInput} = this.state
         let inputView = showSearchInput ? <TextInputEx
-            onRightButtonClick={() => this.cancelFilter}
+            onRightButtonClick={this.cancelFilter}
             autoFocus={true}
             returnKeyType={"search"}
             numberOfLines={1}
@@ -144,26 +143,12 @@ class MentionPage extends React.PureComponent<Props, State> {
         this.props.modal.remove()
     }
     _renderItem = (data) => {
-        Logger.log(TAG, "_renderItem ", this.state.checkedMap)
         let user = data.item;
         return (<UserCell showCheckBox={true}
                           checkMap={this.state.checkedMap} user={user} theme={this.props.theme}
-                          onPress={() => {
-                              // TipsUtil.toast("点击了" + user.name)
-                              let stateMap = this.state.checkedMap
-                              let tmpMap = {}
-                              for (let key in stateMap) {
-                                  tmpMap[key] = stateMap[key];
-                              }
-                              if (tmpMap[user.name]) {
-                                  delete tmpMap[user.name]
-                              } else {
-                                  tmpMap[user.name] = true //表示选中, user.name是唯一的
-                              }
-                              this.setState({
-                                  checkedMap: tmpMap
-                              })
-                          }}/>
+                          onPress={(resultMap) => this.setState({
+                              checkedMap: resultMap
+                          })}/>
         )
     };
 }
