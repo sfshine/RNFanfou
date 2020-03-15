@@ -12,6 +12,7 @@ import {Keyboard} from "react-native";
 import {LayoutProvider} from "recyclerlistview";
 import {screenWidth} from "~/global/util/ScreenUtil";
 import BackPressComponent from "~/global/components/BackPressComponent";
+import MentionSearchPage from "~/biz/compose/mention/search/MentionSearchPage";
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -56,10 +57,16 @@ class MentionPage extends React.PureComponent<Props, State> {
         let {pageData, ptrState} = this.props
         pageData = pageData ? pageData : []
         ptrState = ptrState ? ptrState : RefreshState.Refreshing
-        return <PageCmpt title={"选择好友"} backNav={this.props.navigation} rightNavButtonConfig={{
-            icon: Object.keys(this.state.checkedMap).length > 0 ? "check" : "close",
-            callback: this.sure
-        }}>
+        return <PageCmpt title={"选择好友"} backNav={this.props.navigation} rightNavButtonConfig={[
+            {
+                icon: "search1",
+                callback: this.navigateToSearch
+            },
+            {
+                icon: Object.keys(this.state.checkedMap).length > 0 ? "check" : "close",
+                callback: this.sure
+            }
+        ]}>
             <BackPressComponent backPress={this.dismiss}/>
             <RefreshListView
                 customLayoutProvider={this.layoutProvider}
@@ -80,6 +87,10 @@ class MentionPage extends React.PureComponent<Props, State> {
         </PageCmpt>
     }
 
+    navigateToSearch = () => {
+        let archModal = new ArchModal()
+        archModal.show(<MentionSearchPage modal={archModal}/>)
+    }
     dismiss = () => {
         this.props.callback(null)
         this.props.modal.remove()
