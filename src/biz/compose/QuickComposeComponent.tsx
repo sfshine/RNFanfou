@@ -92,8 +92,7 @@ class QuickComposeComponent extends PureComponent<Props, State> {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                // @ts-ignore
-                this.refs["textInput"].blur()
+                Keyboard.dismiss()
                 let archModal = new ArchModal()
                 archModal.show(<MentionPage callback={this.onChooseMentions} modal={archModal}/>)
             }}>

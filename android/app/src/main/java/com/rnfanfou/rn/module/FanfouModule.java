@@ -15,6 +15,7 @@ import com.facebook.react.bridge.WritableMap;
 
 import com.rnfanfou.rn.module.oauth.OAuth;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import org.oauthsimple.exceptions.OAuthException;
 import org.oauthsimple.model.OAuthToken;
 
@@ -73,19 +74,20 @@ public class FanfouModule extends ReactContextBaseJavaModule {
                 OAuthToken token = null;
                 try {
                     token = mXAuth.getOAuthAccessToken(username, password);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (OAuthException e) {
-                    e.printStackTrace();
-                }
-                Log.d(TAG, "xauth token=" + token);
-                if (token != null) {
-                    WritableMap map = Arguments.createMap();
-                    map.putString("secret", token.getSecret());
-                    map.putString("token", token.getToken());
-                    promise.resolve(map);
-                } else {
-                    promise.reject("warning", "token = null");
+                    Log.d(TAG, "xauth token =" + token);
+                    if (token != null) {
+                        WritableMap map = Arguments.createMap();
+                        map.putString("secret", token.getSecret());
+                        map.putString("token", token.getToken());
+                        promise.resolve(map);
+                    } else {
+                        promise.reject("warning", "token = null");
+                        throw new Exception("token = null");
+                    }
+                } catch (Exception e) {
+                    String error = Log.getStackTraceString(e);
+                    promise.reject("warning", "get token Exception:" + error);
+                    CrashReport.postCatchedException(e);
                 }
                 return null;
             }

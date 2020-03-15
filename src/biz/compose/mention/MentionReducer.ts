@@ -1,11 +1,10 @@
 import RefreshState from "~/global/components/refresh/RefreshState";
 import {defaultReduce} from "~/biz/common/redux/Reducers";
+import {createResetActionWithTag} from "~/global/redux/ResetAction";
 
 const initialState = {
-    loading: false,
-    errorMessage: '',
-    isSuccess: false,
-    hasLogin: false,
+    actionData: [],
+    ptrState: RefreshState.Idle,
 };
 const TAG = "MentionReducer"
 export default function MentionReducer(state = initialState, action) {
@@ -52,4 +51,5 @@ export const MENTION_ACTIONS = {
             ptrState: RefreshState.LoadingMoreError,
         }
     },
+    ResetRedux: createResetActionWithTag(TAG, initialState)
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import * as action from "./PublicAction";
 
@@ -15,6 +15,7 @@ import {ResetRedux} from "~/biz/discovery/public/PublicReducer";
 import DoubleClick from "~/global/util/DoubleClick";
 import EventBus from 'react-native-event-bus'
 import {BusEvents} from "~/biz/common/event/BusEvents";
+import ReduxResetComponent from "~/global/components/ReduxResetComponent";
 
 interface Props extends BaseProps {
     refreshTimeline: Function,
@@ -45,30 +46,35 @@ class PublicCmpt extends React.PureComponent<Props> {
 
     componentDidMount(): void {
         EventBus.getInstance().addListener(BusEvents.refreshPublicTimeline,
-            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
+            this.refreshListener = () => doubleClick.wrap(() => {
+                this.props.refreshTimeline([])
+                this.refreshListView && this.refreshListView.scrollToTop(true)
+            }))
     }
 
     componentWillUnmount(): void {
-        this.props.clearRedux()
         EventBus.getInstance().removeListener(this.refreshListener);
     }
 
     render() {
         Logger.log(TAG, "PublicCmpt render", this.props);
-        return <RefreshListView
-            ref={(view) => this.refreshListView = view}
-            ListHeaderComponent={this._renderHeader()}
-            ptrState={this.props.ptrState}
-            data={this.props.pageList ? this.props.pageList : []}
-            renderItem={this._renderItem}
-            keyExtractor={(item) => item.id}
-            ListFooterComponent={this._renderFooter(this.props.pageList)}
-            onHeaderRefresh={() => {
-                Logger.log(TAG, "onHeaderRefresh");
-                this.props.refreshTimeline(this.props.pageList)
-                this.props.getSearchWordList()
-            }}
-        />
+        return <View style={{flex: 1}}>
+            <RefreshListView
+                ref={(view) => this.refreshListView = view}
+                ListHeaderComponent={this._renderHeader()}
+                ptrState={this.props.ptrState}
+                data={this.props.pageList ? this.props.pageList : []}
+                renderItem={this._renderItem}
+                keyExtractor={(item) => item.id}
+                ListFooterComponent={this._renderFooter(this.props.pageList)}
+                onHeaderRefresh={() => {
+                    Logger.log(TAG, "onHeaderRefresh");
+                    this.props.refreshTimeline(this.props.pageList)
+                    this.props.getSearchWordList()
+                }}
+            />
+            <ReduxResetComponent resetAction={ResetRedux}/>
+        </View>
     }
 
     _renderFooter = (data) => {
@@ -154,6 +160,5 @@ export default connect(
     (dispatch) => ({
         refreshTimeline: (pageList) => dispatch(action.refreshTimeline(pageList)),
         getSearchWordList: () => dispatch(SearchAction.getSearchWordList()),
-        clearRedux: () => dispatch(ResetRedux)
     })
 )(PublicCmpt)

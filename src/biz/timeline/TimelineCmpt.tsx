@@ -9,6 +9,8 @@ import {useScrollToTop} from '@react-navigation/native';
 import EventBus from 'react-native-event-bus'
 import {BusEvents} from "~/biz/common/event/BusEvents";
 import DoubleClick from "~/global/util/DoubleClick";
+import {View} from "react-native";
+import ReduxResetComponent from "~/global/components/ReduxResetComponent";
 
 interface Props extends BaseProps {
     actionData: Array<any>,
@@ -29,30 +31,33 @@ class TimelineCmpt extends React.PureComponent<Props> {
     componentDidMount(): void {
         this.props.refreshTimeline()
         EventBus.getInstance().addListener(BusEvents.refreshTimeline,
-            this.refreshListener = () => doubleClick.wrap(() => this.refreshListView && this.refreshListView.scrollToTop(true)))
+            this.refreshListener = () => doubleClick.wrap(() => {
+                this.props.refreshTimeline()
+                this.refreshListView && this.refreshListView.scrollToTop(true)
+            }))
     }
 
-    componentWillUnmount()
-        :
-        void {
-        this.props.clearRedux()
+    componentWillUnmount(): void {
         EventBus.getInstance().removeListener(this.refreshListener);
     }
 
     render() {
-        return <RefreshListView
-            ref={(view) => this.refreshListView = view}
-            data={this.props.actionData ? this.props.actionData : []}
-            ptrState={this.props.ptrState}
-            renderItem={this._renderItem}
-            keyExtractor={(item) => item.id}
-            onHeaderRefresh={() => {
-                this.props.refreshTimeline()
-            }}
-            onFooterRefresh={() => {
-                this.props.loadMoreTimeline(this.props.actionData)
-            }}
-        />
+        return <View style={{flex: 1}}>
+            <ReduxResetComponent resetAction={ResetRedux}/>
+            <RefreshListView
+                ref={(view) => this.refreshListView = view}
+                data={this.props.actionData ? this.props.actionData : []}
+                ptrState={this.props.ptrState}
+                renderItem={this._renderItem}
+                keyExtractor={(item) => item.id}
+                onHeaderRefresh={() => {
+                    this.props.refreshTimeline()
+                }}
+                onFooterRefresh={() => {
+                    this.props.loadMoreTimeline(this.props.actionData)
+                }}
+            />
+        </View>
     }
 
     _renderItem = (data) => {
@@ -72,6 +77,5 @@ export default connect(
     (dispatch) => ({
         loadMoreTimeline: (oldActionData) => dispatch(mTimelineAction.loadMoreTimeline(oldActionData)),
         refreshTimeline: () => dispatch(mTimelineAction.refreshTimeline()),
-        clearRedux: () => dispatch(ResetRedux)
     })
 )(TimelineCmpt)

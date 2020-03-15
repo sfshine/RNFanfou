@@ -43,13 +43,11 @@ export default class LoginAction {
             return FanfouFetch.get(Api.verify_credentials, {mode: 'lite'})
         }).then(userJson => {
             userJson = {...userJson, ...accessToken}
-            Logger.log(TAG, "登陆成功", userJson)
             GlobalCache.user = userJson
             ConfigUtil.set(KEY, GlobalCache.user).then()
             TipsUtil.toastSuccess("登录成功", loading)
             navigateResetN(navigation, "MainPage");
         }).catch(e => {
-            Logger.error(TAG, "登录失败：", e)
             TipsUtil.toastFail("登录失败,请检查用户名和密码", loading)
         })
     }
