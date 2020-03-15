@@ -10,7 +10,7 @@ interface Props extends BaseProps {
     user: any,
     checkMap?: boolean,
     showCheckBox?: any,
-    onPress?: (event: GestureResponderEvent) => void;
+    onPress?: Function;
 }
 
 const TAG = "UserCell"
@@ -22,7 +22,11 @@ class UserCell extends PureComponent<Props> {
             activeOpacity={0.7}
             style={styles.userContainer}
             onPress={() => {
-                showCheckBox && this.onCheckBoxPressInner(checkMap, user)
+                if (showCheckBox) {
+                    this.onCheckBoxPressInner(checkMap, user)
+                } else {
+                    this.props.onPress()
+                }
             }}>
             <View style={styles.userInfoContainer}>
                 <Image source={{uri: user.profile_image_url_large}} style={styles.thumbnail}/>

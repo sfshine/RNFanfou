@@ -108,7 +108,7 @@ class MentionPage extends React.PureComponent<Props, State> {
         let rightButtonConfigs = []
         if (!this.state.showSearchInput) {
             rightButtonConfigs.push({
-                icon: this.state.showSearchInput ? "" : "search1",
+                icon: "search1",
                 callback: () => this.setState({showSearchInput: !this.state.showSearchInput})
             })
         }
