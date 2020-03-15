@@ -2,21 +2,21 @@ import React from 'react';
 import {connect} from "react-redux";
 import RefreshListView from "../../../global/components/refresh/RefreshListViewFlickr";
 import UserCell from "../UserCell";
-import PageCmpt from "~/global/components/PageCmpt";
 import BaseProps from "~/global/base/BaseProps";
 import MentionAction from "~/biz/compose/mention/MentionAction";
 import Logger from "~/global/util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import ArchModal from "~/global/util/ArchModal";
-import {Keyboard, Text, TouchableOpacity, View} from "react-native";
+import {Keyboard, View} from "react-native";
 import {LayoutProvider} from "recyclerlistview";
 import {screenWidth} from "~/global/util/ScreenUtil";
 import BackPressComponent from "~/global/components/BackPressComponent";
 import MentionSearchPage from "~/biz/compose/mention/search/MentionSearchPage";
 import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
 import TextInputEx from "~/global/components/TextInputEx";
-import NavigationBar, {NAV_BAR_HEIGHT_ANDROID} from "~/global/navigator/NavigationBar";
-import Row from '~/global/components/element/Row';
+import NavigationBar from "~/global/navigator/NavigationBar";
+import ReduxResetComponent from "~/global/components/ReduxResetComponent";
+import {MENTION_ACTIONS} from "~/biz/compose/mention/MentionReducer";
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -27,6 +27,7 @@ interface Props extends BaseProps {
     pageData: [],
     ptrState: string,
     callback: Function,
+    filter: Function,
     modal: ArchModal,
 }
 
@@ -41,6 +42,8 @@ class MentionPage extends React.PureComponent<Props, State> {
         super(props);
         this.state = {
             checkedMap: {},
+            inputKey: "",
+            showSearchInput: false,
         }
         Keyboard.dismiss()
     }
@@ -56,7 +59,7 @@ class MentionPage extends React.PureComponent<Props, State> {
     );
 
     componentDidMount() {
-        this.props.refreshFriends()
+        this.props.refreshFriends(null)
     }
 
     render() {
@@ -64,6 +67,7 @@ class MentionPage extends React.PureComponent<Props, State> {
         pageData = pageData ? pageData : []
         ptrState = ptrState ? ptrState : RefreshState.Refreshing
         return <View style={{flex: 1, backgroundColor: "white"}}>
+            <ReduxResetComponent resetAction={MENTION_ACTIONS.ResetRedux}/>
             {this.renderNavBar()}
             <BackPressComponent backPress={this.dismiss}/>
             <RefreshListView
@@ -74,12 +78,12 @@ class MentionPage extends React.PureComponent<Props, State> {
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
                     console.log("onHeaderRefresh");
-                    this.props.refreshFriends()
+                    this.props.refreshFriends(this.state.inputKey)
                 }}
                 extendedState={this.state.checkedMap}
                 onFooterRefresh={() => {
                     console.log("onFooterRefresh");
-                    this.props.loadMoreFriends(this.props.pageData)
+                    this.props.loadMoreFriends(this.state.inputKey, this.props.pageData)
                 }}
             />
         </View>
@@ -87,16 +91,16 @@ class MentionPage extends React.PureComponent<Props, State> {
 
     renderNavBar = () => {
         const placeholder = "请输入";
-        let {inputKey, showSearchInput} = this.state
+        let {showSearchInput} = this.state
         let inputView = showSearchInput ? <TextInputEx
-            onRightButtonClick={() => this.setState({inputKey: null, showSearchInput: false})}
+            onRightButtonClick={() => this.cancelFilter}
             autoFocus={true}
-            onSubmitEditing={() => this.props.search(inputKey)}
             returnKeyType={"search"}
             numberOfLines={1}
             placeholder={placeholder}
             onChangeText={text => {
                 this.setState({inputKey: text})
+                this.props.filter(text)
             }}
             value={this.state.inputKey}
         >
@@ -122,10 +126,17 @@ class MentionPage extends React.PureComponent<Props, State> {
         let archModal = new ArchModal()
         archModal.show(<MentionSearchPage modal={archModal}/>)
     }
-
+    cancelFilter = () => {
+        this.setState({inputKey: null, showSearchInput: false})
+        this.props.filter(null)
+    }
     dismiss = () => {
-        this.props.callback(null)
-        this.props.modal.remove()
+        if (this.state.showSearchInput) {
+            this.cancelFilter()
+        } else {
+            this.props.callback(null)
+            this.props.modal.remove()
+        }
         return true
     }
     sure = () => {
@@ -164,8 +175,8 @@ export default connect(
         ptrState: state.MentionReducer.ptrState,
     }),
     (dispatch) => ({
-        loadMoreFriends: (oldPageData) => dispatch(action.loadMoreFriends(oldPageData)),
-        refreshFriends: () => dispatch(action.refreshFriends())
-
+        refreshFriends: (query) => dispatch(action.refreshFriends(query)),
+        loadMoreFriends: (query) => dispatch(action.loadMoreFriends(query)),
+        filter: (query) => dispatch(action.filter(query)),
     })
 )(MentionPage)
