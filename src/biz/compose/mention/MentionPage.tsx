@@ -8,11 +8,15 @@ import MentionAction from "~/biz/compose/mention/MentionAction";
 import Logger from "~/global/util/Logger";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import ArchModal from "~/global/util/ArchModal";
-import {Keyboard} from "react-native";
+import {Keyboard, Text, TouchableOpacity, View} from "react-native";
 import {LayoutProvider} from "recyclerlistview";
 import {screenWidth} from "~/global/util/ScreenUtil";
 import BackPressComponent from "~/global/components/BackPressComponent";
 import MentionSearchPage from "~/biz/compose/mention/search/MentionSearchPage";
+import NavigationBarViewFactory from "~/global/navigator/NavigationBarViewFactory";
+import TextInputEx from "~/global/components/TextInputEx";
+import NavigationBar, {NAV_BAR_HEIGHT_ANDROID} from "~/global/navigator/NavigationBar";
+import Row from '~/global/components/element/Row';
 
 const action = new MentionAction()
 const TAG = "MentionPage"
@@ -27,7 +31,9 @@ interface Props extends BaseProps {
 }
 
 interface State {
-    checkedMap: object
+    checkedMap: object,
+    inputKey: string,
+    showSearchInput: boolean,
 }
 
 class MentionPage extends React.PureComponent<Props, State> {
@@ -57,16 +63,8 @@ class MentionPage extends React.PureComponent<Props, State> {
         let {pageData, ptrState} = this.props
         pageData = pageData ? pageData : []
         ptrState = ptrState ? ptrState : RefreshState.Refreshing
-        return <PageCmpt title={"选择好友"} backNav={this.props.navigation} rightNavButtonConfig={[
-            {
-                icon: "search1",
-                callback: this.navigateToSearch
-            },
-            {
-                icon: Object.keys(this.state.checkedMap).length > 0 ? "check" : "close",
-                callback: this.sure
-            }
-        ]}>
+        return <View style={{flex: 1, backgroundColor: "white"}}>
+            {this.renderNavBar()}
             <BackPressComponent backPress={this.dismiss}/>
             <RefreshListView
                 customLayoutProvider={this.layoutProvider}
@@ -84,13 +82,47 @@ class MentionPage extends React.PureComponent<Props, State> {
                     this.props.loadMoreFriends(this.props.pageData)
                 }}
             />
-        </PageCmpt>
+        </View>
+    }
+
+    renderNavBar = () => {
+        const placeholder = "请输入";
+        let {inputKey, showSearchInput} = this.state
+        let inputView = showSearchInput ? <TextInputEx
+            onRightButtonClick={() => this.setState({inputKey: null, showSearchInput: false})}
+            autoFocus={true}
+            onSubmitEditing={() => this.props.search(inputKey)}
+            returnKeyType={"search"}
+            numberOfLines={1}
+            placeholder={placeholder}
+            onChangeText={text => {
+                this.setState({inputKey: text})
+            }}
+            value={this.state.inputKey}
+        >
+        </TextInputEx> : null
+
+        let rightButtonConfigs = []
+        if (!this.state.showSearchInput) {
+            rightButtonConfigs.push({
+                icon: this.state.showSearchInput ? "" : "search1",
+                callback: () => this.setState({showSearchInput: !this.state.showSearchInput})
+            })
+        }
+        rightButtonConfigs.push({
+            text: Object.keys(this.state.checkedMap).length > 0 ? "完成" : "取消",
+            callback: this.sure
+        })
+        return <NavigationBar
+            titleView={inputView} title="选择好友"
+            rightButton={NavigationBarViewFactory.createButtonGroups(rightButtonConfigs)}/>
     }
 
     navigateToSearch = () => {
         let archModal = new ArchModal()
         archModal.show(<MentionSearchPage modal={archModal}/>)
     }
+
     dismiss = () => {
         this.props.callback(null)
         this.props.modal.remove()
@@ -120,7 +152,6 @@ class MentionPage extends React.PureComponent<Props, State> {
                               this.setState({
                                   checkedMap: tmpMap
                               })
-                              // Logger.log(TAG, "onPress ", tmpMap)
                           }}/>
         )
     };

@@ -116,26 +116,18 @@ class SearchPage extends React.PureComponent<Props, State> {
                 icon: "arrowleft",
                 callback: () => this.goBack()
             });
-        let inputView =
-            <View style={styles.textInputWrapper}>
-                <TextInputEx
-                    onRightButtonClick={() => this.setState({inputKey: null, queryId: null})}
-                    autoFocus={!this.state.queryId}
-                    onSubmitEditing={() => this.props.search(this.state.inputKey)}
-                    returnKeyType={"search"}
-                    numberOfLines={1}
-                    selectionColor={'#FFFFFF'}
-                    ref={el => (this.input = el)}
-                    placeholder={placeholder}
-                    placeholderTextColor="white"
-                    onChangeText={text => {
-                        this.setState({inputKey: text, queryId: null})
-                    }}
-                    style={styles.textInput}
-                    value={this.state.inputKey}
-                >
-                </TextInputEx>
-            </View>;
+        let inputView = <TextInputEx
+            onRightButtonClick={() => this.setState({inputKey: null, queryId: null})}
+            autoFocus={!this.state.queryId}
+            onSubmitEditing={() => this.props.search(this.state.inputKey)}
+            returnKeyType={"search"}
+            ref={el => (this.input = el)}
+            placeholder={placeholder}
+            onChangeText={text => {
+                this.setState({inputKey: text, queryId: null})
+            }}
+            value={this.state.inputKey}
+        />
         let inputSomething = inputKey && inputKey.length > 0
         let rightButton =
             <TouchableOpacity onPress={() => {
@@ -199,20 +191,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         color: 'white'
-    },
-    textInput: {
-        flex: 1,
-        fontSize: 15,
-        padding: 0,
-        color: 'white',
-        textAlign: 'left',
-        textAlignVertical: 'center'
-    },
-    textInputWrapper: {
-        borderBottomColor: 'white',
-        borderBottomWidth: 1,
-        flex: 1,
-        margin: 5,
     },
     bottomButton: {
         shadowRadius: 8,

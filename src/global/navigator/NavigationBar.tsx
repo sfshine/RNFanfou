@@ -47,7 +47,7 @@ class NavigationBar extends PureComponent<Props> {
                       color: styleWithTheme.textColor
                   }]}>{this.props.title}</Text>;
         let content = <View style={[styles.navBarShape, {backgroundColor: styleWithTheme.backgroundColor}]}>
-            <Row>
+            <Row style={{flex: 1}}>
                 {this.props.leftButton ? this.props.leftButton : this.getDefaultLeftButton(this.props.backNav)}
                 {titleView}
             </Row>

@@ -1,13 +1,7 @@
 import React, {PureComponent} from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import {
-    StyleSheet,//样式
-    View,//视图组件；
-    Image,//图片
-    TextInput,//输入框
-    TouchableOpacity, TextInputProps,//一个类似button的组件
-} from "react-native";
+import {StyleSheet, TextInput, TextInputProps, TouchableOpacity, View,} from "react-native";
 
 interface Props extends TextInputProps {
     onRightButtonClick: Function,
@@ -41,7 +35,10 @@ export default class TextInputEx extends PureComponent<Props, State> {
                     numberOfLines={1}
                     clearButtonMode={'never'}
                     maxLength={50}
+                    placeholderTextColor="white"
+                    selectionColor={'#FFFFFF'}
                     value={inputValue}
+                    style={styles.textInput}
                     {...this.props}
                     onChangeText={this.onChangeTextInner}
                 />
@@ -73,15 +70,25 @@ export default class TextInputEx extends PureComponent<Props, State> {
 const styles = StyleSheet.create(
     {
         container: {
-            flex: 1,
+            borderBottomColor: 'white',
+            borderBottomWidth: 1,
+            margin: 5,
             flexDirection: 'row',
-            alignItems: 'center'
+            flex: 1,
         },
         closeOpacityStyle: {
             height: 30,
             width: 30,
             justifyContent: 'center',
             alignItems: 'center'
+        },
+        textInput: {
+            flex: 1,
+            fontSize: 15,
+            padding: 0,
+            color: 'white',
+            textAlign: 'left',
+            textAlignVertical: 'center'
         },
     }
 )

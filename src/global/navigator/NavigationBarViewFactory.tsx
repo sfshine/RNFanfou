@@ -29,7 +29,7 @@ export default class NavigationBarViewFactory {
                 <AntDesign name={config.icon} size={24} style={{color: 'white'}}/>, config.callback)
         } else {
             return this.createButtonWithView(
-                <Text style={{fontSize: 15, color: '#FFFFFF'}}>{config.text}</Text>, config.callback)
+                <Text style={{fontSize: 17, color: '#FFFFFF'}}>{config.text}</Text>, config.callback)
         }
     }
 
