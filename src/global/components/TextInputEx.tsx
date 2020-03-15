@@ -28,17 +28,8 @@ export default class TextInputEx extends PureComponent<Props, State> {
     }
 
     _isNull(str) {
-        let result = true;
-        if (str === "" || str === undefined) {
-            result = true;
-        }
-
-        if (str.length > 0) {
-            result = false;
-        }
-        return result;
+        return !(str && str.length > 0)
     }
-
 
     render() {
         let {inputValue} = this.state;
