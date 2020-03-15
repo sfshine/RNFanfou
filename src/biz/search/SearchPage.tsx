@@ -13,6 +13,7 @@ import {SearchAction} from "./SearchAction";
 import RefreshState from "~/global/components/refresh/RefreshState";
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {SEARCH_ACTIONS} from "~/biz/search/SearchReducer";
+import TextInputEx from "~/global/components/TextInputEx";
 
 interface State {
     queryId: string,
@@ -109,6 +110,7 @@ class SearchPage extends React.PureComponent<Props, State> {
     renderNavBar() {
         const {theme} = this.props;
         const placeholder = "请输入";
+        let inputKey = this.state.inputKey
         let backButton = NavigationBarViewFactory.createButton(
             {
                 icon: "arrowleft",
@@ -116,7 +118,8 @@ class SearchPage extends React.PureComponent<Props, State> {
             });
         let inputView =
             <View style={styles.textInputWrapper}>
-                <TextInput
+                <TextInputEx
+                    onRightButtonClick={() => this.setState({inputKey: null, queryId: null})}
                     autoFocus={!this.state.queryId}
                     onSubmitEditing={() => this.props.search(this.state.inputKey)}
                     returnKeyType={"search"}
@@ -131,23 +134,19 @@ class SearchPage extends React.PureComponent<Props, State> {
                     style={styles.textInput}
                     value={this.state.inputKey}
                 >
-                </TextInput>
+                </TextInputEx>
             </View>;
+        let inputSomething = inputKey && inputKey.length > 0
         let rightButton =
-            <TouchableOpacity
-                onPress={() => {
-                    if (this.state.inputKey.length > 0) {
-                        // this.props.search(this.state.inputKey)
-                        this.setState({
-                            inputKey: "",
-                        })
-                    } else {
-                        this.goBack()
-                    }
-                }}
-            >
+            <TouchableOpacity onPress={() => {
+                if (inputSomething) {
+                    this.props.search(inputKey)
+                } else {
+                    this.goBack()
+                }
+            }}>
                 <View style={{marginRight: 10}}>
-                    <Text style={styles.buttonText}> {this.state.inputKey.length > 0 ? '清空' : "取消"}</Text>
+                    <Text style={styles.buttonText}> {inputSomething ? '搜索' : "取消"}</Text>
                 </View>
             </TouchableOpacity>;
         return <View style={{
