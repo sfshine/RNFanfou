@@ -47,12 +47,12 @@ export default class StatusDetailAction {
         }
     }
 
-    static statuses_destroy(id, navigation) {
+    static statuses_destroy(id, callback) {
         let loading = TipsUtil.toastLoading('删除中...');
         FanfouFetch.post(Api.statuses_destroy, {id: id}).then(json => {
             if (json) {
                 TipsUtil.toastSuccess('删除成功', loading);
-                goBackN(navigation)
+                callback && callback()
             } else {
                 TipsUtil.toastFail('删除失败', loading);
             }

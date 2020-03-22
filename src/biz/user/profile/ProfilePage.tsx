@@ -165,7 +165,7 @@ export default class ProfilePage extends React.PureComponent<Props, State> {
         // Logger.log(TAG,"data", data)
         let item = data.item;
         return (
-            <TimelineCell item={item}/>
+            <TimelineCell item={item} onRefresh={this.onRefreshTimeline}/>
         )
     };
 

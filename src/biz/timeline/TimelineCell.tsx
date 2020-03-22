@@ -13,13 +13,16 @@ import {COMPOSE_MODE} from "~/biz/compose/QuickComposeAction";
 import {Modal} from "@ant-design/react-native";
 import {removeHtmlTag} from "~/global/util/StringUtil";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {GlobalCache} from "~/global/AppGlobal";
+import {confirmDeleteStatus} from "~/biz/statsdetail/StatusDetailPage";
 
 const favoriteMap = {}
 
 interface Props extends BaseProps {
     item: any,
     highLight?: boolean,
-    callback?: any,
+    onItemClick?: any,
+    onRefresh?: Function,
 }
 
 export default class TimelineCell extends PureComponent<Props> {
@@ -36,7 +39,7 @@ export default class TimelineCell extends PureComponent<Props> {
         let highLightColor = this.props.highLight ? "#EEEEEE" : "#FFFFFF"
         return (
             <View style={[styles.container, {backgroundColor: highLightColor}]}>
-                {<StatusComponent item={item} callback={this.props.callback}
+                {<StatusComponent item={item} onItemClick={this.props.onItemClick}
                                   onLongPress={() => this.showLongPressOptions(item)}/>}
                 <View style={styles.toolsContainer}>
                     <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
@@ -64,22 +67,29 @@ export default class TimelineCell extends PureComponent<Props> {
     }
 
     showLongPressOptions = (status) => {
-        Modal.operation([
-            {
-                text: "转发",
-                onPress: () => this.quickSend(status, COMPOSE_MODE.Forward)
+        let actions = [{
+            text: "转发",
+            onPress: () => this.quickSend(status, COMPOSE_MODE.Forward)
 
-            }, {
-                text: "评论",
-                onPress: () => this.quickSend(status, COMPOSE_MODE.Comment)
-            },
-            {
-                text: favoriteMap[status.id] ? "取消收藏" : "收藏",
-                onPress: () => this.favorite(status)
-            }, {
-                text: "复制",
-                onPress: () => this.copy(status)
-            }])
+        }, {
+            text: "评论",
+            onPress: () => this.quickSend(status, COMPOSE_MODE.Comment)
+        }, {
+            text: favoriteMap[status.id] ? "取消收藏" : "收藏",
+            onPress: () => this.favorite(status)
+        }, {
+            text: "复制",
+            onPress: () => this.copy(status)
+        }]
+        if (status.user && status.user.id === GlobalCache.user.id) {
+            actions.push({
+                text: "删除",
+                onPress: () => confirmDeleteStatus(status, () => {
+                    this.props.onRefresh && this.props.onRefresh()
+                })
+            })
+        }
+        Modal.operation(actions)
     }
 
     showMoreOptions = (status) => {
