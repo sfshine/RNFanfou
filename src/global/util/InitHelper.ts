@@ -11,8 +11,8 @@ export default class InitHelper {
         WeChat.registerApp("wx6159aef19472b61f").then()
         FanfouModule.config({
             apiHost: "http://api.fanfou.com",
-            apiKey: "a3bec0870d3be1208a78447fb00a30f4",
-            apiSecret: "f05f8fd34ac928753f2270cb387af8d9",
+            apiKey: "061bd1b03d10fe5edfb732abe1193cad",
+            apiSecret: "ada14ba47291c8fa16eef931236412d1",
             callbackUrl: "http://m.fanfou.com",
         });
     }
