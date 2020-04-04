@@ -15,6 +15,8 @@ import FavouritePage from "~/biz/user/favourite/FavouritePage";
 import GalleryPage from "~/biz/user/gallery/GalleryPage";
 import MultiplePictureViewPage from "~/global/components/page/MultiplePictureViewPage";
 import MentionPage from "~/biz/compose/mention/MentionPage";
+import UpdatePage from "~/biz/user/update/UpdateProfilePage";
+import UpdateProfilePage from "~/biz/user/update/UpdateProfilePage";
 
 const RootNavigator = createStackNavigator({
         WelcomePage: {
@@ -55,6 +57,9 @@ const RootNavigator = createStackNavigator({
         },
         GalleryPage: {
             screen: GalleryPage
+        },
+        UpdateProfilePage: {
+            screen: UpdateProfilePage
         }
     }, {
         defaultNavigationOptions: {

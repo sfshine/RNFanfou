@@ -33,6 +33,7 @@ export const Api = {
     favorites: "/favorites",
     user_timeline: "/photos/user_timeline",
     mentions: "/statuses/mentions",
+    update_profile: "/account/update_profile",
 }
 
 export var switchHost = (host: string) => {
