@@ -52,6 +52,13 @@ export default class LoginAction {
         })
     }
 
+    static loadUserInfo(callback) {
+        FanfouFetch.get(Api.verify_credentials, {mode: 'lite'}).then(userJson => {
+            GlobalCache.user = userJson
+            callback(userJson)
+        }).catch()
+    }
+
     static logout(navigation) {
         return dispatch => {
             GlobalCache.user = emptyUser;

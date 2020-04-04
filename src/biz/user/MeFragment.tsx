@@ -9,12 +9,16 @@ import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager
 import BaseProps from "~/global/base/BaseProps";
 import LoginAction from "~/biz/user/login/LoginAction";
 import Logger from "~/global/util/Logger";
+import TipsUtil from "~/global/util/TipsUtil";
+import {BusEvents} from "~/biz/common/event/BusEvents";
+import EventBus from 'react-native-event-bus'
 
 interface Props extends BaseProps {
     logout: Function,
 }
 
 interface State {
+    user: any
 }
 
 const aboutMessage = "\n这是一个简洁易用、基于ReactNative的开源饭否客户端,有任何问题和建议欢迎@Alexander.G；另外,热烈欢迎PR!\n\n感谢: @小喊，@shenlong5418"
@@ -23,6 +27,25 @@ const github = "https://github.com/sfshine/RNFanfou"
 const TAG = "MeFragment"
 
 class MeFragment extends React.PureComponent<Props, State> {
+    constructor(props) {
+        super(props)
+        this.state = {
+            user: GlobalCache.user
+        }
+    }
+
+    private refreshListener
+
+    componentDidMount(): void {
+        EventBus.getInstance().addListener(BusEvents.refreshMine,
+            this.refreshListener = () =>
+                LoginAction.loadUserInfo(user => this.setState({user: user}))
+        )
+    }
+
+    componentWillUnmount(): void {
+        EventBus.getInstance().removeListener(this.refreshListener);
+    }
 
     render() {
         return <PageCmpt title={" "} rightNavButtonConfig={
@@ -47,7 +70,7 @@ class MeFragment extends React.PureComponent<Props, State> {
     }
 
     private renderContent() {
-        let user = GlobalCache.user
+        let user = this.state.user
         return <ScrollView
             style={{flex: 1, backgroundColor: '#f5f5f9'}}
             automaticallyAdjustContentInsets={false}
