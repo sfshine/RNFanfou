@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import UpdateProfileAction from "./UpdateProfileAction";
@@ -7,6 +7,8 @@ import {Button, InputItem, List, TextareaItem} from "@ant-design/react-native";
 import {GlobalCache} from "~/global/AppGlobal";
 import Logger from "~/global/util/Logger";
 import {goBack} from "~/global/navigator/NavigationManager";
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import {getLocation} from "~/global/util/LocationUtil";
 
 /**
  * @author Alex
@@ -55,14 +57,21 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
             </InputItem>
             <InputItem
                 value={this.state.user.location}
-                onChange={value => {
-                    this.setState({
-                        user: {
-                            ...this.state.user,
-                            location: value
-                        }
-                    });
-                }}
+                editable={false}
+                extra={<TouchableOpacity onPress={() => {
+                    getLocation((location) => {
+                        this.setState({
+                            user: {
+                                ...this.state.user,
+                                location: location
+                            }
+                        });
+                    }, () => {
+
+                    }).catch()
+                }}>
+                    <EvilIcons name={'location'} size={24}/>
+                </TouchableOpacity>}
             >
                 位置
             </InputItem>
