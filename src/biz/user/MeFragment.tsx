@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import * as React from "react";
 import {GlobalCache} from "~/global/AppGlobal";
 import PageCmpt from "~/global/components/PageCmpt";
-import {Image, ImageBackground, Linking, ScrollView, StyleSheet, Text} from "react-native";
+import {Image, ImageBackground, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {List, Modal} from "@ant-design/react-native";
 import Item from "@ant-design/react-native/es/list/ListItem";
 import NavigationManager, {navigateN} from "~/global/navigator/NavigationManager";
@@ -12,6 +12,7 @@ import Logger from "~/global/util/Logger";
 import TipsUtil from "~/global/util/TipsUtil";
 import {BusEvents} from "~/biz/common/event/BusEvents";
 import EventBus from 'react-native-event-bus'
+import Row from "~/global/components/element/Row";
 
 interface Props extends BaseProps {
     logout: Function,
@@ -48,7 +49,7 @@ class MeFragment extends React.PureComponent<Props, State> {
     }
 
     render() {
-        return <PageCmpt title={" "} rightNavButtonConfig={
+        return <PageCmpt title={"个人中心"} rightNavButtonConfig={
             {
                 text: "退出",
                 callback: this.confirmLogout
@@ -77,12 +78,15 @@ class MeFragment extends React.PureComponent<Props, State> {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
         >
-            <ImageBackground source={{uri: user.profile_background_image_url}} style={styles.profile}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.profile} onPress={() => {
+                navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: user})
+            }}>
                 <Image style={styles.avatar} source={{uri: user.profile_image_url_large}}/>
-                <Text style={styles.profile_description}>{user.name}</Text>
-                {user.url ? <Text style={styles.profile_description}> {user.url}</Text> : null}
-                <Text style={styles.profile_description}>{user.description}</Text>
-            </ImageBackground>
+                <View style={{paddingLeft: 10, paddingRight: 5, justifyContent: "center"}}>
+                    <Text style={styles.profile_name}>{user.name}</Text>
+                    <Text style={styles.profile_id}>ID:{user.id}</Text>
+                </View>
+            </TouchableOpacity>
             <List>
                 <Item extra={user.statuses_count} arrow="horizontal" onPress={() => {
                     navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: user})
@@ -128,20 +132,23 @@ class MeFragment extends React.PureComponent<Props, State> {
 }
 
 const styles = StyleSheet.create({
-    avatar: {
-        height: 80,
-        width: 80,
-    },
     profile: {
-        paddingTop: 10,
-        alignItems: 'center',
+        flexDirection: "row",
+        backgroundColor: "#FFFFFF",
+        padding: 10,
+        marginBottom: 5,
     },
-    profile_description: {
-        marginTop: 5,
-        textAlign: 'center',
-        color: 'black',
-        textShadowRadius: 4,
-        textShadowColor: 'white'
+    avatar: {
+        height: 55,
+        width: 55,
+    },
+    profile_name: {
+        fontSize: 17,
+    },
+    profile_id: {
+        marginTop: 3,
+        fontSize: 13,
+        color: "#999999",
     },
 })
 export default connect(
