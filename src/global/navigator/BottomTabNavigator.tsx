@@ -46,8 +46,11 @@ const TABS = {
             tabBarLabel: '消息',
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'message-text-outline'} size={24} c style={{color: tintColor}}/>
-
             ),
+            tabBarOnPress: ({defaultHandler}) => {
+                defaultHandler()
+                EventBus.getInstance().fireEvent(BusEvents.refreshMention)
+            },
         },
     },
     MeFragment: {
@@ -56,8 +59,11 @@ const TABS = {
             tabBarLabel: '我的',
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'account'} size={24} c style={{color: tintColor}}/>
-
             ),
+            tabBarOnPress: ({defaultHandler}) => {
+                defaultHandler()
+                EventBus.getInstance().fireEvent(BusEvents.refreshMine)
+            },
         },
     },
 };

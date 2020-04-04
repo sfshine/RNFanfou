@@ -5,6 +5,9 @@ import BaseProps from "~/global/base/BaseProps";
 import PageCmpt from "~/global/components/PageCmpt";
 import MessageAction from "~/biz/message/MessageAction";
 import TimelineCell from "~/biz/timeline/TimelineCell";
+import {BusEvents} from "~/biz/common/event/BusEvents";
+import DoubleClick from "~/global/util/DoubleClick";
+import EventBus from 'react-native-event-bus'
 
 interface Props extends BaseProps {
     actionData: Array<any>,
@@ -14,13 +17,25 @@ interface Props extends BaseProps {
 }
 
 class MessageFragment extends React.PureComponent<Props> {
+    private doubleClick = new DoubleClick()
+    private refreshListener
+    private refreshListView: any
 
-    componentWillMount() {
+    componentDidMount(): void {
         this.props.refreshTimeline()
+        EventBus.getInstance().addListener(BusEvents.refreshMention,
+            this.refreshListener = () => this.doubleClick.wrap(() => {
+                this.props.refreshTimeline([])
+                this.refreshListView && this.refreshListView.scrollToTop(true)
+            }))
     }
 
+    componentWillUnmount(): void {
+        EventBus.getInstance().removeListener(this.refreshListener);
+    }
     render() {
         return <PageCmpt title="与我相关"><RefreshListView
+            ref={(view) => this.refreshListView = view}
             data={this.props.actionData ? this.props.actionData : []}
             ptrState={this.props.ptrState}
             renderItem={this._renderItem}
