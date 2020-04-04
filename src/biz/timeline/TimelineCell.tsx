@@ -93,13 +93,22 @@ export default class TimelineCell extends PureComponent<Props> {
     }
 
     showMoreOptions = (status) => {
-        Modal.operation([{
+        let actions = [{
             text: favoriteMap[status.id] ? "取消收藏" : "收藏",
             onPress: () => this.favorite(status)
         }, {
             text: "复制",
             onPress: () => this.copy(status)
-        }])
+        }]
+        if (status.user && status.user.id === GlobalCache.user.id) {
+            actions.push({
+                text: "删除",
+                onPress: () => confirmDeleteStatus(status, () => {
+                    this.props.onRefresh && this.props.onRefresh()
+                })
+            })
+        }
+        Modal.operation(actions)
     }
 
     copy = (status) => {
