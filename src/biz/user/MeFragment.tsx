@@ -109,7 +109,13 @@ class MeFragment extends React.PureComponent<Props, State> {
                 }}>粉丝
                 </Item>
                 <Item arrow="horizontal" onPress={() => {
-                    navigateN(NavigationManager.mainNavigation, "UpdateProfilePage")
+                    navigateN(NavigationManager.mainNavigation, "UpdateProfilePage", {
+                        onRefresh: () => {
+                            this.setState({
+                                user: GlobalCache.user
+                            })
+                        }
+                    })
                 }}>修改资料
                 </Item>
                 <Item arrow="horizontal" onPress={() => {
@@ -161,7 +167,6 @@ export default connect(
     }),
     (dispatch) => ({
         logout: (navigation) => dispatch(LoginAction.logout(navigation))
-
     })
 )
 (MeFragment)

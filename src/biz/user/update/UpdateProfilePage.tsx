@@ -6,7 +6,7 @@ import * as React from "react";
 import {Button, InputItem, List, TextareaItem} from "@ant-design/react-native";
 import {GlobalCache} from "~/global/AppGlobal";
 import Logger from "~/global/util/Logger";
-import NavigationManager, {goBack, navigateN} from "~/global/navigator/NavigationManager";
+import NavigationManager, {extractParam, goBack, navigateN} from "~/global/navigator/NavigationManager";
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import {getLocation} from "~/global/util/LocationUtil";
 
@@ -113,7 +113,10 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
                     type="primary"
                     onPress={() => {
                         UpdateProfileAction.updateProfile(this.state.user)
-                            .then(() => goBack(this.props)).catch()
+                            .then(() => {
+                                extractParam(this.props, "onRefresh")()
+                                goBack(this.props)
+                            }).catch()
                     }}
                 >确认更改
                 </Button>

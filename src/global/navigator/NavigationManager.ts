@@ -47,3 +47,7 @@ export function goBackN(navigation) {
     }
     return false
 }
+
+export function extractParam(props, key) {
+    return props.navigation && props.navigation.state.params[key]
+}
