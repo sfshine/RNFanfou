@@ -110,7 +110,7 @@ class MeFragment extends React.PureComponent<Props, State> {
                 </Item>
                 <Item arrow="horizontal" onPress={() => {
                     navigateN(NavigationManager.mainNavigation, "UpdateProfilePage")
-                }}>个人资料修改
+                }}>修改资料
                 </Item>
                 <Item arrow="horizontal" onPress={() => {
                     Modal.alert(appVersion, aboutMessage, [

@@ -18,6 +18,7 @@ export default class UpdateProfileAction {
                 name: user.name,
                 location: user.location,
                 description: user.description,
+                url: user.url,
             })
             TipsUtil.toastHide(loadingUI)
             if (userResp) {

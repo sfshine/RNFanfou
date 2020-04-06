@@ -53,7 +53,18 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
                     });
                 }}
             >
-                用户名
+            </InputItem>
+            <InputItem
+                value={this.state.user.url}
+                onChange={value => {
+                    this.setState({
+                        user: {
+                            ...this.state.user,
+                            url: value
+                        }
+                    });
+                }}
+            >
             </InputItem>
             <InputItem
                 value={this.state.user.location}
@@ -73,7 +84,6 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
                     <EvilIcons name={'location'} size={24}/>
                 </TouchableOpacity>}
             >
-                位置
             </InputItem>
             <TextareaItem
                 rows={4}
