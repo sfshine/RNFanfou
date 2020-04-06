@@ -4,6 +4,7 @@ import TipsUtil from "~/global/util/TipsUtil";
 import Logger from "~/global/util/Logger"
 import FanfouFetch from "~/biz/common/api/FanfouFetch";
 import {GlobalCache} from "~/global/AppGlobal";
+import SYImagePicker from "react-native-syan-image-picker";
 
 /**
  * @author Alex
@@ -32,6 +33,27 @@ export default class UpdateProfileAction {
             Logger.error(TAG, err)
             TipsUtil.toastHide(loadingUI)
             TipsUtil.toastFail("错误" + err)
+        }
+    }
+
+    static async updateAvatar(onSuccess) {
+        let loading
+        try {
+            let photos = await SYImagePicker.asyncShowImagePicker({
+                imageCount: 1,
+                isCrop: false,
+                compress: false,
+                isGif: true,
+            })
+            Logger.log(TAG, "choose image end")
+            if (photos && photos.length > 0) {
+                loading = TipsUtil.toastLoading('图片上传中...');
+                let user = await FanfouFetch.post(Api.update_profile_image, null, {"image": photos[0].uri})
+                TipsUtil.toastSuccess("上传图片成功", loading)
+                onSuccess && onSuccess(user)
+            }
+        } catch (e) {
+            TipsUtil.toastFail("上传图片出错,请重试", loading)
         }
     }
 }

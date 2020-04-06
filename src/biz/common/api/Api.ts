@@ -34,6 +34,7 @@ export const Api = {
     user_timeline: "/photos/user_timeline",
     mentions: "/statuses/mentions",
     update_profile: "/account/update_profile",
+    update_profile_image: "/account/update_profile_image"
 }
 
 export var switchHost = (host: string) => {

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import PageCmpt from "~/global/components/PageCmpt";
 import UpdateProfileAction from "./UpdateProfileAction";
@@ -6,7 +6,7 @@ import * as React from "react";
 import {Button, InputItem, List, TextareaItem} from "@ant-design/react-native";
 import {GlobalCache} from "~/global/AppGlobal";
 import Logger from "~/global/util/Logger";
-import {goBack} from "~/global/navigator/NavigationManager";
+import NavigationManager, {goBack, navigateN} from "~/global/navigator/NavigationManager";
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import {getLocation} from "~/global/util/LocationUtil";
 
@@ -42,6 +42,13 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
 
     renderContent = () => {
         return <List>
+            <TouchableOpacity activeOpacity={0.7} style={styles.profile} onPress={() => {
+                UpdateProfileAction.updateAvatar((user) => {
+                    this.setState({user: user})
+                }).catch()
+            }}>
+                <Image style={styles.avatar} source={{uri: this.state.user.profile_image_url_large}}/>
+            </TouchableOpacity>
             <InputItem
                 value={this.state.user.name}
                 onChange={value => {
@@ -118,6 +125,20 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    profile: {
+        borderBottomWidth: 0.3,
+        borderBottomColor: "#DDDDDD",
+        flexDirection: "row",
+        backgroundColor: "#FFFFFF",
+        marginLeft: 15,
+        padding: 10,
+        marginBottom: 5,
+        justifyContent: "center",
+    },
+    avatar: {
+        height: 70,
+        width: 70,
     },
 });
 export default connect(
