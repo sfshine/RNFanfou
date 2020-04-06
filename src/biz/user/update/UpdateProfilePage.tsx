@@ -105,7 +105,7 @@ class UpdateProfilePage extends React.PureComponent<Props, State> {
                         }
                     });
                 }}
-                style={{margin: 5}}
+                style={{marginLeft: 10, marginRight: 10}}
             />
             <List.Item>
                 <Button
