@@ -180,7 +180,7 @@ class SearchPage extends React.PureComponent<Props, State> {
             TipsUtil.toastSuccess("关注话题成功", loading)
         }).catch(e => {
             console.log("createSearchWord error:", e)
-            TipsUtil.toastFail("关注话题失败", loading)
+            TipsUtil.toastFail("关注话题失败,可能关注的话题数量已经达到上限", loading)
         })
     }
 }
