@@ -18,7 +18,7 @@ node android_release.ts
 
 #### 使用说明
 
-1.目前仅支持Android（IOS支持计划中）
+1.  目前仅支持Android（IOS支持计划中）
 
 #### 参与贡献
 
