@@ -6339,10 +6339,10 @@ rmc-dialog@~1.0.6:
     babel-runtime "6.x"
     rc-animate "2.x"
 
-rn-bugly@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npm.taobao.org/rn-bugly/download/rn-bugly-0.1.0.tgz#8d56d93aa8a001b9c878eaf615a63fcbe18bda54"
-  integrity sha1-jVbZOqigAbnIeOr2FaY/y+GL2lQ=
+rn-bugly@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npm.taobao.org/rn-bugly/download/rn-bugly-0.3.0.tgz#d299beb28a235f62dd71236d727804fa39596ff2"
+  integrity sha1-0pm+soojX2LdcSNtcngE+jlZb/I=
 
 rn-global-modal@^1.0.3:
   version "1.0.3"

@@ -47,7 +47,7 @@
     "recyclerlistview": "^2.0.12",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0",
-    "rn-bugly": "0.1.0",
+    "rn-bugly": "0.3.0",
     "rn-global-modal": "^1.0.3",
     "tslib": "^1.10.0"
   },
