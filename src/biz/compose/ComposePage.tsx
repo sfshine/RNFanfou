@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Keyboard, ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -12,6 +12,7 @@ import {goBack} from "~/global/navigator/NavigationManager";
 import PageCmpt from "~/global/components/PageCmpt";
 import ArchModal from "~/global/util/ArchModal";
 import MentionPage from "~/biz/compose/mention/MentionPage";
+import EmojiCmpt from './emoji/EmojiCmpt';
 
 interface Props extends BaseProps {
     data: any,
@@ -21,6 +22,7 @@ interface State {
     inputString: string,
     photos: Array<any>,
     selection: any,
+    showEmoji:boolean,
 }
 
 const TAG = "ComposePage"
@@ -34,12 +36,18 @@ class ComposePage extends React.PureComponent<Props, State> {
             photos: [],
             inputString: '',
             selection: null,
+            showEmoji:false
         };
     }
 
     render() {
-        let {photos, selection, inputString} = this.state;
+        let {photos, selection, inputString,showEmoji} = this.state;
         let textInput = <TextInput
+            onTouchStart={()=>  {
+                if (showEmoji){
+                    this.setState({showEmoji:!this.state.showEmoji})
+                }
+            }}
             selection={selection}
             ref="textInput"
             onSelectionChange={() => this.setState({selection: null})}
@@ -85,6 +93,13 @@ class ComposePage extends React.PureComponent<Props, State> {
                 {scrollView}
                 {this.renderToolbar()}
             </View>
+            {showEmoji? <EmojiCmpt onChoose = {(emoji)=>{
+                let newInputStr = (inputString||"") + emoji
+                this.setState({
+                    inputString: newInputStr,
+                    selection: {start: newInputStr.length, end: newInputStr.length}
+                })
+            }}/>:null}
         </PageCmpt>
     }
 
@@ -103,6 +118,9 @@ class ComposePage extends React.PureComponent<Props, State> {
                 archModal.show(<MentionPage callback={this.onChooseMentions} modal={archModal}/>)
             }}>
                 <Feather name={'at-sign'} size={25} style={{color: 'white'}}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.onEmojiButtonClick}>
+                <Feather name={'smile'} size={25} style={{color: 'white'}}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={this.onHashButtonClick}>
                 <Feather name={'hash'} size={25} style={{color: 'white'}}/>
@@ -133,6 +151,13 @@ class ComposePage extends React.PureComponent<Props, State> {
             selection: {start: curInputStr.length - 1, end: curInputStr.length - 1}
         })
     }
+    onEmojiButtonClick = ()=>{
+        const showEmoji = !this.state.showEmoji
+        this.setState({showEmoji})
+        if (showEmoji){
+            Keyboard.dismiss()
+        }
+    }
     onSendButtonClick = () => {
         const {photos, inputString} = this.state
         if (inputString.length == 0 && photos.length == 0) {
@@ -161,7 +186,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     textInput: {
-        fontSize: 15,
+        fontSize: 18,
         flex: 1,
         alignSelf: "stretch",
         padding: 10,

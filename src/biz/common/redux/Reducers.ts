@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import Logger from "../../../global/util/Logger";
 import {RESET} from "../../../global/redux/ResetAction";
 import themeReducer from '../../../global/theme/ThemeReducer';
 import TimelineReducer from "~/biz/timeline/TimelineReducer";
@@ -12,6 +11,7 @@ import FavouriteReducer from "~/biz/user/favourite/FavouriteReducer";
 import GalleryReducer from "~/biz/user/gallery/GalleryReducer";
 import MentionReducer from "~/biz/compose/mention/MentionReducer";
 import MessageReducer from "~/biz/message/MessageReducer";
+import UpdateProfileReducer from "~/biz/user/update/UpdateProfileReducer";
 
 export const rootReducer = combineReducers({
     themeReducer: themeReducer,
@@ -25,6 +25,7 @@ export const rootReducer = combineReducers({
     GalleryReducer: GalleryReducer,
     MentionReducer: MentionReducer,
     MessageReducer: MessageReducer,
+    UpdateProfileReducer: UpdateProfileReducer,
 });
 
 /**

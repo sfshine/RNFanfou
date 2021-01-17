@@ -9,10 +9,10 @@ const cmdRN = [
     "./node_modules/.bin/tsc",
     "rm  -rf ./android/app/build/outputs/apk/release/*.apk",
     "react-native link",
-    "rm -rf android/app/src/main/assets/index.android.bundle",
-    "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
-    "rm -rf android/app/src/main/res/drawable-*",
-    "rm -rf android/app/src/main/res/raw/",
+    // "rm -rf android/app/src/main/assets/index.android.bundle",
+    // "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
+    // "rm -rf android/app/src/main/res/drawable-*",
+    // "rm -rf android/app/src/main/res/raw/",
     "npx jetify",
 ]
 
@@ -20,7 +20,8 @@ const cmdAndroid = [
     // "export JAVA_OPTS=\"-Xmx1024M -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512M\"",
     // "export GRADLE_OPTS=\"-Dorg.gradle.daemon=false\"",
     // "./gradlew clean",
-    "./gradlew assembleRelease -x bundleReleaseJsAndAssets -x verifyReleaseResources",
+    // "./gradlew assembleRelease -x bundleReleaseJsAndAssets -x verifyReleaseResources",
+    "./gradlew assembleRelease -x verifyReleaseResources",
     // "node ./rename-apk.js"
 ]
 console.log("start>>>>")

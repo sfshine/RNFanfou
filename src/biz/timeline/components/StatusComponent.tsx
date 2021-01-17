@@ -15,7 +15,7 @@ const screenWidth = Dimensions.get('window').width;
 
 interface Props extends BaseProps {
     item: any,
-    callback: any,
+    onItemClick: any,
     onLongPress: () => {},
 }
 
@@ -24,7 +24,7 @@ const TAG = "StatusComponent"
 class StatusComponent extends PureComponent<Props> {
     render() {
         Logger.log(TAG, "StatusComponent: ", this.props)
-        const {item, callback} = this.props;
+        const {item, onItemClick} = this.props;
         let userView = <TouchableOpacity activeOpacity={0.7} style={styles.userContainer}
                                          onPress={() => {
                                              navigateN(NavigationManager.mainNavigation, "ProfilePage", {user: item.user})
@@ -63,8 +63,8 @@ class StatusComponent extends PureComponent<Props> {
             <TouchableOpacity activeOpacity={0.7} style={styles.msgContainer}
                               onLongPress={this.props.onLongPress}
                               onPress={() => {
-                                  if (callback) {
-                                      callback()
+                                  if (onItemClick) {
+                                      onItemClick()
                                   } else {
                                       navigateN(NavigationManager.mainNavigation, "StatusDetailPage", {item: item})
                                   }

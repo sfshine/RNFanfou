@@ -26,8 +26,12 @@ export default class ProfileAction {
             }
         } catch (err) {
             dispatch(USER_PROFILE_ACTIONS.RefreshingFailed())
-            Logger.error(TAG, "refreshTimeline error", err)
-            TipsUtil.toastFail("数据异常，请重试")
+            Logger.error(TAG, "refreshTimeline error", err.message)
+            if (err.message.indexOf("操作失败") > -1) {
+                TipsUtil.toastFail("该用户的状态需要关注后才能查看!")
+            } else {
+                TipsUtil.toastFail("数据异常")
+            }
         }
     }
 

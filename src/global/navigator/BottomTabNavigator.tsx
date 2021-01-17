@@ -12,6 +12,7 @@ import MeFragment from "~/biz/user/MeFragment";
 import MessageFragment from "~/biz/message/MessageFragment";
 import EventBus from 'react-native-event-bus'
 import {BusEvents} from "~/biz/common/event/BusEvents";
+import Logger from "~/global/util/Logger";
 
 const TABS = {
     HomeFragment: {
@@ -46,8 +47,11 @@ const TABS = {
             tabBarLabel: '消息',
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'message-text-outline'} size={24} c style={{color: tintColor}}/>
-
             ),
+            tabBarOnPress: ({defaultHandler}) => {
+                defaultHandler()
+                EventBus.getInstance().fireEvent(BusEvents.refreshMention)
+            },
         },
     },
     MeFragment: {
@@ -56,8 +60,7 @@ const TABS = {
             tabBarLabel: '我的',
             tabBarIcon: ({tintColor, focused}) => (
                 <Icon name={'account'} size={24} c style={{color: tintColor}}/>
-
-            ),
+            )
         },
     },
 };
@@ -93,7 +96,9 @@ class BottomTabNavigator extends PureComponent<BaseProps> {
         const Tab = this.initBottomNavigator();
         // return <Icon name={'home'} size={24} style={'#FF00FE'}/>
         return <Tab onNavigationStateChange={(prevState, newState, action) => {//TAB切换事件
-
+            if (newState.index === 3) {
+                EventBus.getInstance().fireEvent(BusEvents.refreshMine)
+            }
         }}/>;
     }
 }

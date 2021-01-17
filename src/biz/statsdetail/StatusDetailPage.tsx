@@ -15,6 +15,7 @@ import RefreshState from "~/global/components/refresh/RefreshState";
 import Logger from "~/global/util/Logger";
 import ArchModal from "~/global/util/ArchModal";
 import QuickComposeComponent from "~/biz/compose/QuickComposeComponent";
+import {goBack} from "~/global/navigator/NavigationManager";
 
 interface Props extends BaseProps {
     refreshContextTimeline: Function,
@@ -28,6 +29,22 @@ interface State {
 }
 
 const TAG = "StatusDetailPage"
+
+export function confirmDeleteStatus(status, callback) {
+    Alert.alert('提示', `确定删除:${removeHtmlTag(status.text)}?`,
+        [
+            {
+                text: '取消', onPress: () => {
+
+                },
+            },
+            {
+                text: '确定', onPress: () => {
+                    StatusDetailAction.statuses_destroy(status.id, callback)
+                },
+            },
+        ]);
+}
 
 class StatusDetailPage extends React.PureComponent<Props, State> {
     private readonly statusFromPreviousPage
@@ -47,9 +64,9 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
 
     render() {
         let {pageData, ptrState, headerStatus} = this.props
-        pageData = pageData ? pageData : []
-        headerStatus = headerStatus ? headerStatus : this.statusFromPreviousPage
-        ptrState = ptrState ? ptrState : RefreshState.Idle
+        pageData = pageData || []
+        headerStatus = headerStatus || this.statusFromPreviousPage
+        ptrState = ptrState || RefreshState.Idle
 
         return <PageCmpt title="状态详情" backNav={this.props.navigation}>
             <RefreshListView
@@ -60,7 +77,7 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
                 renderItem={data => this._renderItem(data, headerStatus)}
                 keyExtractor={(item) => item.id}
                 onHeaderRefresh={() => {
-                    this.props.refreshContextTimeline(headerStatus.id);
+                    this.props.refreshContextTimeline(headerStatus);
                 }}
             />
             {this.renderToolbar(headerStatus)}
@@ -71,7 +88,7 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
     _renderHeader = (headerStatus) => {
         Logger.log(TAG, "_renderHeader", headerStatus)
         return headerStatus ? <View style={{backgroundColor: '#FFFFFF', paddingBottom: 5, marginBottom: 2}}>
-            <StatusComponent item={headerStatus} callback={() => {
+            <StatusComponent item={headerStatus} onItemClick={() => {
                 //no-op
             }}/>
         </View> : null;
@@ -83,7 +100,10 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
             <TimelineCell
                 highLight={headerStatus.id != this.statusFromPreviousPage.id && this.statusFromPreviousPage.id == item.id}
                 item={item}
-                callback={() => this._onStatusClick(item)}/>
+                onRefresh={() => {
+                    this.props.refreshContextTimeline(headerStatus);
+                }}
+                onItemClick={() => this._onStatusClick(item)}/>
         );
     };
     _onStatusClick = (status) => {
@@ -107,19 +127,9 @@ class StatusDetailPage extends React.PureComponent<Props, State> {
             </TouchableOpacity>
             {status.user && status.user.id === GlobalCache.user.id ?
                 <TouchableOpacity style={styles.toolsButton} activeOpacity={0.7} onPress={() => {
-                    Alert.alert('提示', `确定删除:${removeHtmlTag(status.text)}?`,
-                        [
-                            {
-                                text: '取消', onPress: () => {
-
-                                },
-                            },
-                            {
-                                text: '确定', onPress: () => {
-                                    StatusDetailAction.statuses_destroy(status.id, this.props.navigation)
-                                },
-                            },
-                        ]);
+                    confirmDeleteStatus(status, () => {
+                        goBack(this.props)
+                    });
                 }}>
                     <AntDesign name={'delete'} size={25} style={{color: 'white'}}/>
                 </TouchableOpacity> : null}

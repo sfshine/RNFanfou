@@ -63,7 +63,7 @@ class TimelineCmpt extends React.PureComponent<Props> {
     _renderItem = (data) => {
         let item = data.item;
         return (
-            <TimelineCell item={item}/>
+            <TimelineCell item={item} onRefresh={() => this.props.refreshTimeline()}/>
         )
     };
 }

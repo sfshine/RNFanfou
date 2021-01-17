@@ -1,4 +1,6 @@
 export const BusEvents = {
     refreshTimeline: 'refreshTimeline',
-    refreshPublicTimeline: 'refreshPublicTimeline'
+    refreshPublicTimeline: 'refreshPublicTimeline',
+    refreshMention: 'refreshMention',
+    refreshMine: 'refreshMine'
 }

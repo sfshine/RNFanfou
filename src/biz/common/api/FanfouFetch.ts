@@ -5,14 +5,15 @@ const TAG = "FanfouFetch"
 
 export default class FanfouFetch {
     static get(url, params?) {
-        Logger.log(TAG, 'FanfouFetch url:', url);
+        Logger.log(TAG, 'FanfouFetch start,url', url);
         Logger.log(TAG, 'FanfouFetch params:', params);
         return FanfouModule.fetch('GET', url, params, {})
             .then(response => {
                 return response ? response : Promise.reject('获取数据失败: ' + response);
             }).then(response => {
                 let json = JSON.parse(response)
-                Logger.log(TAG, "FanfouFetch get response:", json)
+                Logger.log(TAG, 'FanfouFetch get end, url:', url);
+                Logger.log(TAG, "FanfouFetch get end, response:", json)
                 return json;
             });
     }
@@ -23,6 +24,7 @@ export default class FanfouFetch {
                 return response ? response : Promise.reject('操作失败: ' + response);
             }).then(response => {
                 let json = JSON.parse(response)
+                Logger.log(TAG, 'FanfouFetch post end, url:', url);
                 Logger.log(TAG, "FanfouFetch post response:", json)
                 return json;
             });
