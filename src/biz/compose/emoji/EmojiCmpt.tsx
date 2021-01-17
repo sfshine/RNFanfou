@@ -1,8 +1,7 @@
 import React from "react";
 import {Text,FlatList,TouchableOpacity} from 'react-native';
-import {emojiStr} from "~/biz/compose/emoji/emoji";
+import {emojiArray} from "~/biz/compose/emoji/emoji";
 
-const emojiArray = emojiStr.split(" ")
 export default ({onChoose}) => {
     return <FlatList
         style={{
