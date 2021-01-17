@@ -97,7 +97,6 @@ class ComposePage extends React.PureComponent<Props, State> {
                 let newInputStr = (inputString||"") + emoji
                 this.setState({
                     inputString: newInputStr,
-                    selection: {start: newInputStr.length, end: newInputStr.length}
                 })
             }}/>:null}
         </PageCmpt>
@@ -172,10 +171,6 @@ class ComposePage extends React.PureComponent<Props, State> {
     }
     dismiss = () => {
         Logger.log(TAG, "back")
-        this.setState({
-            inputString: '',
-            photos: []
-        })
         goBack(this.props)
     }
 }
