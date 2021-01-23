@@ -97,6 +97,7 @@ class ComposePage extends React.PureComponent<Props, State> {
                 let newInputStr = (inputString||"") + emoji
                 this.setState({
                     inputString: newInputStr,
+                    selection: {start: newInputStr.length, end: newInputStr.length}
                 })
             }}/>:null}
         </PageCmpt>
